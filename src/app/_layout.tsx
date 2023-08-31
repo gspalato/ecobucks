@@ -12,9 +12,18 @@ import { loadErrorMessages, loadDevMessages } from "@apollo/client/dev";
 loadErrorMessages();
 loadDevMessages();
 
+export const unstable_settings = {
+    initialRouteName: "login",
+}
+
 export default function Layout() {
     const [loaded, error] = useFonts({
+        "Inter ExtraLight": require('../../assets/fonts/Inter-ExtraLight.ttf'),
+        "Inter Light": require('../../assets/fonts/Inter-Light.ttf'),
+        "Inter Thin": require('../../assets/fonts/Inter-Thin.ttf'),
         "Inter": require('../../assets/fonts/Inter.ttf'),
+        "Inter Medium": require('../../assets/fonts/Inter-Medium.ttf'),
+        "Inter SemiBold": require('../../assets/fonts/Inter-SemiBold.ttf'),
         "Inter Bold": require('../../assets/fonts/Inter-Bold.ttf'),
         "Inter Extrabold": require('../../assets/fonts/Inter-ExtraBold.ttf'),
         "Inter Black": require('../../assets/fonts/Inter-Black.ttf'),
@@ -42,7 +51,7 @@ export default function Layout() {
 
     return (
         <ApolloProvider client={client}>
-            <Stack initialRouteName="login" screenOptions={{ headerShown: false }} />
+            <Stack initialRouteName="/login" screenOptions={{ headerShown: false }} />
         </ApolloProvider>
     );
 };

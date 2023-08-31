@@ -13,7 +13,6 @@ const Topbar: React.FC = () => {
             <View style={tw`flex flex-row gap-4`}>
                 <MapButton />
                 <ScanButton />
-                <BackButton />
             </View>
         </View>
     );

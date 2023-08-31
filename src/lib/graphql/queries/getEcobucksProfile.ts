@@ -1,16 +1,17 @@
 import { gql } from '@apollo/client';
 
-import { CheckAuthenticationPayload } from '../../../types/CheckAuthenticationPayload';
+import { Profile } from 'types/Profile';
 
 export const Query = gql`
 	query ($token: String!) {
 		ecobucksProfile(token: $token) {
-			successful
-			user {
-				username
-			}
+			id,
+			name,
+			username,
+			credits,
+			isOperator
 		}
 	}
 `;
 
-export type ReturnType = { checkAuthentication: CheckAuthenticationPayload };
+export type ReturnType = { ecobucksProfile: Profile };

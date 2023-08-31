@@ -10,7 +10,7 @@ const Component = () => {
 
     return (
         <Pressable onPress={onPress}>
-            <View style={tw`p-1 border`}>
+            <View style={tw`p-1 border bg-transparent absolute top-3 left-3 z-5`}>
                 <Feather icon='chevron-left' size={24} color="black" />
             </View>
         </Pressable>

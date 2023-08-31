@@ -1,11 +1,14 @@
 import { useLazyQuery, useMutation } from "@apollo/client";
-import Button from "components/Button";
 import { Link, Stack, router } from "expo-router";
+import * as SecureStore from "expo-secure-store";
 import { useEffect, useState } from "react";
 import { Image, Text, View } from "react-native";
 import { TextInput } from "react-native-gesture-handler";
 import tw from 'twrnc';
 
+import Button from "components/Button";
+
+import { useAuthToken, useExpireAuthToken, useSetAuthToken } from "lib/auth";
 import { Authenticate } from "lib/graphql/mutations";
 import { AuthenticationPayload } from "types/AuthenticationPayload";
 
@@ -18,6 +21,9 @@ const Screen = () => {
 
     const [token, setToken] = useState<string | null>(null);
 
+    useExpireAuthToken();
+    useAuthToken(setToken);
+
     const [ login, { loading } ] = useMutation(Authenticate.Mutation, {
         variables: {
             username,
@@ -29,17 +35,22 @@ const Screen = () => {
 
             setSuccess(success);
 
-            if (!success) return;
+            if (!success)
+            {
+                setSubmitting(false);
+                return;
+            }
 
-            setToken(payload.token);
             setSubmitting(false);
 
-            router.push('home');
+            SecureStore.setItemAsync('token', payload.token).then(() => {
+                setToken(payload.token);
+            });
         },
         onError(e) {
             setSubmitting(false);
             setSuccess(false);
-            alert("Failed to login. Try again.");
+            alert(`Failed to login. Try again.`);
         },
     });
 
@@ -49,8 +60,11 @@ const Screen = () => {
     }
 
     useEffect(() => {
+        if (!token || !success) return;
 
-    }, []);
+        if (token && success)
+            router.replace('home');
+    }, [token, success]);
 
   	return (
         <View style={{ flex: 1, alignItems: "center", justifyContent: "center" }}>
@@ -61,7 +75,7 @@ const Screen = () => {
             <TextInput
                 style={[styles.input, success === false && tw`border-[#ff0000]`]}
                 onChangeText={setUsername}
-                value={username}
+                editable={!submitting}
                 autoCorrect={false}
                 autoCapitalize="none"
                 placeholder="Username"
@@ -70,7 +84,7 @@ const Screen = () => {
             <TextInput
                 style={[styles.input, success === false && tw`border-[#ff0000]`]}
                 onChangeText={setPassword}
-                value={password}
+                editable={!submitting}
                 autoCorrect={false}
                 autoCapitalize="none"
                 placeholder="Password"
