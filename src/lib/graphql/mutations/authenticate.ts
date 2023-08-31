@@ -1,6 +1,6 @@
 import { gql } from '@apollo/client';
 
-import { AuthenticationPayload } from '../../../types/AuthenticationPayload';
+import { AuthenticationPayload } from '@/types/AuthenticationPayload';
 
 export const Mutation = gql`
 	mutation Authenticate($username: String!, $password: String!) {

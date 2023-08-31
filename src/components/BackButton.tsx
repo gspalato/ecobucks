@@ -1,22 +1,24 @@
-import { router } from "expo-router";
-import { Pressable, View } from "react-native"
-import { FontAwesome5, Feather } from "@expo/vector-icons";
+import { Feather, FontAwesome5 } from '@expo/vector-icons';
+import { router } from 'expo-router';
+import { Pressable, View } from 'react-native';
 import tw from 'twrnc';
 
 const Component = () => {
-    const onPress = () => {
-        router.back();
-    }
+	const onPress = () => {
+		router.back();
+	};
 
-    return (
-        <Pressable onPress={onPress}>
-            <View style={tw`p-1 border bg-transparent absolute top-3 left-3 z-5`}>
-                <Feather icon='chevron-left' size={24} color="black" />
-            </View>
-        </Pressable>
-    )
-}
+	return (
+		<Pressable onPress={onPress}>
+			<View
+				style={tw`z-5 absolute left-3 top-3 border bg-transparent p-1`}
+			>
+				<Feather icon='chevron-left' size={24} color='black' />
+			</View>
+		</Pressable>
+	);
+};
 
-Component.displayName = "BackButton";
+Component.displayName = 'BackButton';
 
 export default Component;

@@ -1,6 +1,6 @@
 import { gql } from '@apollo/client';
 
-import { CheckAuthenticationPayload } from '../../../types/CheckAuthenticationPayload';
+import { CheckAuthenticationPayload } from '@/types/CheckAuthenticationPayload';
 
 export const Query = gql`
 	query ($token: String!) {

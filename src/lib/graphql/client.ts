@@ -1,6 +1,6 @@
 import { ApolloClient, HttpLink, InMemoryCache } from '@apollo/client';
 
-import Constants from '../../constants';
+import Constants from '@/constants';
 
 const ApiLink = new HttpLink({ uri: Constants.GATEWAY_URL });
 
