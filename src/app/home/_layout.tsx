@@ -1,5 +1,7 @@
 import { Slot } from 'expo-router';
 
-export default function Layout() {
+const Layout: React.FC = () => {
 	return <Slot />;
-}
+};
+
+export default Layout;

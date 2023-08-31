@@ -26,6 +26,7 @@ const Screen = () => {
 	useAuthToken(setToken);
 
 	const [login, { loading }] = useMutation(Authenticate.Mutation, {
+		fetchPolicy: 'no-cache',
 		variables: {
 			username,
 			password,

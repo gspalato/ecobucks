@@ -149,21 +149,6 @@ const Screen = () => {
 							</Text>
 						</View>
 					</View>
-					{/*
-					<FlatList
-						data={UserOptions}
-						renderItem={
-							({ item }) => (
-								<OptionButton
-									text={item.name}
-									buttonStyle={tw`min-w-10 w-35`}
-									onPress={() => router.push(item.path)}
-								/>
-							)
-						}
-						horizontal
-						contentContainerStyle={tw`justify-around gap-2 px-2 w-full mt-5`}
-					/>*/}
 				</View>
 			</SafeAreaView>
 		</>
