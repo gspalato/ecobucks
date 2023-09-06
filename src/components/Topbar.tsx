@@ -5,7 +5,13 @@ import tw from 'twrnc';
 
 import BackButton from './BackButton';
 
-const Topbar: React.FC = () => {
+interface ITopbarProps {
+	isOperator?: boolean;
+}
+
+const Component: React.FC<ITopbarProps> = (props) => {
+	const { isOperator } = props;
+
 	return (
 		<View
 			style={tw`min-h-12 flex w-full flex-row items-center justify-between border-b border-b-[#00000011] px-4 pb-2`}
@@ -21,12 +27,18 @@ const Topbar: React.FC = () => {
 			<View style={tw`flex flex-row gap-4`}>
 				<MapButton />
 				<ScanButton />
+				{isOperator && (
+					<>
+						<View style={tw`my-1 border-l border-[#00000011]`} />
+						<RegisterButton />
+					</>
+				)}
 			</View>
 		</View>
 	);
 };
 
-export default Topbar;
+export default Component;
 
 const MapButton: React.FC = () => {
 	const onPress = () => {
@@ -35,7 +47,7 @@ const MapButton: React.FC = () => {
 
 	return (
 		<Pressable onPress={onPress}>
-			<View style={tw`rounded-full p-1`}>
+			<View style={tw`p-1`}>
 				<FontAwesome name='map-marker' size={24} color='black' />
 			</View>
 		</Pressable>
@@ -49,8 +61,22 @@ const ScanButton: React.FC = () => {
 
 	return (
 		<Pressable onPress={onPress}>
-			<View style={tw`rounded-full p-1`}>
+			<View style={tw`p-1`}>
 				<Ionicons name='scan' size={24} color='black' />
+			</View>
+		</Pressable>
+	);
+};
+
+const RegisterButton: React.FC = () => {
+	const onPress = () => {
+		router.push('register');
+	};
+
+	return (
+		<Pressable onPress={onPress}>
+			<View style={tw`p-1`}>
+				<Ionicons name='add' size={24} color='black' />
 			</View>
 		</Pressable>
 	);

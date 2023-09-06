@@ -1,11 +1,10 @@
+import { Feather } from '@expo/vector-icons';
 import * as Location from 'expo-location';
-import { Stack } from 'expo-router';
+import { router, Stack } from 'expo-router';
 import React, { useEffect, useState } from 'react';
-import { StyleSheet, View } from 'react-native';
+import { Pressable, StyleSheet, View } from 'react-native';
 import MapView from 'react-native-maps';
 import tw from 'twrnc';
-
-import BackButton from '@components/BackButton';
 
 const Screen = () => {
 	const [location, setLocation] = useState<Location.LocationObject | null>(
@@ -29,10 +28,28 @@ const Screen = () => {
 	return (
 		<>
 			<View style={tw`flex-1`}>
-				<MapView style={tw`h-full w-full`} showsUserLocation={true} />
+				<BackButton />
+				<MapView
+					style={tw`absolute z-0 h-full w-full`}
+					showsUserLocation={true}
+				/>
 			</View>
 		</>
 	);
 };
 
 export default Screen;
+
+const BackButton = () => {
+	const onPress = () => {
+		router.push('home');
+	};
+
+	return (
+		<Pressable onPress={onPress}>
+			<View style={[tw`absolute z-10 p-1`]}>
+				<Feather size={35} name='chevron-left' color={'#ffffff'} />
+			</View>
+		</Pressable>
+	);
+};

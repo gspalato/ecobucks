@@ -16,6 +16,7 @@ import * as GetEcobucksProfile from '@lib/graphql/queries/getEcobucksProfile';
 
 import { Profile } from '@/types/Profile';
 
+import CreditCard from './components/CreditCard';
 import OptionButton from './components/OptionButton';
 
 const Screen = () => {
@@ -93,7 +94,7 @@ const Screen = () => {
 		<>
 			<Stack.Screen options={{}} />
 			<SafeAreaView style={{ alignItems: 'center' }}>
-				<Topbar />
+				<Topbar isOperator={profile.isOperator} />
 				<View style={tw`h-full w-full items-start justify-start py-4`}>
 					<View style={tw`w-full px-4`}>
 						<View
@@ -102,7 +103,7 @@ const Screen = () => {
 						>
 							<Text
 								style={[
-									tw`text-center text-2xl text-black/50`,
+									tw`text-black/50 text-center text-2xl`,
 									{ fontFamily: 'Inter' },
 								]}
 							>
@@ -110,44 +111,14 @@ const Screen = () => {
 							</Text>
 							<Text
 								style={[
-									tw`text-center text-2xl text-black/50`,
+									tw`text-black/50 text-center text-2xl`,
 									{ fontFamily: 'Space Grotesk Bold' },
 								]}
 							>
 								{profile.name}!
 							</Text>
 						</View>
-						<View
-							id='card_representation'
-							style={tw`mx-auto mt-5 flex aspect-video w-[95%] items-center justify-center overflow-hidden rounded-2xl border border-[#00000011] bg-[#f0f0f5] shadow-md`}
-						>
-							<LinearGradient
-								colors={['#ebebed', '#ffffff', '#ebebed']}
-								style={tw`absolute h-full w-full rounded-2xl`}
-								locations={[0.25, 0.5, 0.75]}
-								start={{ x: 0, y: 1 }}
-								end={{ x: 1, y: 0 }}
-							/>
-							<Text
-								style={[
-									{
-										fontFamily: 'Space Grotesk Bold',
-										fontSize: 140,
-									},
-									tw`text-black/05 -bottom-15 absolute mx-auto font-bold`,
-								]}
-							>
-								credit
-							</Text>
-							<Text
-								style={[
-									tw`leading-0 text-7xl font-bold text-[#11da33]`,
-									{ fontFamily: 'Space Grotesk Bold' },
-								]}
-							>
-								${profile?.credits || '0'}
-							</Text>
-						</View>
+						<CreditCard credits={profile.credits} />
 					</View>
 				</View>
 			</SafeAreaView>
@@ -156,27 +127,3 @@ const Screen = () => {
 };
 
 export default Screen;
-
-const UserOptions = [
-	{
-		name: 'Scan',
-		icon: 'qrcode',
-		color: '#11da33',
-		path: 'scan',
-	},
-	{
-		name: 'Locations',
-		icon: 'map-marker-alt',
-		color: '#11da33',
-		path: 'map',
-	},
-];
-
-const OperatorOptions = [
-	{
-		name: 'Register',
-		icon: 'user-plus',
-		color: '#11da33',
-		path: 'register',
-	},
-];
