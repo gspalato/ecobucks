@@ -62,7 +62,7 @@ const Component = (props: {
 							return newDisposalFields;
 						})
 					}
-					placeholder='Weight'
+					placeholder='Weight (grams)'
 					placeholderTextColor='#00000055'
 				/>
 				<Select

@@ -1,5 +1,5 @@
 import { useMutation } from '@apollo/client';
-import { BarCodeScanner } from 'expo-barcode-scanner';
+import { BarCodeScannedCallback, BarCodeScanner } from 'expo-barcode-scanner';
 import * as Haptics from 'expo-haptics';
 import { router } from 'expo-router';
 import React, { useEffect, useState } from 'react';
@@ -8,6 +8,8 @@ import tw from 'twrnc';
 
 import { useAuth, useAuthToken } from '@lib/auth';
 import * as ClaimDisposalAndCredits from '@lib/graphql/mutations/claimDisposalAndCredits';
+
+import Constants from '@/constants';
 
 const Screen: React.FC<any> = ({ navigation }) => {
 	const [hasPermission, setHasPermission] = useState<boolean | null>(null);
@@ -57,7 +59,7 @@ const Screen: React.FC<any> = ({ navigation }) => {
 		getBarCodeScannerPermissions();
 	}, []);
 
-	const handleBarCodeScanned = (data: any) => {
+	const handleBarCodeScanned: BarCodeScannedCallback = (data) => {
 		if (data.type !== 'org.iso.QRCode') {
 			setScanned(false);
 			return;
@@ -67,10 +69,16 @@ const Screen: React.FC<any> = ({ navigation }) => {
 
 		Haptics.notificationAsync(Haptics.NotificationFeedbackType.Success);
 
+		let disposalToken;
+		if (data.data.startsWith(Constants.CLAIM_DISPOSAL_QRCODE_PREFIX))
+			disposalToken = data.data.slice(
+				Constants.CLAIM_DISPOSAL_QRCODE_PREFIX.length,
+			);
+
 		claim({
 			variables: {
 				userToken: token,
-				disposalToken: data.data,
+				disposalToken: disposalToken,
 			},
 		});
 	};

@@ -7,6 +7,14 @@ import { SplashScreen } from 'expo-router';
 import { Stack } from 'expo-router/stack';
 import React from 'react';
 import { useCallback, useEffect, useState } from 'react';
+import { Dimensions, Easing } from 'react-native';
+import {
+	createModalStack,
+	ModalProvider,
+	ModalStackConfig,
+} from 'react-native-modalfy';
+
+import { modalStack } from '@/components/modals';
 
 import { AuthProvider } from '@lib/auth';
 import client from '@lib/graphql/client';
@@ -29,7 +37,7 @@ const App: React.FC = () => {
 		'Inter Thin': require('../../assets/fonts/Inter-Thin.ttf'),
 		Inter: require('../../assets/fonts/Inter.ttf'),
 		'Inter Medium': require('../../assets/fonts/Inter-Medium.ttf'),
-		'Inter SemiBold': require('../../assets/fonts/Inter-SemiBold.ttf'),
+		'Inter Semibold': require('../../assets/fonts/Inter-SemiBold.ttf'),
 		'Inter Bold': require('../../assets/fonts/Inter-Bold.ttf'),
 		'Inter Extrabold': require('../../assets/fonts/Inter-ExtraBold.ttf'),
 		'Inter Black': require('../../assets/fonts/Inter-Black.ttf'),
@@ -48,7 +56,9 @@ const App: React.FC = () => {
 	return (
 		<ApolloProvider client={client}>
 			<AuthProvider>
-				<Stack screenOptions={{ headerShown: false }} />
+				<ModalProvider stack={modalStack}>
+					<Stack screenOptions={{ headerShown: false }} />
+				</ModalProvider>
 			</AuthProvider>
 		</ApolloProvider>
 	);

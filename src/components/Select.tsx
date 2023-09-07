@@ -3,18 +3,19 @@ import { isValidElement, useRef, useState } from 'react';
 import {
 	Animated,
 	FlatList,
-	Modal,
 	Pressable,
 	StyleProp,
 	Text,
 	TextStyle,
+	useWindowDimensions,
 	View,
 	ViewStyle,
 } from 'react-native';
 import { Swipeable, TouchableOpacity } from 'react-native-gesture-handler';
+import { useModal } from 'react-native-modalfy';
 import tw from 'twrnc';
 
-type SelectItemDefinition = {
+export type SelectItemDefinition = {
 	key: string;
 	icon?: string | JSX.Element;
 	label: string;
@@ -31,13 +32,25 @@ interface ISelectProps {
 }
 
 const Component: React.FC<ISelectProps> = (props) => {
-	const { buttonStyle, placeholder, setItem, textStyle } = props;
+	const { buttonStyle, items, placeholder, setItem, textStyle } = props;
 
-	const [_item, _setItem] = useState<SelectItemDefinition | null>(null);
-	const [isSelectModalOpen, setIsSelectModalOpen] = useState(false);
+	const [selected, setSelected] = useState<SelectItemDefinition | null>(null);
+
+	const scrollViewRef = useRef<FlatList<SelectItemDefinition>>(null);
+
+	const dimensions = useWindowDimensions();
+	const modalHeight = dimensions.height / 3;
+
+	const { openModal } = useModal();
 
 	const onPress = () => {
-		setIsSelectModalOpen(true);
+		openModal('SelectItemModal', {
+			items: items,
+			setItem: (item: SelectItemDefinition) => {
+				setSelected(item);
+				setItem(item);
+			},
+		});
 	};
 
 	return (
@@ -47,58 +60,10 @@ const Component: React.FC<ISelectProps> = (props) => {
 				onPress={onPress}
 			>
 				<Text style={[Styles.text, textStyle]}>
-					{_item?.label || placeholder}
+					{selected?.label || placeholder}
 				</Text>
 				<Ionicons name='chevron-down' size={20} color='#000000' />
 			</TouchableOpacity>
-			<Modal
-				visible={isSelectModalOpen}
-				animationType='fade'
-				onRequestClose={() => setIsSelectModalOpen(false)}
-				presentationStyle='pageSheet'
-				supportedOrientations={['portrait']}
-			>
-				<Pressable onPress={() => setIsSelectModalOpen(false)}>
-					<Animated.View
-						style={[tw`flex-1 items-center justify-center`]}
-					>
-						<View
-							style={tw`h-1/2 w-3/4 rounded-3xl bg-[#ffffff] shadow-md`}
-						>
-							<View style={tw`h-7 rounded-3xl shadow-md`} />
-							<FlatList
-								data={props.items}
-								renderItem={(info) => (
-									<TouchableOpacity
-										style={Styles.selectItem.container}
-										onPress={() => {
-											setItem(info.item);
-											_setItem(info.item);
-											setIsSelectModalOpen(false);
-										}}
-									>
-										{info.item.icon &&
-											(isValidElement(info.item.icon) ? (
-												info.item.icon
-											) : (
-												<Text
-													style={
-														Styles.selectItem.icon
-													}
-												>
-													{info.item.icon}
-												</Text>
-											))}
-										<Text style={Styles.selectItem.text}>
-											{info.item.label}
-										</Text>
-									</TouchableOpacity>
-								)}
-							/>
-						</View>
-					</Animated.View>
-				</Pressable>
-			</Modal>
 		</>
 	);
 };
@@ -112,11 +77,13 @@ const Styles = {
 		tw`leading-0 w-90 h-13 text-4.25 mx-auto mb-4 flex-row items-center justify-between rounded-lg border border-[#00000022] bg-[#0000011] p-3`,
 	],
 	text: [tw`text-lg font-bold text-[#000000]`, { fontFamily: 'Inter' }],
+	modal: [tw`m-0`, { justifyContent: 'flex-start' }],
+	container: [tw`h-300 rounded-t-lg`],
 	selectItem: {
 		container: [
-			tw`flex w-full items-center justify-between border-b border-[#00000011] p-2`,
+			tw`flex w-full flex-row items-center justify-center border-b border-[#00000011] p-2`,
 		],
-		icon: [tw`bg-[#ff0000] text-xl`],
+		icon: [tw`absolute left-5 text-xl`],
 		text: [tw`text-center text-xl`, { fontFamily: 'Inter' }],
 	},
 };

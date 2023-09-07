@@ -3,7 +3,6 @@ import { DeviceMotion } from 'expo-sensors';
 import { Subscription } from 'expo-sensors/build/Pedometer';
 import { useEffect, useRef, useState } from 'react';
 import {
-	Animated,
 	Easing,
 	StyleProp,
 	Text,
@@ -11,6 +10,12 @@ import {
 	View,
 	ViewStyle,
 } from 'react-native';
+import Animated, {
+	interpolate,
+	useAnimatedStyle,
+	useSharedValue,
+	withTiming,
+} from 'react-native-reanimated';
 import tw from 'twrnc';
 
 interface ICreditCardProps {
@@ -20,64 +25,54 @@ interface ICreditCardProps {
 const Component: React.FC<ICreditCardProps> = (props) => {
 	const { credits } = props;
 
-	const rotationX = useRef(new Animated.Value(0)).current;
-	const rotationY = useRef(new Animated.Value(0)).current;
-
+	/*
 	const [subscription, setSubscription] = useState<Subscription | null>(null);
 
-	const clamp = (n: number, min: number, max: number): number =>
-		Math.max(Math.min(n, max), min);
+	const rotationX = useSharedValue(0);
+	const rotationY = useSharedValue(0);
 
-	const scale = (
-		unscaledNum: number,
-		minAllowed: number,
-		maxAllowed: number,
-		min: number,
-		max: number,
-	) => {
-		return (
-			((maxAllowed - minAllowed) * (unscaledNum - min)) / (max - min) +
-			minAllowed
-		);
+	const animationConfig = {
+		duration: 200,
+		easing: Easing.bezier(0.5, 0.01, 0, 1),
 	};
 
+	const style = useAnimatedStyle(() => {
+		const style = {
+			transform: [
+				{
+					rotateX: `${interpolate(
+						rotationX.value,
+						[-0.5, 0.5],
+						[-30, 30],
+					)}deg`,
+				},
+				{
+					rotateY: `${interpolate(
+						rotationY.value,
+						[-0.5, 0.5],
+						[-30, 30],
+					)}deg`,
+				},
+			],
+		};
+
+		console.log(style);
+
+		return style;
+	});
+
 	const _subscribe = () => {
-		DeviceMotion.setUpdateInterval(100);
+		DeviceMotion.setUpdateInterval(50);
 		setSubscription(
 			DeviceMotion.addListener((data) => {
-				/*
 				// Beta: -1 -> 1
 				let beta = clamp(data.rotation.beta, -0.5, 0.5);
 
 				// Gamma: -3 -> 3
 				let gamma = clamp(data.rotation.gamma, -0.5, 0.5);
 
-				rotationX.interpolate({
-					inputRange: [-0.5, 0.5],
-					outputRange: ['-30deg', '30deg'],
-				});
-
-				rotationY.interpolate({
-					inputRange: [-0.5, 0.5],
-					outputRange: ['-30deg', '30deg'],
-				});
-
-				console.log(rotationX, rotationY);
-
-				Animated.timing(rotationX, {
-					toValue: gamma,
-					easing: Easing.inOut(Easing.ease),
-					duration: 100,
-					useNativeDriver: true,
-				}).start();
-
-				Animated.timing(rotationY, {
-					toValue: beta,
-					easing: Easing.inOut(Easing.ease),
-					duration: 100,
-					useNativeDriver: true,
-				}).start();
-				*/
+				rotationX.value = withTiming(beta, animationConfig);
+				rotationY.value = withTiming(gamma, animationConfig);
 			}),
 		);
 	};
@@ -91,11 +86,7 @@ const Component: React.FC<ICreditCardProps> = (props) => {
 		_subscribe();
 		return () => _unsubscribe();
 	}, []);
-
-	const config = {
-		duration: 100,
-		easing: Easing.bezier(0.5, 0.01, 0, 1),
-	};
+	*/
 
 	return (
 		<Animated.View

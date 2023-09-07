@@ -13,6 +13,7 @@ import tw from 'twrnc';
 
 import Button from '@/components/Button';
 
+import { useAuthToken } from '@/lib/auth';
 import * as RegisterDisposal from '@/lib/graphql/mutations/registerDisposal';
 
 import { DisposalType } from '@/types/DisposalClaim';
@@ -26,7 +27,19 @@ export type DisposalField = {
 	disposalType?: DisposalType;
 };
 
+// This is an early development only implementation.
+// In the future, the rates will be set and calculated on the server.
+const PER_TYPE_RATE_KG = {
+	[DisposalType.RECYCLABLE]: 100,
+	[DisposalType.SPONGE]: 250,
+	[DisposalType.BATTERY]: 500,
+	[DisposalType.ELECTRONIC]: 1000,
+};
+
 const Screen: React.FC = () => {
+	const [token, setToken] = useState<string | null>(null);
+	useAuthToken(setToken);
+
 	const [disposalFields, setDisposalFields] = useState<DisposalField[]>([
 		{ _id: 0, weight: undefined, disposalType: undefined },
 	]);
@@ -46,11 +59,7 @@ const Screen: React.FC = () => {
 		});
 	};
 
-	const removeDisposalFieldById = (id: number) => {
-		setDisposalFields((prev) => prev.filter((item) => item._id !== id));
-	};
-
-	const [register, { loading }] = useMutation<RegisterDisposal.ReturnType>(
+	const [register] = useMutation<RegisterDisposal.ReturnType>(
 		RegisterDisposal.Mutation,
 		{
 			fetchPolicy: 'no-cache',
@@ -71,7 +80,9 @@ const Screen: React.FC = () => {
 				});
 			},
 			onError: (error) => {
-				alert(`Failed to register disposal.\n${error.message}`);
+				alert(
+					`Failed to register disposal (internal error).\n${error.message}`,
+				);
 			},
 		},
 	);
@@ -131,11 +142,22 @@ const Screen: React.FC = () => {
 					buttonStyle={Styles.registerButton.button}
 					textStyle={Styles.registerButton.text}
 					onPress={() => {
+						if (
+							disposalFields.some(
+								(item) =>
+									item.weight === undefined ||
+									item.disposalType === undefined,
+							)
+						)
+							return alert('Please fill in all fields.');
+
 						register({
 							variables: {
-								operatorToken: '',
+								operatorToken: token,
 								disposals: disposalFields.map((item) => ({
-									credits: 0,
+									credits:
+										(item.weight! / 1000) *
+										PER_TYPE_RATE_KG[item.disposalType!],
 									weight: item.weight,
 									disposalType: item.disposalType,
 								})),

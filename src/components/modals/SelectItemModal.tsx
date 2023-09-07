@@ -1,0 +1,101 @@
+import React, {
+	isValidElement,
+	useCallback,
+	useEffect,
+	useRef,
+	useState,
+} from 'react';
+import {
+	Animated,
+	FlatList,
+	Text,
+	TouchableOpacity,
+	useWindowDimensions,
+	View,
+} from 'react-native';
+import {
+	ModalComponentProp,
+	ModalEventCallback,
+	ModalEventListener,
+	ModalProps,
+} from 'react-native-modalfy';
+import tw from 'twrnc';
+
+import { SelectItemDefinition } from '../Select';
+
+import { ModalStackParamsList } from '.';
+
+const Component: React.FC<any> = ({
+	modal: { closeModal, getParam, addListener },
+}) => {
+	const [isSelectModalOpen, setIsSelectModalOpen] = useState(false);
+
+	const [selected, setSelected] = useState<SelectItemDefinition | null>(null);
+
+	const dimensions = useWindowDimensions();
+	const modalHeight = dimensions.height / 3;
+
+	const items: SelectItemDefinition[] = getParam('items', []);
+	const setItem: React.Dispatch<React.SetStateAction<SelectItemDefinition>> =
+		getParam('setItem', () => {});
+
+	return (
+		<View
+			style={[
+				tw`w-full rounded-t-3xl bg-[#ffffff]`,
+				Styles.container,
+				{ height: modalHeight, width: dimensions.width },
+			]}
+		>
+			<View
+				style={tw`h-7 items-center justify-center rounded-t-3xl shadow-md`}
+			>
+				<View style={tw`h-1 w-7 rounded-full bg-[#00000022]`} />
+			</View>
+			<FlatList
+				style={tw`flex-1`}
+				data={items}
+				renderItem={(info) => (
+					<TouchableOpacity
+						style={[
+							Styles.selectItem.container,
+							info.index == 0 && {
+								borderTopWidth: 1,
+							},
+						]}
+						onPress={() => {
+							setItem(info.item);
+							closeModal();
+						}}
+					>
+						{info.item.icon &&
+							(isValidElement(info.item.icon) ? (
+								info.item.icon
+							) : (
+								<Text style={Styles.selectItem.icon}>
+									{info.item.icon}
+								</Text>
+							))}
+						<Text style={Styles.selectItem.text}>
+							{info.item.label}
+						</Text>
+					</TouchableOpacity>
+				)}
+			/>
+		</View>
+	);
+};
+
+export default Component;
+
+const Styles = {
+	modal: [tw`m-0`, { justifyContent: 'flex-start' }],
+	container: [tw`h-300 rounded-t-lg`],
+	selectItem: {
+		container: [
+			tw`flex w-full flex-row items-center justify-center border-b border-[#00000011] p-2`,
+		],
+		icon: [tw`absolute left-5 text-xl`],
+		text: [tw`text-center text-xl`, { fontFamily: 'Inter' }],
+	},
+};
