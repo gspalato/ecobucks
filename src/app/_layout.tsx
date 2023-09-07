@@ -1,10 +1,12 @@
 import { ApolloProvider } from '@apollo/client';
 import { loadDevMessages, loadErrorMessages } from '@apollo/client/dev';
 import { FontAwesome, Ionicons } from '@expo/vector-icons';
+import { registerRootComponent } from 'expo';
 import { useFonts } from 'expo-font';
-import { router, SplashScreen } from 'expo-router';
+import { SplashScreen } from 'expo-router';
 import { Stack } from 'expo-router/stack';
-import { useEffect } from 'react';
+import React from 'react';
+import { useCallback, useEffect, useState } from 'react';
 
 import { AuthProvider } from '@lib/auth';
 import client from '@lib/graphql/client';
@@ -15,11 +17,13 @@ loadErrorMessages();
 loadDevMessages();
 
 export const unstable_settings = {
-	initialRouteName: 'login',
+	// Ensure any route can link back to `/`
+	initialRouteName: 'home',
 };
 
-export default function Layout() {
-	const [loaded, error] = useFonts({
+const App: React.FC = () => {
+	const [loaded, setLoaded] = useState(false);
+	const [fontsLoaded, error] = useFonts({
 		'Inter ExtraLight': require('../../assets/fonts/Inter-ExtraLight.ttf'),
 		'Inter Light': require('../../assets/fonts/Inter-Light.ttf'),
 		'Inter Thin': require('../../assets/fonts/Inter-Thin.ttf'),
@@ -35,27 +39,21 @@ export default function Layout() {
 		...Ionicons.font,
 	});
 
-	// Expo Router uses Error Boundaries to catch errors in the navigation tree.
 	useEffect(() => {
-		if (error) throw error;
-	}, [error]);
+		if (fontsLoaded) SplashScreen.hideAsync();
+	}, [fontsLoaded]);
 
-	useEffect(() => {
-		if (!loaded) return;
-
-		SplashScreen.hideAsync();
-	}, [loaded]);
-
-	if (!loaded) return null;
+	if (!fontsLoaded) return;
 
 	return (
 		<ApolloProvider client={client}>
 			<AuthProvider>
-				<Stack
-					initialRouteName='/login'
-					screenOptions={{ headerShown: false }}
-				/>
+				<Stack screenOptions={{ headerShown: false }} />
 			</AuthProvider>
 		</ApolloProvider>
 	);
-}
+};
+
+registerRootComponent(App);
+
+export default App;

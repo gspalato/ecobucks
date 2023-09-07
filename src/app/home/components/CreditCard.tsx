@@ -1,15 +1,16 @@
 import { LinearGradient } from 'expo-linear-gradient';
 import { DeviceMotion } from 'expo-sensors';
 import { Subscription } from 'expo-sensors/build/Pedometer';
-import { useEffect, useState } from 'react';
-import { StyleProp, Text, TextStyle, View, ViewStyle } from 'react-native';
-import { TouchableOpacity } from 'react-native-gesture-handler';
-import Animated, {
+import { useEffect, useRef, useState } from 'react';
+import {
+	Animated,
 	Easing,
-	useAnimatedStyle,
-	useSharedValue,
-	withTiming,
-} from 'react-native-reanimated';
+	StyleProp,
+	Text,
+	TextStyle,
+	View,
+	ViewStyle,
+} from 'react-native';
 import tw from 'twrnc';
 
 interface ICreditCardProps {
@@ -19,21 +20,64 @@ interface ICreditCardProps {
 const Component: React.FC<ICreditCardProps> = (props) => {
 	const { credits } = props;
 
-	const rotationX = useSharedValue(0);
-	const rotationY = useSharedValue(0);
-	const rotationZ = useSharedValue(0);
+	const rotationX = useRef(new Animated.Value(0)).current;
+	const rotationY = useRef(new Animated.Value(0)).current;
 
 	const [subscription, setSubscription] = useState<Subscription | null>(null);
 
 	const clamp = (n: number, min: number, max: number): number =>
 		Math.max(Math.min(n, max), min);
 
+	const scale = (
+		unscaledNum: number,
+		minAllowed: number,
+		maxAllowed: number,
+		min: number,
+		max: number,
+	) => {
+		return (
+			((maxAllowed - minAllowed) * (unscaledNum - min)) / (max - min) +
+			minAllowed
+		);
+	};
+
 	const _subscribe = () => {
-		DeviceMotion.setUpdateInterval(50);
+		DeviceMotion.setUpdateInterval(100);
 		setSubscription(
 			DeviceMotion.addListener((data) => {
-				rotationX.value = clamp(data.rotation.gamma * 10, -10, 10);
-				rotationY.value = clamp(data.rotation.beta * 10, -10, 10);
+				/*
+				// Beta: -1 -> 1
+				let beta = clamp(data.rotation.beta, -0.5, 0.5);
+
+				// Gamma: -3 -> 3
+				let gamma = clamp(data.rotation.gamma, -0.5, 0.5);
+
+				rotationX.interpolate({
+					inputRange: [-0.5, 0.5],
+					outputRange: ['-30deg', '30deg'],
+				});
+
+				rotationY.interpolate({
+					inputRange: [-0.5, 0.5],
+					outputRange: ['-30deg', '30deg'],
+				});
+
+				console.log(rotationX, rotationY);
+
+				Animated.timing(rotationX, {
+					toValue: gamma,
+					easing: Easing.inOut(Easing.ease),
+					duration: 100,
+					useNativeDriver: true,
+				}).start();
+
+				Animated.timing(rotationY, {
+					toValue: beta,
+					easing: Easing.inOut(Easing.ease),
+					duration: 100,
+					useNativeDriver: true,
+				}).start();
+				*/
 			}),
 		);
 	};
@@ -44,8 +88,8 @@ const Component: React.FC<ICreditCardProps> = (props) => {
 	};
 
 	useEffect(() => {
-		//_subscribe();
-		//return () => _unsubscribe();
+		_subscribe();
+		return () => _unsubscribe();
 	}, []);
 
 	const config = {
@@ -53,20 +97,11 @@ const Component: React.FC<ICreditCardProps> = (props) => {
 		easing: Easing.bezier(0.5, 0.01, 0, 1),
 	};
 
-	const rotationStyle = useAnimatedStyle(() => {
-		return {
-			transform: [
-				{ rotateX: withTiming(rotationX.value, config) + 'deg' },
-				{ rotateZ: withTiming(rotationZ.value, config) + 'deg' },
-			],
-		};
-	});
-
 	return (
 		<Animated.View
 			id='card_representation'
 			style={[
-				tw`mx-auto mt-5 flex aspect-video w-[95%] items-center justify-center overflow-hidden rounded-2xl border border-[#00000011] bg-[#f0f0f5] shadow-md`,
+				tw`mx-auto mt-5 flex aspect-video w-[95%] items-center justify-center overflow-hidden rounded-2xl border border-[#00000011] bg-[#f0f0f5]`,
 			]}
 		>
 			<LinearGradient
@@ -76,6 +111,17 @@ const Component: React.FC<ICreditCardProps> = (props) => {
 				start={{ x: 0, y: 1 }}
 				end={{ x: 1, y: 0 }}
 			/>
+			<Text
+				style={[
+					{
+						fontFamily: 'Space Grotesk Bold',
+						fontSize: 140,
+					},
+					tw`text-black/05 -top-22 absolute mx-auto font-bold`,
+				]}
+			>
+				credit
+			</Text>
 			<Text
 				style={[
 					{

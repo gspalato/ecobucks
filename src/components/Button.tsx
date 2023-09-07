@@ -25,9 +25,9 @@ const Component: React.FC<IButtonProps> = (props) => {
 export default Component;
 
 const styles = {
-	button: [tw`rounded-lg border-2 border-[#00000055] p-3`],
+	button: [tw`items-center justify-center rounded-lg bg-[#11da33] p-3`],
 	text: [
-		tw`text-xl font-bold text-[#000000cc]`,
+		tw`leading-0 text-xl font-bold text-[#ffffff]`,
 		{ fontFamily: 'Space Grotesk Bold' },
 	],
 };

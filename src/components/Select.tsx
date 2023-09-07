@@ -1,10 +1,10 @@
 import { Ionicons } from '@expo/vector-icons';
-import { Pressable } from '@gluestack-ui/themed';
 import { isValidElement, useRef, useState } from 'react';
 import {
 	Animated,
 	FlatList,
 	Modal,
+	Pressable,
 	StyleProp,
 	Text,
 	TextStyle,
@@ -52,10 +52,10 @@ const Component: React.FC<ISelectProps> = (props) => {
 				<Ionicons name='chevron-down' size={20} color='#000000' />
 			</TouchableOpacity>
 			<Modal
-				transparent
 				visible={isSelectModalOpen}
 				animationType='fade'
 				onRequestClose={() => setIsSelectModalOpen(false)}
+				presentationStyle='pageSheet'
 				supportedOrientations={['portrait']}
 			>
 				<Pressable onPress={() => setIsSelectModalOpen(false)}>

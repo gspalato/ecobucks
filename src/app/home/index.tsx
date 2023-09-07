@@ -1,15 +1,15 @@
 import { useLazyQuery } from '@apollo/client';
-import { useIsFocused } from '@react-navigation/native';
-import { LinearGradient } from 'expo-linear-gradient';
-import { Link, router, Stack, useFocusEffect } from 'expo-router';
+import { router, useFocusEffect } from 'expo-router';
 import * as SecureStore from 'expo-secure-store';
 import { useCallback, useEffect, useState } from 'react';
-import { ActivityIndicator, FlatList, Image, Text, View } from 'react-native';
+import { ActivityIndicator, Text, View } from 'react-native';
 import { SafeAreaView } from 'react-native-safe-area-context';
 import tw from 'twrnc';
 
 import BackButton from '@components/BackButton';
 import Topbar from '@components/Topbar';
+
+import Button from '@/components/Button';
 
 import { useAuthToken } from '@lib/auth';
 import * as GetEcobucksProfile from '@lib/graphql/queries/getEcobucksProfile';
@@ -19,9 +19,7 @@ import { Profile } from '@/types/Profile';
 import CreditCard from './components/CreditCard';
 import OptionButton from './components/OptionButton';
 
-const Screen = () => {
-	const isFocused = useIsFocused();
-
+const Screen: React.FC<any> = ({ navigation }) => {
 	const [token, setToken] = useState<string | null>(null);
 	const [profile, setProfile] = useState<Profile | null>(null);
 
@@ -58,7 +56,7 @@ const Screen = () => {
 	};
 
 	useEffect(() => {
-		if (success === false) router.replace('login');
+		if (success === false) router.replace('/');
 	}, [success]);
 
 	useEffect(fetchProfile, [token]);
@@ -67,7 +65,7 @@ const Screen = () => {
 			console.log('focused.');
 			const update = async () => {
 				const token = await SecureStore.getItemAsync('token');
-				if (!token) return;
+				if (!token) router.replace('/');
 
 				console.log('has token. fetching again...');
 				fetch({
@@ -92,7 +90,6 @@ const Screen = () => {
 
 	return (
 		<>
-			<Stack.Screen options={{}} />
 			<SafeAreaView style={{ alignItems: 'center' }}>
 				<Topbar isOperator={profile.isOperator} />
 				<View style={tw`h-full w-full items-start justify-start py-4`}>
@@ -118,7 +115,33 @@ const Screen = () => {
 								{profile.name}!
 							</Text>
 						</View>
-						<CreditCard credits={profile.credits} />
+						<View
+							style={tw`rounded-2xl shadow-lg shadow-[#000000]/70`}
+						>
+							<CreditCard credits={profile.credits} />
+						</View>
+						<Button
+							buttonStyle={tw`h-13 mx-auto mt-5 w-80`}
+							textStyle={tw`text-center`}
+							onPress={() =>
+								router.push({
+									pathname: '/(operator)/qrcode',
+									params: { id: 'TEST' },
+								})
+							}
+							text='QRCode Test'
+						/>
+						<Button
+							buttonStyle={tw`h-13 mx-auto mt-5 w-80`}
+							textStyle={tw`text-center`}
+							onPress={() =>
+								router.push({
+									pathname: '/claim_success_modal',
+									params: { credits: 100 },
+								})
+							}
+							text='Claim Success Test'
+						/>
 					</View>
 				</View>
 			</SafeAreaView>

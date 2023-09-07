@@ -9,7 +9,7 @@ import tw from 'twrnc';
 import { useAuth, useAuthToken } from '@lib/auth';
 import * as ClaimDisposalAndCredits from '@lib/graphql/mutations/claimDisposalAndCredits';
 
-const Screen = () => {
+const Screen: React.FC<any> = ({ navigation }) => {
 	const [hasPermission, setHasPermission] = useState<boolean | null>(null);
 	const [scanned, setScanned] = useState<boolean>(false);
 
@@ -35,19 +35,15 @@ const Screen = () => {
 						return;
 					}
 
-					alert(
-						`Successfully claimed ${disposalClaim.credits} credits!`,
-					);
-					router.replace('home');
+					router.replace({
+						pathname: '/claim_success_modal',
+						params: { credits: disposalClaim.credits },
+					});
 				},
 				onError(e) {
-					alert(
-						`Failed to claim.\n{}\n\n\n${e.message}\n${
-							e.cause
-						}\n${e.graphQLErrors.map((e) => e.message)}`,
-					);
+					alert(`Failed to claim.\n${e.message}`);
 					setSuccess(false);
-					router.replace('home');
+					router.replace('/home/');
 				},
 			},
 		);

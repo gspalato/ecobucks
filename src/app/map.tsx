@@ -1,12 +1,12 @@
 import { Feather } from '@expo/vector-icons';
 import * as Location from 'expo-location';
-import { router, Stack } from 'expo-router';
+import { router } from 'expo-router';
 import React, { useEffect, useState } from 'react';
 import { Pressable, StyleSheet, View } from 'react-native';
 import MapView from 'react-native-maps';
 import tw from 'twrnc';
 
-const Screen = () => {
+const Screen: React.FC<any> = ({ navigation }) => {
 	const [location, setLocation] = useState<Location.LocationObject | null>(
 		null,
 	);
@@ -40,9 +40,9 @@ const Screen = () => {
 
 export default Screen;
 
-const BackButton = () => {
+const BackButton: React.FC = () => {
 	const onPress = () => {
-		router.push('home');
+		router.replace('/home/');
 	};
 
 	return (

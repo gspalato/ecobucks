@@ -3,7 +3,7 @@ export type VariantType<
 		[v: string]: {
 			[n: string]: string;
 		};
-	}
+	},
 > = {
 	[V in keyof T]: keyof T[V];
 };

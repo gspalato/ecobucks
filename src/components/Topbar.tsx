@@ -1,7 +1,10 @@
 import { FontAwesome, Ionicons } from '@expo/vector-icons';
+import { useNavigation } from '@react-navigation/native';
 import { router } from 'expo-router';
-import { Pressable, Text, View } from 'react-native';
+import { Pressable, Text, TouchableOpacity, View } from 'react-native';
 import tw from 'twrnc';
+
+import IconButton from '@/components/IconButton';
 
 import BackButton from './BackButton';
 
@@ -30,7 +33,7 @@ const Component: React.FC<ITopbarProps> = (props) => {
 				{isOperator && (
 					<>
 						<View style={tw`my-1 border-l border-[#00000011]`} />
-						<RegisterButton />
+						<IconButton path='/add/' icon='add' />
 					</>
 				)}
 			</View>
@@ -42,42 +45,42 @@ export default Component;
 
 const MapButton: React.FC = () => {
 	const onPress = () => {
-		router.push('map');
+		router.replace('/map');
 	};
 
 	return (
-		<Pressable onPress={onPress}>
+		<TouchableOpacity onPress={onPress}>
 			<View style={tw`p-1`}>
 				<FontAwesome name='map-marker' size={24} color='black' />
 			</View>
-		</Pressable>
+		</TouchableOpacity>
 	);
 };
 
 const ScanButton: React.FC = () => {
 	const onPress = () => {
-		router.push('scan');
+		router.replace('/scan');
 	};
 
 	return (
-		<Pressable onPress={onPress}>
+		<TouchableOpacity onPress={onPress}>
 			<View style={tw`p-1`}>
 				<Ionicons name='scan' size={24} color='black' />
 			</View>
-		</Pressable>
+		</TouchableOpacity>
 	);
 };
 
 const RegisterButton: React.FC = () => {
 	const onPress = () => {
-		router.push('register');
+		router.replace('/add/');
 	};
 
 	return (
-		<Pressable onPress={onPress}>
+		<TouchableOpacity onPress={onPress}>
 			<View style={tw`p-1`}>
 				<Ionicons name='add' size={24} color='black' />
 			</View>
-		</Pressable>
+		</TouchableOpacity>
 	);
 };

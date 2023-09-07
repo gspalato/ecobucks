@@ -1,5 +1,5 @@
 import { useLazyQuery, useMutation } from '@apollo/client';
-import { Link, router, Stack } from 'expo-router';
+import { router } from 'expo-router';
 import * as SecureStore from 'expo-secure-store';
 import { useEffect, useState } from 'react';
 import { Image, Text, View } from 'react-native';
@@ -8,12 +8,16 @@ import tw from 'twrnc';
 
 import Button from '@components/Button';
 
+import Input from '@/components/Input';
+
 import { useAuthToken, useExpireAuthToken, useSetAuthToken } from '@lib/auth';
 import { Authenticate } from '@lib/graphql/mutations';
 
+import { CheckAuth } from '@/lib/graphql/queries';
+
 import { AuthenticationPayload } from '@/types/AuthenticationPayload';
 
-const Screen = () => {
+const Screen: React.FC = () => {
 	const [username, setUsername] = useState<string>('');
 	const [password, setPassword] = useState<string>('');
 
@@ -55,22 +59,43 @@ const Screen = () => {
 		},
 	});
 
+	const [check, { loading: loadingCheck }] = useLazyQuery(CheckAuth.Query, {
+		fetchPolicy: 'no-cache',
+		variables: {
+			token,
+		},
+		onCompleted: (data) => {
+			console.log(data);
+			if (data.checkAuth.successful) {
+				router.replace('/home/');
+			}
+		},
+		onError: (e) => {},
+	});
+
 	const onPress = () => {
 		login();
 		setSubmitting(true);
 	};
 
 	useEffect(() => {
+		SecureStore.getItemAsync('token').then((token) => {
+			if (!token) return;
+
+			check({ variables: { token } });
+		});
+	}, []);
+
+	useEffect(() => {
 		if (!token || !success) return;
 
-		if (token && success) router.replace('home');
+		if (token && success) router.replace('/home/');
 	}, [token, success]);
 
 	return (
 		<View
 			style={{ flex: 1, alignItems: 'center', justifyContent: 'center' }}
 		>
-			<Stack.Screen options={{}} />
 			<Text
 				style={[
 					tw`pb-10 text-6xl font-bold text-[#11da33]`,
@@ -79,11 +104,8 @@ const Screen = () => {
 			>
 				ecobucks
 			</Text>
-			<TextInput
-				style={[
-					styles.input,
-					success === false && tw`border-[#ff0000]`,
-				]}
+			<Input
+				style={[success === false && tw`border-[#ff0000]`]}
 				onChangeText={setUsername}
 				editable={!submitting}
 				autoCorrect={false}
@@ -91,11 +113,8 @@ const Screen = () => {
 				placeholder='Username'
 				placeholderTextColor='#00000055'
 			/>
-			<TextInput
-				style={[
-					styles.input,
-					success === false && tw`border-[#ff0000]`,
-				]}
+			<Input
+				style={[success === false && tw`border-[#ff0000]`]}
 				onChangeText={setPassword}
 				editable={!submitting}
 				autoCorrect={false}
@@ -107,7 +126,7 @@ const Screen = () => {
 			<Button
 				text='Login'
 				buttonStyle={tw`mt-2 w-40 border-0 bg-[#11da33]`}
-				textStyle={tw`text-center text-white`}
+				textStyle={tw`text-white text-center`}
 				onPress={onPress}
 			/>
 		</View>
@@ -115,10 +134,3 @@ const Screen = () => {
 };
 
 export default Screen;
-
-const styles = {
-	input: [
-		tw`leading-0 w-90 h-13 text-4.25 mx-10 mb-4 rounded-lg border border-[#00000011] bg-[#00000011] p-3`,
-		{ fontFamily: 'Inter', color: '#000000aa' },
-	],
-};
