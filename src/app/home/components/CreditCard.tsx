@@ -1,147 +1,59 @@
+import { Image } from 'expo-image';
 import { LinearGradient } from 'expo-linear-gradient';
-import { DeviceMotion } from 'expo-sensors';
-import { Subscription } from 'expo-sensors/build/Pedometer';
-import { useEffect, useRef, useState } from 'react';
-import {
-	Easing,
-	StyleProp,
-	Text,
-	TextStyle,
-	View,
-	ViewStyle,
-} from 'react-native';
-import Animated, {
-	interpolate,
-	useAnimatedStyle,
-	useSharedValue,
-	withTiming,
-} from 'react-native-reanimated';
+import { Animated, Text, View } from 'react-native';
 import tw from 'twrnc';
+
+import CardGradient from '@assets/gradients/gradient2.png';
+import Grain from '@assets/grain.svg';
 
 interface ICreditCardProps {
 	credits: number;
+	name: string;
 }
 
 const Component: React.FC<ICreditCardProps> = (props) => {
-	const { credits } = props;
-
-	/*
-	const [subscription, setSubscription] = useState<Subscription | null>(null);
-
-	const rotationX = useSharedValue(0);
-	const rotationY = useSharedValue(0);
-
-	const animationConfig = {
-		duration: 200,
-		easing: Easing.bezier(0.5, 0.01, 0, 1),
-	};
-
-	const style = useAnimatedStyle(() => {
-		const style = {
-			transform: [
-				{
-					rotateX: `${interpolate(
-						rotationX.value,
-						[-0.5, 0.5],
-						[-30, 30],
-					)}deg`,
-				},
-				{
-					rotateY: `${interpolate(
-						rotationY.value,
-						[-0.5, 0.5],
-						[-30, 30],
-					)}deg`,
-				},
-			],
-		};
-
-		console.log(style);
-
-		return style;
-	});
-
-	const _subscribe = () => {
-		DeviceMotion.setUpdateInterval(50);
-		setSubscription(
-			DeviceMotion.addListener((data) => {
-				// Beta: -1 -> 1
-				let beta = clamp(data.rotation.beta, -0.5, 0.5);
-
-				// Gamma: -3 -> 3
-				let gamma = clamp(data.rotation.gamma, -0.5, 0.5);
-
-				rotationX.value = withTiming(beta, animationConfig);
-				rotationY.value = withTiming(gamma, animationConfig);
-			}),
-		);
-	};
-
-	const _unsubscribe = () => {
-		subscription && subscription.remove();
-		setSubscription(null);
-	};
-
-	useEffect(() => {
-		_subscribe();
-		return () => _unsubscribe();
-	}, []);
-	*/
+	const { credits, name } = props;
 
 	return (
-		<Animated.View
-			id='card_representation'
-			style={[
-				tw`mx-auto mt-5 flex aspect-video w-[95%] items-center justify-center overflow-hidden rounded-2xl border border-[#00000011] bg-[#f0f0f5]`,
-			]}
-		>
-			<LinearGradient
-				colors={['#ebebed', '#ffffff', '#ebebed']}
+		<Animated.View style={Styles.card}>
+			<Image
+				source={CardGradient}
 				style={tw`absolute h-full w-full rounded-2xl`}
-				locations={[0.25, 0.5, 0.75]}
-				start={{ x: 0, y: 1 }}
-				end={{ x: 1, y: 0 }}
+				contentPosition={{ top: -10 }}
+				priority='high'
+				transition={500}
 			/>
-			<Text
-				style={[
-					{
-						fontFamily: 'Space Grotesk Bold',
-						fontSize: 140,
-					},
-					tw`text-black/05 -top-22 absolute mx-auto font-bold`,
-				]}
-			>
-				credit
-			</Text>
-			<Text
-				style={[
-					{
-						fontFamily: 'Space Grotesk Bold',
-						fontSize: 140,
-					},
-					tw`text-black/05 -bottom-15 absolute mx-auto font-bold`,
-				]}
-			>
-				credit
-			</Text>
-			<Text
-				style={[
-					tw`leading-0 text-7xl font-bold text-[#11da33]`,
-					{ fontFamily: 'Space Grotesk Bold' },
-				]}
-			>
-				${credits || '0'}
-			</Text>
+			<Text style={Styles.text.credit}>${credits || '0'}</Text>
+			<View style={Styles.detail.container}>
+				<Text style={Styles.detail.name}>{name}</Text>
+				<Text style={Styles.detail.number}>•••• •••• •••• ••••</Text>
+			</View>
 		</Animated.View>
 	);
 };
 
 export default Component;
 
-const styles = {
-	button: [tw`rounded-lg bg-[#11da33] p-3`],
-	text: [
-		tw`text-white text-center text-xl font-bold`,
-		{ fontFamily: 'Inter SemiBold' },
+const Styles = {
+	card: [
+		tw`mx-auto mt-5 flex aspect-video w-[95%] items-start justify-start overflow-hidden rounded-2xl border border-[#ffffff11] bg-[#00000022]`,
 	],
+	button: [tw`rounded-lg bg-[#11da33] p-3`],
+	text: {
+		credit: [
+			tw`leading-0 text-white w-1/2 p-5 text-5xl font-bold`,
+			{ fontFamily: 'Bricolage Grotesque Bold' },
+		],
+	},
+	detail: {
+		container: [tw`absolute bottom-0 w-full pb-5`],
+		name: [
+			tw`leading-0 text-white w-3/4 p-5 pb-2 text-xl`,
+			{ fontFamily: 'Syne_700Bold' },
+		],
+		number: [
+			tw`leading-0 text-white w-full px-5 text-xl`,
+			{ fontFamily: 'Inter_400Regular' },
+		],
+	},
 };

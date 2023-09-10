@@ -3,13 +3,13 @@ module.exports = {
 	content: ['./src/**/*.{html,js,jsx,ts,tsx}'],
 	theme: {
 		colors: {
-			accent: "#11da33"
+			accent: '#11da33',
 		},
 		fontFamily: {
-			sans: ['Inter', 'sans-serif'],
-            'sans-bold': ['Inter Bold', 'sans-serif'],
-            display: ['Space Grotesk', 'sans-serif'],
-            'display-bold': ['Space Grotesk Bold', 'sans-serif'],
+			sans: ['Inter_400Regular', 'sans-serif'],
+			'sans-bold': ['Inter Bold', 'sans-serif'],
+			display: ['SpaceGrotesk_400Regular', 'sans-serif'],
+			'display-bold': ['SpaceGrotesk_700Bold', 'sans-serif'],
 		},
 		extend: {
 			spacing: {

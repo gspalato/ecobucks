@@ -37,10 +37,7 @@ const Screen: React.FC<any> = ({ navigation }) => {
 						return;
 					}
 
-					router.replace({
-						pathname: '/claim_success_modal',
-						params: { credits: disposalClaim.credits },
-					});
+					// success modal
 				},
 				onError(e) {
 					alert(`Failed to claim.\n${e.message}`);
@@ -91,7 +88,7 @@ const Screen: React.FC<any> = ({ navigation }) => {
 	}
 
 	return (
-		<View style={tw`flex-1 items-center`}>
+		<View style={[tw`flex-1 items-center`, StyleSheet.absoluteFillObject]}>
 			<BarCodeScanner
 				onBarCodeScanned={scanned ? undefined : handleBarCodeScanned}
 				style={StyleSheet.absoluteFillObject}

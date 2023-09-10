@@ -28,10 +28,6 @@ import { ModalStackParamsList } from '.';
 const Component: React.FC<any> = ({
 	modal: { closeModal, getParam, addListener },
 }) => {
-	const [isSelectModalOpen, setIsSelectModalOpen] = useState(false);
-
-	const [selected, setSelected] = useState<SelectItemDefinition | null>(null);
-
 	const dimensions = useWindowDimensions();
 	const modalHeight = dimensions.height / 3;
 
@@ -47,9 +43,7 @@ const Component: React.FC<any> = ({
 				{ height: modalHeight, width: dimensions.width },
 			]}
 		>
-			<View
-				style={tw`h-7 items-center justify-center rounded-t-3xl shadow-md`}
-			>
+			<View style={tw`h-7 items-center justify-center rounded-t-3xl`}>
 				<View style={tw`h-1 w-7 rounded-full bg-[#00000022]`} />
 			</View>
 			<FlatList
@@ -96,6 +90,6 @@ const Styles = {
 			tw`flex w-full flex-row items-center justify-center border-b border-[#00000011] p-2`,
 		],
 		icon: [tw`absolute left-5 text-xl`],
-		text: [tw`text-center text-xl`, { fontFamily: 'Inter' }],
+		text: [tw`text-center text-xl`, { fontFamily: 'Inter_400Regular' }],
 	},
 };

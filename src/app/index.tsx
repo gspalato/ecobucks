@@ -2,8 +2,7 @@ import { useLazyQuery, useMutation } from '@apollo/client';
 import { router } from 'expo-router';
 import * as SecureStore from 'expo-secure-store';
 import { useEffect, useState } from 'react';
-import { Image, Text, View } from 'react-native';
-import { TextInput } from 'react-native-gesture-handler';
+import { Text, View } from 'react-native';
 import tw from 'twrnc';
 
 import Button from '@components/Button';
@@ -93,13 +92,11 @@ const Screen: React.FC = () => {
 	}, [token, success]);
 
 	return (
-		<View
-			style={{ flex: 1, alignItems: 'center', justifyContent: 'center' }}
-		>
+		<View style={tw`flex-1 items-center justify-center`}>
 			<Text
 				style={[
 					tw`pb-10 text-6xl font-bold text-[#11da33]`,
-					{ fontFamily: 'Space Grotesk Bold' },
+					{ fontFamily: 'SpaceGrotesk_700Bold' },
 				]}
 			>
 				ecobucks

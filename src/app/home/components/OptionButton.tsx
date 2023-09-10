@@ -27,7 +27,7 @@ export default Component;
 const styles = {
 	button: [tw`rounded-lg bg-[#11da33] p-3`],
 	text: [
-		tw`text-center text-xl font-bold text-white`,
-		{ fontFamily: 'Inter SemiBold' },
+		tw`text-white text-center text-xl font-bold`,
+		{ fontFamily: 'Inter_600SemiBold' },
 	],
 };

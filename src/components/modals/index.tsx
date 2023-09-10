@@ -3,6 +3,7 @@ import { createModalStack, ModalStackConfig } from 'react-native-modalfy';
 import { Easing } from 'react-native-reanimated';
 import tw from 'twrnc';
 
+import ClaimSuccessModal from './ClaimSuccessModal';
 import SelectItemModal from './SelectItemModal';
 
 import { SelectItemDefinition } from '../Select';

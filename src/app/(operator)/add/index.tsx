@@ -2,16 +2,13 @@ import { useMutation } from '@apollo/client';
 import { Feather } from '@expo/vector-icons';
 import { router } from 'expo-router';
 import React, { useState } from 'react';
-import {
-	FlatList,
-	SafeAreaView,
-	Text,
-	TouchableOpacity,
-	View,
-} from 'react-native';
+import { SafeAreaView, Text, TouchableOpacity, View } from 'react-native';
+import { ScrollView } from 'react-native-gesture-handler';
 import tw from 'twrnc';
 
 import Button from '@/components/Button';
+import HeaderPadding from '@/components/HeaderPadding';
+import ClaimSuccessModal from '@/components/modals/ClaimSuccessModal';
 
 import { useAuthToken } from '@/lib/auth';
 import * as RegisterDisposal from '@/lib/graphql/mutations/registerDisposal';
@@ -40,6 +37,9 @@ const Screen: React.FC = () => {
 	const [token, setToken] = useState<string | null>(null);
 	useAuthToken(setToken);
 
+	const [claimedCredits, setClaimedCredits] = useState<number | null>(null);
+	const [displaySuccessModal, setDisplaySuccessModal] = useState(false);
+
 	const [disposalFields, setDisposalFields] = useState<DisposalField[]>([
 		{ _id: 0, weight: undefined, disposalType: undefined },
 	]);
@@ -57,6 +57,12 @@ const Screen: React.FC = () => {
 			newDisposalFields.splice(index, 1);
 			return newDisposalFields;
 		});
+	};
+
+	const onSuccessModalClose = () => {
+		setDisplaySuccessModal(false);
+		setClaimedCredits(null);
+		router.push('/home/');
 	};
 
 	const [register] = useMutation<RegisterDisposal.ReturnType>(
@@ -88,85 +94,88 @@ const Screen: React.FC = () => {
 	);
 
 	return (
-		<SafeAreaView style={tw`flex-1`}>
-			<View
-				style={[
-					tw`min-h-12 flex w-full flex-row border-b border-[#00000011]`,
-				]}
-			>
-				<BackButton />
-				<Text
-					style={[
-						tw`my-auto w-full text-center text-2xl font-bold`,
-						{ fontFamily: 'Inter Bold' },
-					]}
-				>
-					Add Disposal
-				</Text>
-			</View>
-			<View style={[tw`flex-1`]}>
-				<FlatList
-					data={disposalFields}
-					extraData={disposalFields.length}
-					renderItem={({ item, index }) => (
-						<>
+		<>
+			{displaySuccessModal && (
+				<ClaimSuccessModal
+					credits={claimedCredits!}
+					visible={displaySuccessModal}
+					onClose={onSuccessModalClose}
+					onPress={onSuccessModalClose}
+				/>
+			)}
+			<SafeAreaView style={[tw`flex-1`]}>
+				<HeaderPadding style={tw`justify-center`}>
+					<BackButton style={[tw`pl-2`]} />
+					<Text
+						numberOfLines={1}
+						adjustsFontSizeToFit
+						style={[
+							tw`absolute w-full items-center justify-center text-center text-2xl font-bold`,
+							{
+								fontFamily: 'Syne_700Bold',
+								alignSelf: 'center',
+								pointerEvents: 'none',
+							},
+						]}
+					>
+						Register Client Disposal
+					</Text>
+				</HeaderPadding>
+				<View style={tw`flex-1`}>
+					<ScrollView style={[tw`h-full w-full flex-1`]}>
+						{disposalFields.map((item, index) => (
 							<DisposalField
+								key={index}
 								index={index}
 								onDelete={() =>
 									removeDisposalFieldByIndex(index)
 								}
 								update={setDisposalFields}
 							/>
-							{
-								// If it's the last item, render the field and add button.
-								index === disposalFields.length - 1 && (
-									<TouchableOpacity
-										onPress={addNewDisposalField}
-									>
-										<View style={Styles.addButton}>
-											<Feather
-												size={24}
-												name='plus'
-												color={'#000000'}
-											/>
-										</View>
-									</TouchableOpacity>
+						))}
+						<TouchableOpacity onPress={addNewDisposalField}>
+							<View style={Styles.addButton}>
+								<Feather
+									size={24}
+									name='plus'
+									color={'#000000'}
+								/>
+							</View>
+						</TouchableOpacity>
+					</ScrollView>
+					<Button
+						text='Register'
+						buttonStyle={Styles.registerButton.button}
+						textStyle={Styles.registerButton.text}
+						onPress={() => {
+							if (
+								disposalFields.some(
+									(item) =>
+										item.weight === undefined ||
+										item.disposalType === undefined,
 								)
-							}
-						</>
-					)}
-					keyExtractor={(item) => item._id.toString()}
-				/>
-				<Button
-					text='Register'
-					buttonStyle={Styles.registerButton.button}
-					textStyle={Styles.registerButton.text}
-					onPress={() => {
-						if (
-							disposalFields.some(
-								(item) =>
-									item.weight === undefined ||
-									item.disposalType === undefined,
 							)
-						)
-							return alert('Please fill in all fields.');
+								return alert('Please fill in all fields.');
 
-						register({
-							variables: {
-								operatorToken: token,
-								disposals: disposalFields.map((item) => ({
-									credits:
-										(item.weight! / 1000) *
-										PER_TYPE_RATE_KG[item.disposalType!],
-									weight: item.weight,
-									disposalType: item.disposalType,
-								})),
-							},
-						});
-					}}
-				/>
-			</View>
-		</SafeAreaView>
+							register({
+								variables: {
+									operatorToken: token,
+									disposals: disposalFields.map((item) => ({
+										credits:
+											(item.weight! / 1000) *
+											PER_TYPE_RATE_KG[
+												item.disposalType!
+											],
+										weight: item.weight,
+										disposalType: item.disposalType,
+									})),
+								},
+							});
+						}}
+					/>
+				</View>
+			</SafeAreaView>
+		</>
 	);
 };
 
@@ -174,7 +183,7 @@ export default Screen;
 
 const Styles = {
 	addButton: [
-		tw`w-90 h-13 text-4.25 z-10 mx-auto items-center justify-center rounded-lg p-3 text-center shadow-md`,
+		tw`text-4.25 z-10 mx-auto items-center justify-center rounded-lg p-3 text-center`,
 	],
 	registerButton: {
 		button: [

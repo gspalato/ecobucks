@@ -27,7 +27,7 @@ export default Component;
 const styles = {
 	button: [tw`items-center justify-center rounded-lg bg-[#11da33] p-3`],
 	text: [
-		tw`leading-0 text-xl font-bold text-[#ffffff]`,
-		{ fontFamily: 'Space Grotesk Bold' },
+		tw`leading-0 overflow-visible text-xl font-bold text-[#ffffff]`,
+		{ fontFamily: 'Syne_700Bold' },
 	],
 };

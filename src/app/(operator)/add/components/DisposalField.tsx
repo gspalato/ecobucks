@@ -1,5 +1,10 @@
-import { TextInput, View } from 'react-native';
-import { Swipeable } from 'react-native-gesture-handler';
+import { Feather } from '@expo/vector-icons';
+import { BlurView } from '@react-native-community/blur';
+import { Animated, TextInput, View } from 'react-native';
+import {
+	GestureHandlerRootView,
+	Swipeable,
+} from 'react-native-gesture-handler';
 import tw from 'twrnc';
 
 import Select from '@components/Select';
@@ -47,11 +52,35 @@ const Component = (props: {
 		});
 	};
 
+	const renderRightActions = (progress: any, dragX: any) => {
+		const opacity = dragX.interpolate({
+			inputRange: [-100, 0],
+			outputRange: [1, 0],
+		});
+
+		return (
+			<Animated.View
+				style={[tw`flex-1 justify-center bg-[#ff0000]`, { opacity }]}
+			>
+				<Feather
+					size={25}
+					name='trash-2'
+					color={'#000000'}
+					style={tw`text-center`}
+				/>
+			</Animated.View>
+		);
+	};
+
 	return (
-		<Swipeable onSwipeableOpen={onDelete} key={index}>
-			<View
+		<GestureHandlerRootView>
+			<Swipeable
 				key={index}
-				style={tw`min-h-40 mt-4 w-full border-b border-[#00000011] p-5`}
+				onSwipeableOpen={onDelete}
+				containerStyle={tw`w-full flex-row justify-end`}
+				childrenContainerStyle={tw`min-h-40 mt-4 w-full border-b border-[#00000011] p-5`}
+				renderRightActions={renderRightActions}
+				useNativeAnimations={false}
 			>
 				<Input
 					style={tw`mx-auto`}
@@ -70,8 +99,8 @@ const Component = (props: {
 					setItem={onSelect}
 					placeholder='Select Disposal Type'
 				/>
-			</View>
-		</Swipeable>
+			</Swipeable>
+		</GestureHandlerRootView>
 	);
 };
 

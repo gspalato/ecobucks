@@ -1,23 +1,22 @@
 import { ApolloProvider } from '@apollo/client';
 import { loadDevMessages, loadErrorMessages } from '@apollo/client/dev';
-import { FontAwesome, Ionicons } from '@expo/vector-icons';
 import { registerRootComponent } from 'expo';
 import { useFonts } from 'expo-font';
+import * as NavigationBar from 'expo-navigation-bar';
 import { SplashScreen } from 'expo-router';
 import { Stack } from 'expo-router/stack';
 import React from 'react';
-import { useCallback, useEffect, useState } from 'react';
-import { Dimensions, Easing } from 'react-native';
-import {
-	createModalStack,
-	ModalProvider,
-	ModalStackConfig,
-} from 'react-native-modalfy';
+import { useEffect, useState } from 'react';
+import { Platform, StatusBar } from 'react-native';
+import { ModalProvider } from 'react-native-modalfy';
 
 import { modalStack } from '@/components/modals';
+import SplashScreenComponent from '@/components/modals/SplashScreen';
 
 import { AuthProvider } from '@lib/auth';
 import client from '@lib/graphql/client';
+
+import fonts from '@/lib/fonts';
 
 SplashScreen.preventAutoHideAsync();
 
@@ -31,21 +30,20 @@ export const unstable_settings = {
 
 const App: React.FC = () => {
 	const [loaded, setLoaded] = useState(false);
-	const [fontsLoaded, error] = useFonts({
-		'Inter ExtraLight': require('../../assets/fonts/Inter-ExtraLight.ttf'),
-		'Inter Light': require('../../assets/fonts/Inter-Light.ttf'),
-		'Inter Thin': require('../../assets/fonts/Inter-Thin.ttf'),
-		Inter: require('../../assets/fonts/Inter.ttf'),
-		'Inter Medium': require('../../assets/fonts/Inter-Medium.ttf'),
-		'Inter Semibold': require('../../assets/fonts/Inter-SemiBold.ttf'),
-		'Inter Bold': require('../../assets/fonts/Inter-Bold.ttf'),
-		'Inter Extrabold': require('../../assets/fonts/Inter-ExtraBold.ttf'),
-		'Inter Black': require('../../assets/fonts/Inter-Black.ttf'),
-		'Space Grotesk': require('../../assets/fonts/SpaceGrotesk.ttf'),
-		'Space Grotesk Bold': require('../../assets/fonts/SpaceGrotesk-Bold.ttf'),
-		...FontAwesome.font,
-		...Ionicons.font,
-	});
+	const [fontsLoaded, error] = useFonts(fonts);
+
+	useEffect(() => {
+		if (Platform.OS != 'android') return;
+
+		NavigationBar.setBackgroundColorAsync('#fff');
+		NavigationBar.setVisibilityAsync('hidden');
+	}, []);
+
+	useEffect(() => {
+		if (!error) return;
+
+		console.log(error);
+	}, [error]);
 
 	useEffect(() => {
 		if (fontsLoaded) SplashScreen.hideAsync();
@@ -54,13 +52,17 @@ const App: React.FC = () => {
 	if (!fontsLoaded) return;
 
 	return (
-		<ApolloProvider client={client}>
-			<AuthProvider>
-				<ModalProvider stack={modalStack}>
-					<Stack screenOptions={{ headerShown: false }} />
-				</ModalProvider>
-			</AuthProvider>
-		</ApolloProvider>
+		<>
+			<StatusBar translucent backgroundColor='transparent' />
+			<ApolloProvider client={client}>
+				<AuthProvider>
+					<ModalProvider stack={modalStack}>
+						<SplashScreenComponent />
+						<Stack screenOptions={{ headerShown: false }} />
+					</ModalProvider>
+				</AuthProvider>
+			</ApolloProvider>
+		</>
 	);
 };
 

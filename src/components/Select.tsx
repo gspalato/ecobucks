@@ -36,10 +36,7 @@ const Component: React.FC<ISelectProps> = (props) => {
 
 	const [selected, setSelected] = useState<SelectItemDefinition | null>(null);
 
-	const scrollViewRef = useRef<FlatList<SelectItemDefinition>>(null);
-
 	const dimensions = useWindowDimensions();
-	const modalHeight = dimensions.height / 3;
 
 	const { openModal } = useModal();
 
@@ -76,7 +73,10 @@ const Styles = {
 	button: [
 		tw`leading-0 w-90 h-13 text-4.25 mx-auto mb-4 flex-row items-center justify-between rounded-lg border border-[#00000022] bg-[#0000011] p-3`,
 	],
-	text: [tw`text-lg font-bold text-[#000000]`, { fontFamily: 'Inter' }],
+	text: [
+		tw`text-lg font-bold text-[#000000]`,
+		{ fontFamily: 'Inter_400Regular' },
+	],
 	modal: [tw`m-0`, { justifyContent: 'flex-start' }],
 	container: [tw`h-300 rounded-t-lg`],
 	selectItem: {
@@ -84,6 +84,6 @@ const Styles = {
 			tw`flex w-full flex-row items-center justify-center border-b border-[#00000011] p-2`,
 		],
 		icon: [tw`absolute left-5 text-xl`],
-		text: [tw`text-center text-xl`, { fontFamily: 'Inter' }],
+		text: [tw`text-center text-xl`, { fontFamily: 'Inter_400Regular' }],
 	},
 };

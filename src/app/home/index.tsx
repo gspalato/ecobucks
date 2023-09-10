@@ -1,34 +1,43 @@
 import { useLazyQuery } from '@apollo/client';
+import { BlurView } from '@candlefinance/blur-view';
 import { router, useFocusEffect } from 'expo-router';
 import * as SecureStore from 'expo-secure-store';
-import { useCallback, useEffect, useState } from 'react';
-import { ActivityIndicator, Text, View } from 'react-native';
-import { SafeAreaView } from 'react-native-safe-area-context';
+import React, { useCallback, useEffect, useState } from 'react';
+import { ActivityIndicator, Platform, Text, View } from 'react-native';
+import {
+	SafeAreaView,
+	useSafeAreaInsets,
+} from 'react-native-safe-area-context';
 import tw from 'twrnc';
 
-import BackButton from '@components/BackButton';
-import Topbar from '@components/Topbar';
-
-import Button from '@/components/Button';
+import HeaderPadding from '@/components/HeaderPadding';
+import ClaimSuccessModal from '@/components/modals/ClaimSuccessModal';
+import Topbar from '@/components/Topbar';
 
 import { useAuthToken } from '@lib/auth';
 import * as GetEcobucksProfile from '@lib/graphql/queries/getEcobucksProfile';
 
+import { DisposalType } from '@/types/DisposalClaim';
 import { Profile } from '@/types/Profile';
 
 import CreditCard from './components/CreditCard';
-import OptionButton from './components/OptionButton';
+import RecentTransactionList from './components/RecentTransactionList';
 
-const Screen: React.FC<any> = ({ navigation }) => {
+const Screen: React.FC = () => {
 	const [token, setToken] = useState<string | null>(null);
-	const [profile, setProfile] = useState<Profile | null>(null);
 
+	const [profile, setProfile] = useState<Profile | null>(null);
 	const [success, setSuccess] = useState<boolean | null>(null);
+
+	const [displaySuccessModal, setDisplaySuccessModal] = useState(false);
 
 	useAuthToken(setToken);
 
-	const [fetch, { loading, error, data }] =
-		useLazyQuery<GetEcobucksProfile.ReturnType>(GetEcobucksProfile.Query, {
+	const paddings = useSafeAreaInsets();
+
+	const [fetch] = useLazyQuery<GetEcobucksProfile.ReturnType>(
+		GetEcobucksProfile.Query,
+		{
 			fetchPolicy: 'no-cache',
 			onCompleted(data) {
 				console.log(data);
@@ -43,7 +52,8 @@ const Screen: React.FC<any> = ({ navigation }) => {
 				);
 				setSuccess(false);
 			},
-		});
+		},
+	);
 
 	const fetchProfile = () => {
 		if (!token) return;
@@ -90,57 +100,60 @@ const Screen: React.FC<any> = ({ navigation }) => {
 
 	return (
 		<>
-			<SafeAreaView style={{ alignItems: 'center' }}>
-				<Topbar isOperator={profile.isOperator} />
-				<View style={tw`h-full w-full items-start justify-start py-4`}>
-					<View style={tw`w-full px-4`}>
-						<View
-							id='greeting'
-							style={tw`flex-row justify-center gap-1`}
-						>
-							<Text
-								style={[
-									tw`text-black/50 text-center text-2xl`,
-									{ fontFamily: 'Inter' },
-								]}
-							>
-								Welcome back,
-							</Text>
-							<Text
-								style={[
-									tw`text-black/50 text-center text-2xl`,
-									{ fontFamily: 'Space Grotesk Bold' },
-								]}
-							>
-								{profile.name}!
-							</Text>
-						</View>
-						<View
-							style={tw`rounded-2xl shadow-lg shadow-[#000000]/70`}
-						>
-							<CreditCard credits={profile.credits} />
-						</View>
-						<Button
-							buttonStyle={tw`h-13 mx-auto mt-5 w-80`}
-							textStyle={tw`text-center`}
-							onPress={() =>
-								router.push({
-									pathname: '/(operator)/qrcode',
-									params: { id: 'TEST' },
-								})
-							}
-							text='QRCode Test'
+			{displaySuccessModal && (
+				<ClaimSuccessModal
+					credits={100}
+					visible={displaySuccessModal}
+					onClose={() => setDisplaySuccessModal(false)}
+					onPress={() => setDisplaySuccessModal(false)}
+				/>
+			)}
+			<SafeAreaView style={Styles.safeArea}>
+				<View style={Styles.safeAreaContent}>
+					<HeaderPadding>
+						<Topbar
+							name={profile.name}
+							isOperator={profile.isOperator}
+							containerStyle={tw`px-3 pb-0`}
 						/>
-						<Button
-							buttonStyle={tw`h-13 mx-auto mt-5 w-80`}
-							textStyle={tw`text-center`}
-							onPress={() =>
-								router.push({
-									pathname: '/claim_success_modal',
-									params: { credits: 100 },
-								})
-							}
-							text='Claim Success Test'
+					</HeaderPadding>
+					<View style={Styles.contentContainer}>
+						<View style={Styles.creditCardContainer}>
+							<CreditCard
+								credits={profile.credits}
+								name={profile.name}
+							/>
+						</View>
+						<Text style={Styles.transactions.title}>
+							Recent Transactions
+						</Text>
+						<RecentTransactionList
+							style={[
+								Styles.transactions.list,
+								{ paddingBottom: paddings.bottom },
+							]}
+							transactions={[
+								{
+									action: 'claim',
+									weight: 1,
+									credits: 500,
+									type: DisposalType.BATTERY,
+								},
+								{
+									action: 'spend',
+									credits: 375,
+								},
+								{
+									action: 'claim',
+									weight: 1,
+									credits: 500,
+									type: DisposalType.BATTERY,
+								},
+								{
+									action: 'spend',
+									credits: 1000 - 375,
+								},
+							]}
 						/>
 					</View>
 				</View>
@@ -150,3 +163,20 @@ const Screen: React.FC<any> = ({ navigation }) => {
 };
 
 export default Screen;
+
+const Styles = {
+	safeArea: [tw`flex-1`, { alignItems: 'center', overflow: 'hidden' }],
+	safeAreaContent: [tw`w-full flex-1 overflow-hidden`],
+	creditCardContainer: [
+		tw`h-auto w-auto rounded-2xl`,
+		Platform.OS === 'ios' && tw`shadow-md`,
+	],
+	contentContainer: [tw`flex w-full px-4 py-0`],
+	transactions: {
+		list: [tw`w-full`],
+		title: [
+			tw`text-black/80 pt-15 px-3 pb-4 text-left text-2xl`,
+			{ fontFamily: 'Syne_600SemiBold' },
+		],
+	},
+};
