@@ -1,4 +1,3 @@
-/*
 import { Platform, StatusBar } from 'react-native';
 
 const usePlatform = () => {
@@ -25,4 +24,3 @@ const usePlatform = () => {
 };
 
 export { usePlatform };
-*/

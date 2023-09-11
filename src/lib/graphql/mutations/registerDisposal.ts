@@ -3,8 +3,13 @@ import { gql } from '@apollo/client';
 import { DisposalClaim } from '@/types/DisposalClaim';
 
 export const Mutation = gql`
-	mutation RegisterDisposal($input: RegisterDisposalInput!) {
-		registerDisposal(input: $input) {
+	mutation RegisterDisposal(
+		$operatorToken: String!
+		$disposals: [DisposalInput!]!
+	) {
+		registerDisposal(
+			input: { operatorToken: $operatorToken, disposals: $disposals }
+		) {
 			successful
 			error
 			disposal {

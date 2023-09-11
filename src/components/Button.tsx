@@ -2,6 +2,8 @@ import { StyleProp, Text, TextStyle, ViewStyle } from 'react-native';
 import { TouchableOpacity } from 'react-native-gesture-handler';
 import tw from 'twrnc';
 
+import { getFontSize } from '@/lib/fonts';
+
 interface IButtonProps {
 	onPress?: () => void;
 	text: string;
@@ -25,9 +27,9 @@ const Component: React.FC<IButtonProps> = (props) => {
 export default Component;
 
 const styles = {
-	button: [tw`items-center justify-center rounded-lg bg-[#11da33] p-3`],
+	button: [tw`flex items-center justify-center rounded-lg bg-[#11da33] p-3`],
 	text: [
-		tw`leading-0 overflow-visible text-xl font-bold text-[#ffffff]`,
-		{ fontFamily: 'Syne_700Bold' },
+		tw`overflow-visible leading-none text-[#ffffff]`,
+		{ fontSize: getFontSize(17), fontFamily: 'Syne_700Bold' },
 	],
 };

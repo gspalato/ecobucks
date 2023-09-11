@@ -1,8 +1,16 @@
-import { ApolloClient, HttpLink, InMemoryCache } from '@apollo/client';
+import {
+	ApolloClient,
+	ApolloLink,
+	HttpLink,
+	InMemoryCache,
+} from '@apollo/client';
+import { ASTNode } from 'graphql';
 
 import Constants from '@/constants';
 
-const ApiLink = new HttpLink({ uri: Constants.GATEWAY_URL });
+const ApiLink = new HttpLink({
+	uri: Constants.GATEWAY_URL,
+});
 
 export const useFoundationClient = () => {
 	const client = new ApolloClient({

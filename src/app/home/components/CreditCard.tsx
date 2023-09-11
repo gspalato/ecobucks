@@ -3,6 +3,8 @@ import { LinearGradient } from 'expo-linear-gradient';
 import { Animated, Text, View } from 'react-native';
 import tw from 'twrnc';
 
+import { getFontSize } from '@/lib/fonts';
+
 import CardGradient from '@assets/gradients/gradient2.png';
 import Grain from '@assets/grain.svg';
 
@@ -41,19 +43,22 @@ const Styles = {
 	button: [tw`rounded-lg bg-[#11da33] p-3`],
 	text: {
 		credit: [
-			tw`leading-0 text-white w-1/2 p-5 text-5xl font-bold`,
-			{ fontFamily: 'Bricolage Grotesque Bold' },
+			tw`text-white w-1/2 p-5 leading-none`,
+			{
+				fontSize: getFontSize(40),
+				fontFamily: 'Bricolage Grotesque Bold',
+			},
 		],
 	},
 	detail: {
 		container: [tw`absolute bottom-0 w-full pb-5`],
 		name: [
-			tw`leading-0 text-white w-3/4 p-5 pb-2 text-xl`,
-			{ fontFamily: 'Syne_700Bold' },
+			tw`text-white w-3/4 p-5 pb-2 leading-none`,
+			{ fontSize: getFontSize(18), fontFamily: 'Syne_700Bold' },
 		],
 		number: [
-			tw`leading-0 text-white w-full px-5 text-xl`,
-			{ fontFamily: 'Inter_400Regular' },
+			tw`text-white w-full px-5 leading-none`,
+			{ fontSize: getFontSize(18), fontFamily: 'Inter_400Regular' },
 		],
 	},
 };

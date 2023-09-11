@@ -15,8 +15,8 @@ export type Disposal = {
 };
 
 export enum DisposalType {
-	RECYCLABLE = 0,
-	BATTERY = 1,
-	SPONGE = 2,
-	ELECTRONIC = 3,
+	RECYCLABLE = 'RECYCLABLE',
+	BATTERY = 'BATTERY',
+	SPONGE = 'SPONGE',
+	ELECTRONIC = 'ELECTRONIC',
 }

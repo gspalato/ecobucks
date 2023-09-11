@@ -24,6 +24,7 @@ import {
 	Syne_800ExtraBold,
 } from '@expo-google-fonts/syne';
 import { FontAwesome, Ionicons } from '@expo/vector-icons';
+import { PixelRatio } from 'react-native';
 
 export default {
 	'Bricolage Grotesque Extralight': require('../../assets/fonts/BricolageGrotesque-ExtraLight.ttf'),
@@ -59,3 +60,15 @@ export default {
 	...FontAwesome.font,
 	...Ionicons.font,
 };
+
+const getFontSize = (size: number) => size / PixelRatio.getFontScale();
+
+const fontSizes = {
+	title: getFontSize(20),
+
+	xxl: getFontSize(20),
+	xl: getFontSize(17),
+	lg: getFontSize(15),
+};
+
+export { getFontSize, fontSizes };

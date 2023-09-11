@@ -3,6 +3,8 @@ import { router } from 'expo-router';
 import { StyleProp, Text, View, ViewStyle } from 'react-native';
 import tw from 'twrnc';
 
+import { getFontSize } from '@/lib/fonts';
+
 import IconButton from './IconButton';
 
 type ModernTopbarProps = {
@@ -54,12 +56,12 @@ const Styles = {
 		container: [tw`flex flex-1 flex-row gap-2`],
 		text: {
 			greeting: [
-				tw`text-black/80 text-center text-2xl`,
-				{ fontFamily: 'Syne_600SemiBold' },
+				tw`text-black/80 text-center leading-none`,
+				{ fontSize: getFontSize(22), fontFamily: 'Syne_600SemiBold' },
 			],
 			name: [
-				tw`overflow-hidden text-center text-2xl text-[#11da33]`,
-				{ fontFamily: 'Syne_700Bold' },
+				tw`overflow-hidden text-center leading-none text-[#11da33]`,
+				{ fontSize: getFontSize(22), fontFamily: 'Syne_700Bold' },
 			],
 		},
 	},

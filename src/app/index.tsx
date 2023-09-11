@@ -12,6 +12,7 @@ import Input from '@/components/Input';
 import { useAuthToken, useExpireAuthToken, useSetAuthToken } from '@lib/auth';
 import { Authenticate } from '@lib/graphql/mutations';
 
+import { getFontSize } from '@/lib/fonts';
 import { CheckAuth } from '@/lib/graphql/queries';
 
 import { AuthenticationPayload } from '@/types/AuthenticationPayload';
@@ -95,8 +96,11 @@ const Screen: React.FC = () => {
 		<View style={tw`flex-1 items-center justify-center`}>
 			<Text
 				style={[
-					tw`pb-10 text-6xl font-bold text-[#11da33]`,
-					{ fontFamily: 'SpaceGrotesk_700Bold' },
+					tw`pb-10 leading-none text-[#11da33]`,
+					{
+						fontSize: getFontSize(55),
+						fontFamily: 'SpaceGrotesk_700Bold',
+					},
 				]}
 			>
 				ecobucks

@@ -35,8 +35,8 @@ const App: React.FC = () => {
 	useEffect(() => {
 		if (Platform.OS != 'android') return;
 
-		NavigationBar.setBackgroundColorAsync('#fff');
-		NavigationBar.setVisibilityAsync('hidden');
+		NavigationBar.setPositionAsync('absolute');
+		NavigationBar.setBackgroundColorAsync('#ffffff00');
 	}, []);
 
 	useEffect(() => {

@@ -2,6 +2,8 @@ import { useEffect, useRef, useState } from 'react';
 import { Animated, Modal, Pressable, Text, View } from 'react-native';
 import tw from 'twrnc';
 
+import { getFontSize } from '@/lib/fonts';
+
 const Component = () => {
 	const [tapped, setTapped] = useState(false);
 	const [playedOnce, setPlayedOnce] = useState(false);
@@ -53,7 +55,7 @@ export default Component;
 const Styles = {
 	container: [tw`flex flex-1 items-center justify-center bg-[#11da33]`],
 	text: [
-		tw`leading-0 text-6xl text-[#ffffff]`,
-		{ fontFamily: 'SpaceGrotesk_700Bold' },
+		tw`text-[#ffffff]`,
+		{ fontFamily: 'SpaceGrotesk_700Bold', fontSize: getFontSize(55) },
 	],
 };

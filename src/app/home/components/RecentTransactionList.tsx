@@ -2,6 +2,8 @@ import { StyleProp, Text, View, ViewStyle } from 'react-native';
 import { FlatList, ScrollView } from 'react-native-gesture-handler';
 import tw from 'twrnc';
 
+import { getFontSize } from '@/lib/fonts';
+
 import { DisposalType } from '@/types/DisposalClaim';
 
 type Transaction =
@@ -75,19 +77,22 @@ const Styles = {
 		detail: {
 			container: [tw`flex-1 flex-col justify-center`],
 			title: [
-				tw`leading-0 pb-2 text-xl`,
-				{ fontFamily: 'Syne_500Medium' },
+				tw`pb-2 leading-none`,
+				{ fontSize: getFontSize(17), fontFamily: 'Syne_500Medium' },
 			],
 			description: [
-				tw`text-black/60 leading-0`,
-				{ fontFamily: 'Inter_400Regular', fontSize: 15 },
+				tw`text-black/60 leading-none`,
+				{ fontFamily: 'Inter_400Regular', fontSize: getFontSize(15) },
 			],
 		},
 		credit: {
 			container: [tw`flex items-center justify-center`],
 			text: [
-				tw`leading-0 text-center text-lg`,
-				{ fontFamily: 'Bricolage Grotesque Bold' },
+				tw`text-center leading-none`,
+				{
+					fontSize: getFontSize(15),
+					fontFamily: 'Bricolage Grotesque Bold',
+				},
 			],
 		},
 	},

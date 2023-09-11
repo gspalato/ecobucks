@@ -8,6 +8,8 @@ import tw from 'twrnc';
 import Button from '@/components/Button';
 import HeaderPadding from '@/components/HeaderPadding';
 
+import { fontSizes, getFontSize } from '@/lib/fonts';
+
 import BackButton from './add/components/BackButton';
 import Constants from '@/constants';
 
@@ -24,11 +26,12 @@ const Screen = () => {
 					numberOfLines={1}
 					adjustsFontSizeToFit
 					style={[
-						tw`absolute w-full items-center justify-center text-center text-2xl font-bold`,
+						tw`absolute w-full items-center justify-center text-center text-2xl`,
 						{
 							fontFamily: 'Syne_700Bold',
 							alignSelf: 'center',
 							pointerEvents: 'none',
+							fontSize: fontSizes.title,
 						},
 					]}
 				>
@@ -66,8 +69,10 @@ const Styles = {
 	],
 	proceedButton: {
 		button: [
-			tw`h-13 text-4.25 border-transparent mx-auto mb-7 w-80 items-center justify-center rounded-lg bg-[#11da33] p-3 text-center`,
-			tw``,
+			tw`h-13 border-transparent mx-auto mb-7 w-80 rounded-lg bg-[#11da33] p-3 text-center`,
+			{
+				fontSize: getFontSize(17),
+			},
 		],
 		text: [tw`text-lg text-[#ffffff]`],
 	},

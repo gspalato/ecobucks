@@ -11,6 +11,8 @@ import tw from 'twrnc';
 
 import Checkmark from '@/components/Checkmark';
 
+import { usePlatform } from '@/lib/platform';
+
 type ClaimSuccessModalProps = {
 	credits: number;
 	visible: boolean;
@@ -24,6 +26,7 @@ const Component: React.FC<ClaimSuccessModalProps> = (props) => {
 	const progress = useRef(new Animated.Value(0)).current;
 
 	const dimensions = useWindowDimensions();
+	const { SafeAreaStyle } = usePlatform();
 
 	Animated.timing(progress, {
 		toValue: 0.8 * dimensions.width,
@@ -39,7 +42,7 @@ const Component: React.FC<ClaimSuccessModalProps> = (props) => {
 			style={tw`m-0 flex-1`}
 		>
 			<Pressable onPress={onClose} style={tw`flex-1`}>
-				<Animated.View style={[Styles.screen]}>
+				<Animated.View style={[Styles.screen, SafeAreaStyle]}>
 					<Text
 						style={[
 							Styles.text,

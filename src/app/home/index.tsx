@@ -17,6 +17,9 @@ import Topbar from '@/components/Topbar';
 import { useAuthToken } from '@lib/auth';
 import * as GetEcobucksProfile from '@lib/graphql/queries/getEcobucksProfile';
 
+import { getFontSize } from '@/lib/fonts';
+import { usePlatform } from '@/lib/platform';
+
 import { DisposalType } from '@/types/DisposalClaim';
 import { Profile } from '@/types/Profile';
 
@@ -34,6 +37,7 @@ const Screen: React.FC = () => {
 	useAuthToken(setToken);
 
 	const paddings = useSafeAreaInsets();
+	const { isAndroid, SafeAreaStyle } = usePlatform();
 
 	const [fetch] = useLazyQuery<GetEcobucksProfile.ReturnType>(
 		GetEcobucksProfile.Query,
@@ -108,7 +112,9 @@ const Screen: React.FC = () => {
 					onPress={() => setDisplaySuccessModal(false)}
 				/>
 			)}
-			<SafeAreaView style={Styles.safeArea}>
+			<SafeAreaView
+				style={[Styles.safeArea, SafeAreaStyle, isAndroid && tw`pt-0`]}
+			>
 				<View style={Styles.safeAreaContent}>
 					<HeaderPadding>
 						<Topbar
@@ -175,8 +181,8 @@ const Styles = {
 	transactions: {
 		list: [tw`w-full`],
 		title: [
-			tw`text-black/80 pt-15 px-3 pb-4 text-left text-2xl`,
-			{ fontFamily: 'Syne_600SemiBold' },
+			tw`text-black/80 pt-15 px-1 pb-4 text-left`,
+			{ fontSize: getFontSize(22), fontFamily: 'Syne_600SemiBold' },
 		],
 	},
 };

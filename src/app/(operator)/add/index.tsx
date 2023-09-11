@@ -11,7 +11,9 @@ import HeaderPadding from '@/components/HeaderPadding';
 import ClaimSuccessModal from '@/components/modals/ClaimSuccessModal';
 
 import { useAuthToken } from '@/lib/auth';
+import { fontSizes, getFontSize } from '@/lib/fonts';
 import * as RegisterDisposal from '@/lib/graphql/mutations/registerDisposal';
+import { usePlatform } from '@/lib/platform';
 
 import { DisposalType } from '@/types/DisposalClaim';
 
@@ -26,6 +28,13 @@ export type DisposalField = {
 
 // This is an early development only implementation.
 // In the future, the rates will be set and calculated on the server.
+const DISPOSAL_TYPE_ENUM_NAME = {
+	[DisposalType.RECYCLABLE]: 'RECYCLABLE',
+	[DisposalType.SPONGE]: 'SPONGE',
+	[DisposalType.BATTERY]: 'BATTERY',
+	[DisposalType.ELECTRONIC]: 'ELECTRONIC',
+};
+
 const PER_TYPE_RATE_KG = {
 	[DisposalType.RECYCLABLE]: 100,
 	[DisposalType.SPONGE]: 250,
@@ -36,6 +45,8 @@ const PER_TYPE_RATE_KG = {
 const Screen: React.FC = () => {
 	const [token, setToken] = useState<string | null>(null);
 	useAuthToken(setToken);
+
+	const { isAndroid, SafeAreaStyle } = usePlatform();
 
 	const [claimedCredits, setClaimedCredits] = useState<number | null>(null);
 	const [displaySuccessModal, setDisplaySuccessModal] = useState(false);
@@ -103,18 +114,19 @@ const Screen: React.FC = () => {
 					onPress={onSuccessModalClose}
 				/>
 			)}
-			<SafeAreaView style={[tw`flex-1`]}>
+			<SafeAreaView style={[tw`flex-1`, SafeAreaStyle]}>
 				<HeaderPadding style={tw`justify-center`}>
 					<BackButton style={[tw`pl-2`]} />
 					<Text
 						numberOfLines={1}
 						adjustsFontSizeToFit
 						style={[
-							tw`absolute w-full items-center justify-center text-center text-2xl font-bold`,
+							tw`absolute w-full items-center justify-center text-center text-2xl`,
 							{
 								fontFamily: 'Syne_700Bold',
 								alignSelf: 'center',
 								pointerEvents: 'none',
+								fontSize: fontSizes.title,
 							},
 						]}
 					>
@@ -183,12 +195,18 @@ export default Screen;
 
 const Styles = {
 	addButton: [
-		tw`text-4.25 z-10 mx-auto items-center justify-center rounded-lg p-3 text-center`,
+		tw`z-10 mx-auto items-center justify-center rounded-lg p-3 text-center`,
+		{
+			fontSize: getFontSize(17),
+		},
 	],
 	registerButton: {
 		button: [
-			tw`h-13 text-4.25 border-transparent mx-auto w-80 items-center justify-center rounded-lg bg-[#11da33] p-3 text-center`,
+			tw`h-13 mx-auto w-80 rounded-lg border-none bg-[#11da33] p-3 text-center`,
+			{
+				fontSize: getFontSize(17),
+			},
 		],
-		text: [tw`text-lg font-bold text-[#ffffff]`],
+		text: [tw`text-[#ffffff]`, { fontSize: getFontSize(17) }],
 	},
 };

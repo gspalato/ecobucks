@@ -1,29 +1,16 @@
-import React, {
-	isValidElement,
-	useCallback,
-	useEffect,
-	useRef,
-	useState,
-} from 'react';
+import React, { isValidElement } from 'react';
 import {
-	Animated,
 	FlatList,
 	Text,
 	TouchableOpacity,
 	useWindowDimensions,
 	View,
 } from 'react-native';
-import {
-	ModalComponentProp,
-	ModalEventCallback,
-	ModalEventListener,
-	ModalProps,
-} from 'react-native-modalfy';
 import tw from 'twrnc';
 
-import { SelectItemDefinition } from '../Select';
+import { fontSizes } from '@/lib/fonts';
 
-import { ModalStackParamsList } from '.';
+import { SelectItemDefinition } from '../Select';
 
 const Component: React.FC<any> = ({
 	modal: { closeModal, getParam, addListener },
@@ -89,7 +76,10 @@ const Styles = {
 		container: [
 			tw`flex w-full flex-row items-center justify-center border-b border-[#00000011] p-2`,
 		],
-		icon: [tw`absolute left-5 text-xl`],
-		text: [tw`text-center text-xl`, { fontFamily: 'Inter_400Regular' }],
+		icon: [tw`absolute left-5`, { fontSize: fontSizes.xl }],
+		text: [
+			tw`text-center`,
+			{ fontFamily: 'Inter_400Regular', fontSize: fontSizes.xl },
+		],
 	},
 };

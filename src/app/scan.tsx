@@ -1,10 +1,13 @@
 import { useMutation } from '@apollo/client';
 import { BarCodeScannedCallback, BarCodeScanner } from 'expo-barcode-scanner';
+import { Camera } from 'expo-camera';
 import * as Haptics from 'expo-haptics';
 import { router } from 'expo-router';
 import React, { useEffect, useState } from 'react';
 import { Button, StyleSheet, Text, View } from 'react-native';
 import tw from 'twrnc';
+
+import ClaimSuccessModal from '@/components/modals/ClaimSuccessModal';
 
 import { useAuth, useAuthToken } from '@lib/auth';
 import * as ClaimDisposalAndCredits from '@lib/graphql/mutations/claimDisposalAndCredits';
@@ -19,6 +22,9 @@ const Screen: React.FC<any> = ({ navigation }) => {
 
 	const [success, setSuccess] = useState<boolean | null>(null);
 	const [disposal, setDisposal] = useState<string | null>(null);
+
+	const [displaySuccessModal, setDisplaySuccessModal] = useState(false);
+	const [claimedCredits, setClaimedCredits] = useState<number | null>(null);
 
 	const { setProfile } = useAuth();
 	useAuthToken(setToken);
@@ -37,7 +43,8 @@ const Screen: React.FC<any> = ({ navigation }) => {
 						return;
 					}
 
-					// success modal
+					setClaimedCredits(disposalClaim.credits);
+					setDisplaySuccessModal(true);
 				},
 				onError(e) {
 					alert(`Failed to claim.\n${e.message}`);
@@ -80,6 +87,12 @@ const Screen: React.FC<any> = ({ navigation }) => {
 		});
 	};
 
+	const onSuccessModalClose = () => {
+		setDisplaySuccessModal(false);
+		setClaimedCredits(null);
+		router.push('/home/');
+	};
+
 	if (hasPermission === null) {
 		return <Text>Requesting for camera permission</Text>;
 	}
@@ -88,18 +101,33 @@ const Screen: React.FC<any> = ({ navigation }) => {
 	}
 
 	return (
-		<View style={[tw`flex-1 items-center`, StyleSheet.absoluteFillObject]}>
-			<BarCodeScanner
-				onBarCodeScanned={scanned ? undefined : handleBarCodeScanned}
-				style={StyleSheet.absoluteFillObject}
-			/>
-			{scanned && (
-				<Button
-					title={'Tap to Scan Again'}
-					onPress={() => setScanned(false)}
+		<>
+			{displaySuccessModal && (
+				<ClaimSuccessModal
+					credits={claimedCredits!}
+					visible={displaySuccessModal}
+					onClose={onSuccessModalClose}
+					onPress={onSuccessModalClose}
 				/>
 			)}
-		</View>
+			<View
+				style={[
+					tw`m-0 h-full flex-1 items-center p-0`,
+					StyleSheet.absoluteFillObject,
+				]}
+			>
+				<Camera
+					onBarCodeScanned={
+						scanned ? undefined : handleBarCodeScanned
+					}
+					ratio='16:9'
+					style={[
+						tw`mt-0 h-full flex-1 p-0`,
+						StyleSheet.absoluteFillObject,
+					]}
+				/>
+			</View>
+		</>
 	);
 };
 

@@ -1,19 +1,17 @@
 import { Ionicons } from '@expo/vector-icons';
 import { isValidElement, useRef, useState } from 'react';
 import {
-	Animated,
-	FlatList,
-	Pressable,
 	StyleProp,
 	Text,
 	TextStyle,
 	useWindowDimensions,
-	View,
 	ViewStyle,
 } from 'react-native';
 import { Swipeable, TouchableOpacity } from 'react-native-gesture-handler';
 import { useModal } from 'react-native-modalfy';
 import tw from 'twrnc';
+
+import { getFontSize } from '@/lib/fonts';
 
 export type SelectItemDefinition = {
 	key: string;
@@ -71,11 +69,11 @@ export default Component;
 
 const Styles = {
 	button: [
-		tw`leading-0 w-90 h-13 text-4.25 mx-auto mb-4 flex-row items-center justify-between rounded-lg border border-[#00000022] bg-[#0000011] p-3`,
+		tw`leading-0 w-90 h-13 mx-auto mb-4 flex-row items-center justify-between rounded-lg border border-[#00000022] bg-[#0000011] p-3`,
 	],
 	text: [
-		tw`text-lg font-bold text-[#000000]`,
-		{ fontFamily: 'Inter_400Regular' },
+		tw`text-[#000000]`,
+		{ fontFamily: 'Inter_400Regular', fontSize: getFontSize(15) },
 	],
 	modal: [tw`m-0`, { justifyContent: 'flex-start' }],
 	container: [tw`h-300 rounded-t-lg`],
@@ -83,7 +81,10 @@ const Styles = {
 		container: [
 			tw`flex w-full flex-row items-center justify-center border-b border-[#00000011] p-2`,
 		],
-		icon: [tw`absolute left-5 text-xl`],
-		text: [tw`text-center text-xl`, { fontFamily: 'Inter_400Regular' }],
+		icon: [tw`absolute left-5`, { fontSize: getFontSize(20) }],
+		text: [
+			tw`text-center`,
+			{ fontFamily: 'Inter_400Regular', fontSize: getFontSize(17) },
+		],
 	},
 };
