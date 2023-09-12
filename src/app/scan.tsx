@@ -21,7 +21,6 @@ const Screen: React.FC = () => {
 	const [token, setToken] = useState<string | null>(null);
 
 	const [success, setSuccess] = useState<boolean | null>(null);
-	const [disposal, setDisposal] = useState<string | null>(null);
 
 	const [displaySuccessModal, setDisplaySuccessModal] = useState(false);
 	const [claimedCredits, setClaimedCredits] = useState<number | null>(null);
@@ -63,7 +62,8 @@ const Screen: React.FC = () => {
 	}, []);
 
 	const handleBarCodeScanned: BarCodeScannedCallback = (data) => {
-		if (data.type !== 'org.iso.QRCode') {
+		let qrcode = ['org.iso.QRCode', '256', 256];
+		if (!qrcode.some((e) => e == data.type)) {
 			setScanned(false);
 			return;
 		}
@@ -73,17 +73,20 @@ const Screen: React.FC = () => {
 		Haptics.notificationAsync(Haptics.NotificationFeedbackType.Success);
 
 		let disposalToken;
-		if (data.data.startsWith(Constants.CLAIM_DISPOSAL_QRCODE_PREFIX))
+		if (data.data.startsWith(Constants.CLAIM_DISPOSAL_QRCODE_PREFIX)) {
 			disposalToken = data.data.slice(
 				Constants.CLAIM_DISPOSAL_QRCODE_PREFIX.length,
 			);
 
-		claim({
-			variables: {
-				userToken: token,
-				disposalToken: disposalToken,
-			},
-		});
+			claim({
+				variables: {
+					userToken: token,
+					disposalToken: disposalToken,
+				},
+			});
+		} else {
+			alert('Invalid QRCode.');
+		}
 	};
 
 	const onSuccessModalClose = () => {
@@ -115,14 +118,10 @@ const Screen: React.FC = () => {
 					StyleSheet.absoluteFillObject,
 				]}
 			>
-				<Camera
+				<BarCodeScanner
 					onBarCodeScanned={
 						scanned ? undefined : handleBarCodeScanned
 					}
-					barCodeScannerSettings={{
-						barCodeTypes: [BarCodeScanner.Constants.BarCodeType.qr],
-					}}
-					ratio='16:9'
 					style={[
 						tw`mt-0 h-full flex-1 p-0`,
 						StyleSheet.absoluteFillObject,

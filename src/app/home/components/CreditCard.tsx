@@ -1,31 +1,43 @@
 import { Image } from 'expo-image';
-import { LinearGradient } from 'expo-linear-gradient';
 import { Animated, Text, View } from 'react-native';
 import tw from 'twrnc';
 
 import { getFontSize } from '@/lib/fonts';
 
-import CardGradient from '@assets/gradients/gradient2.png';
-import Grain from '@assets/grain.svg';
+import CardGradient1 from '@assets/gradients/gradient1.png';
+import CardGradient2 from '@assets/gradients/gradient2.png';
+import CardGradient7 from '@assets/gradients/gradient7.png';
+import CardGradient12 from '@assets/gradients/gradient12.png';
+import CardGradient20 from '@assets/gradients/gradient20.png';
 
-interface ICreditCardProps {
+type CreditCardProps = {
 	credits: number;
 	name: string;
 }
 
-const Component: React.FC<ICreditCardProps> = (props) => {
+const Component: React.FC<CreditCardProps> = (props) => {
 	const { credits, name } = props;
+
+	const CardGradientOptions = [
+		CardGradient1,
+		CardGradient2,
+		CardGradient7,
+		CardGradient12,
+		CardGradient20
+	];
+
+	const SelectedGradient = CardGradientOptions[Math.floor(Math.random() * CardGradientOptions.length)]
 
 	return (
 		<Animated.View style={Styles.card}>
 			<Image
-				source={CardGradient}
+				source={SelectedGradient}
 				style={tw`absolute h-full w-full rounded-2xl`}
 				contentPosition={{ top: -10 }}
 				priority='high'
-				transition={500}
+				transition={750}
 			/>
-			<Text style={Styles.text.credit}>${credits || '0'}</Text>
+			<Text adjustsFontSizeToFit numberOfLines={2}  style={Styles.text.credit}>${Math.floor(credits) || '0'}</Text>
 			<View style={Styles.detail.container}>
 				<Text style={Styles.detail.name}>{name}</Text>
 				<Text style={Styles.detail.number}>•••• •••• •••• ••••</Text>
@@ -43,7 +55,7 @@ const Styles = {
 	button: [tw`rounded-lg bg-[#11da33] p-3`],
 	text: {
 		credit: [
-			tw`text-white w-1/2 p-5 leading-none`,
+			tw`text-white w-full p-5 `,
 			{
 				fontSize: getFontSize(40),
 				fontFamily: 'BricolageGrotesque_700Bold',
@@ -53,11 +65,11 @@ const Styles = {
 	detail: {
 		container: [tw`absolute bottom-0 w-full pb-5`],
 		name: [
-			tw`text-white w-3/4 p-5 pb-2 leading-none`,
+			tw`text-white w-3/4 p-5 pb-2 `,
 			{ fontSize: getFontSize(18), fontFamily: 'Syne_700Bold' },
 		],
 		number: [
-			tw`text-white w-full px-5 leading-none`,
+			tw`text-white w-full px-5 `,
 			{ fontSize: getFontSize(18), fontFamily: 'Inter_400Regular' },
 		],
 	},

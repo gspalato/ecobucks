@@ -35,7 +35,7 @@ const Component: React.FC<RecentTransactionListProps> = (props) => {
 
 	return (
 		<ScrollView style={[Styles.container, style]}>
-			{transactions.map((item, i) => (
+			{transactions.reverse().map((item, i) => (
 				<View
 					key={item.action + i}
 					style={Styles.transactionItem.container}
@@ -77,18 +77,18 @@ const Styles = {
 		detail: {
 			container: [tw`flex-1 flex-col justify-center`],
 			title: [
-				tw`pb-2 leading-none`,
+				tw`pb-2 `,
 				{ fontSize: getFontSize(17), fontFamily: 'Syne_500Medium' },
 			],
 			description: [
-				tw`text-black/60 leading-none`,
+				tw`text-black/60 `,
 				{ fontFamily: 'Inter_400Regular', fontSize: getFontSize(15) },
 			],
 		},
 		credit: {
 			container: [tw`flex items-center justify-center`],
 			text: [
-				tw`text-center leading-none`,
+				tw`text-center `,
 				{
 					fontSize: getFontSize(15),
 					fontFamily: 'BricolageGrotesque_700Bold',

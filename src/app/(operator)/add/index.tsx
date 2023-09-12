@@ -202,7 +202,7 @@ const Styles = {
 	],
 	registerButton: {
 		button: [
-			tw`h-13 mx-auto w-80 rounded-lg border-none bg-[#11da33] p-3 text-center`,
+			tw`h-13 mx-auto w-80 rounded-lg border-transparent bg-[#11da33] p-3 text-center`,
 			{
 				fontSize: getFontSize(17),
 			},

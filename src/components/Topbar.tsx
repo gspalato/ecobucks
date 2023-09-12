@@ -54,11 +54,11 @@ const Styles = {
 		container: [tw`flex flex-1 flex-row gap-2`],
 		text: {
 			greeting: [
-				tw`text-black/80 text-center leading-none`,
+				tw`text-black/80 text-center `,
 				{ fontSize: getFontSize(22), fontFamily: 'Syne_600SemiBold' },
 			],
 			name: [
-				tw`overflow-hidden text-center leading-none text-[#11da33]`,
+				tw`overflow-hidden text-center  text-[#11da33]`,
 				{ fontSize: getFontSize(22), fontFamily: 'Syne_700Bold' },
 			],
 		},
