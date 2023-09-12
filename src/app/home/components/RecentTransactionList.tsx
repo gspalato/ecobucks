@@ -35,7 +35,7 @@ const Component: React.FC<RecentTransactionListProps> = (props) => {
 
 	return (
 		<ScrollView style={[Styles.container, style]}>
-			{transactions.map((item, i) => (
+			{transactions.reverse().map((item, i) => (
 				<View
 					key={item.action + i}
 					style={Styles.transactionItem.container}

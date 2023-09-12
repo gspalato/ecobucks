@@ -5,7 +5,10 @@ import tw from 'twrnc';
 
 import { getFontSize } from '@/lib/fonts';
 
-import CardGradient from '@assets/gradients/gradient2.png';
+import CardGradient1 from '@assets/gradients/gradient1.png';
+import CardGradient2 from '@assets/gradients/gradient2.png';
+import CardGradient20 from '@assets/gradients/gradient20.png';
+
 import Grain from '@assets/grain.svg';
 
 interface ICreditCardProps {
@@ -16,16 +19,24 @@ interface ICreditCardProps {
 const Component: React.FC<ICreditCardProps> = (props) => {
 	const { credits, name } = props;
 
+	const CardGradientOptions = [
+		CardGradient1,
+		CardGradient2,
+		CardGradient20
+	];
+
+	const SelectedGradient = CardGradientOptions[Math.floor(Math.random() * CardGradientOptions.length)]
+
 	return (
 		<Animated.View style={Styles.card}>
 			<Image
-				source={CardGradient}
+				source={SelectedGradient}
 				style={tw`absolute h-full w-full rounded-2xl`}
 				contentPosition={{ top: -10 }}
 				priority='high'
 				transition={500}
 			/>
-			<Text style={Styles.text.credit}>${Math.floor(credits) || '0'}</Text>
+			<Text adjustsFontSizeToFit numberOfLines={1}  style={Styles.text.credit}>${Math.floor(credits) || '0'}</Text>
 			<View style={Styles.detail.container}>
 				<Text style={Styles.detail.name}>{name}</Text>
 				<Text style={Styles.detail.number}>•••• •••• •••• ••••</Text>
