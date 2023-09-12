@@ -1,5 +1,3 @@
-import { FontAwesome, Ionicons } from '@expo/vector-icons';
-import { router } from 'expo-router';
 import { StyleProp, Text, View, ViewStyle } from 'react-native';
 import tw from 'twrnc';
 

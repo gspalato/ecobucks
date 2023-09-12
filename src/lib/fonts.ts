@@ -27,13 +27,13 @@ import { FontAwesome, Ionicons } from '@expo/vector-icons';
 import { PixelRatio } from 'react-native';
 
 export default {
-	'Bricolage Grotesque Extralight': require('../../assets/fonts/BricolageGrotesque-ExtraLight.ttf'),
-	'Bricolage Grotesque Light': require('../../assets/fonts/BricolageGrotesque-Light.ttf'),
-	'Bricolage Grotesque': require('../../assets/fonts/BricolageGrotesque-Regular.ttf'),
-	'Bricolage Grotesque Medium': require('../../assets/fonts/BricolageGrotesque-Medium.ttf'),
-	'Bricolage Grotesque Semibold': require('../../assets/fonts/BricolageGrotesque-SemiBold.ttf'),
-	'Bricolage Grotesque Bold': require('../../assets/fonts/BricolageGrotesque-Bold.ttf'),
-	'Bricolage Grotesque Extrabold': require('../../assets/fonts/BricolageGrotesque-ExtraBold.ttf'),
+	BricolageGrotesque_200ExtraLight: require('../../assets/fonts/BricolageGrotesque-ExtraLight.ttf'),
+	BricolageGrotesque_300Light: require('../../assets/fonts/BricolageGrotesque-Light.ttf'),
+	BricolageGrotesque_400Regular: require('../../assets/fonts/BricolageGrotesque-Regular.ttf'),
+	BricolageGrotesque_500Medium: require('../../assets/fonts/BricolageGrotesque-Medium.ttf'),
+	BricolageGrotesque_600SemiBold: require('../../assets/fonts/BricolageGrotesque-SemiBold.ttf'),
+	BricolageGrotesque_700Bold: require('../../assets/fonts/BricolageGrotesque-Bold.ttf'),
+	BricolageGrotesque_800ExtraBold: require('../../assets/fonts/BricolageGrotesque-ExtraBold.ttf'),
 
 	Inter_100Thin,
 	Inter_200ExtraLight,

@@ -91,7 +91,7 @@ const Styles = {
 				tw`text-center leading-none`,
 				{
 					fontSize: getFontSize(15),
-					fontFamily: 'Bricolage Grotesque Bold',
+					fontFamily: 'BricolageGrotesque_700Bold',
 				},
 			],
 		},

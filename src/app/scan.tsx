@@ -14,7 +14,7 @@ import * as ClaimDisposalAndCredits from '@lib/graphql/mutations/claimDisposalAn
 
 import Constants from '@/constants';
 
-const Screen: React.FC<any> = ({ navigation }) => {
+const Screen: React.FC = () => {
 	const [hasPermission, setHasPermission] = useState<boolean | null>(null);
 	const [scanned, setScanned] = useState<boolean>(false);
 
@@ -26,7 +26,6 @@ const Screen: React.FC<any> = ({ navigation }) => {
 	const [displaySuccessModal, setDisplaySuccessModal] = useState(false);
 	const [claimedCredits, setClaimedCredits] = useState<number | null>(null);
 
-	const { setProfile } = useAuth();
 	useAuthToken(setToken);
 
 	const [claim, { loading }] =
@@ -120,6 +119,9 @@ const Screen: React.FC<any> = ({ navigation }) => {
 					onBarCodeScanned={
 						scanned ? undefined : handleBarCodeScanned
 					}
+					barCodeScannerSettings={{
+						barCodeTypes: [BarCodeScanner.Constants.BarCodeType.qr],
+					}}
 					ratio='16:9'
 					style={[
 						tw`mt-0 h-full flex-1 p-0`,
