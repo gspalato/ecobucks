@@ -1,5 +1,4 @@
 import { Image } from 'expo-image';
-import { LinearGradient } from 'expo-linear-gradient';
 import { Animated, Text, View } from 'react-native';
 import tw from 'twrnc';
 
@@ -7,21 +6,23 @@ import { getFontSize } from '@/lib/fonts';
 
 import CardGradient1 from '@assets/gradients/gradient1.png';
 import CardGradient2 from '@assets/gradients/gradient2.png';
+import CardGradient7 from '@assets/gradients/gradient7.png';
+import CardGradient12 from '@assets/gradients/gradient12.png';
 import CardGradient20 from '@assets/gradients/gradient20.png';
 
-import Grain from '@assets/grain.svg';
-
-interface ICreditCardProps {
+type CreditCardProps = {
 	credits: number;
 	name: string;
 }
 
-const Component: React.FC<ICreditCardProps> = (props) => {
+const Component: React.FC<CreditCardProps> = (props) => {
 	const { credits, name } = props;
 
 	const CardGradientOptions = [
 		CardGradient1,
 		CardGradient2,
+		CardGradient7,
+		CardGradient12,
 		CardGradient20
 	];
 
@@ -34,9 +35,9 @@ const Component: React.FC<ICreditCardProps> = (props) => {
 				style={tw`absolute h-full w-full rounded-2xl`}
 				contentPosition={{ top: -10 }}
 				priority='high'
-				transition={500}
+				transition={750}
 			/>
-			<Text adjustsFontSizeToFit numberOfLines={1}  style={Styles.text.credit}>${Math.floor(credits) || '0'}</Text>
+			<Text adjustsFontSizeToFit numberOfLines={2}  style={Styles.text.credit}>${Math.floor(credits) || '0'}</Text>
 			<View style={Styles.detail.container}>
 				<Text style={Styles.detail.name}>{name}</Text>
 				<Text style={Styles.detail.number}>•••• •••• •••• ••••</Text>

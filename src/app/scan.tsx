@@ -21,7 +21,6 @@ const Screen: React.FC<any> = ({ navigation }) => {
 	const [token, setToken] = useState<string | null>(null);
 
 	const [success, setSuccess] = useState<boolean | null>(null);
-	const [disposal, setDisposal] = useState<string | null>(null);
 
 	const [displaySuccessModal, setDisplaySuccessModal] = useState(false);
 	const [claimedCredits, setClaimedCredits] = useState<number | null>(null);
@@ -76,16 +75,22 @@ const Screen: React.FC<any> = ({ navigation }) => {
 
 		let disposalToken;
 		if (data.data.startsWith(Constants.CLAIM_DISPOSAL_QRCODE_PREFIX))
+		{
 			disposalToken = data.data.slice(
 				Constants.CLAIM_DISPOSAL_QRCODE_PREFIX.length,
 			);
 
-		claim({
-			variables: {
-				userToken: token,
-				disposalToken: disposalToken,
-			},
-		});
+			claim({
+				variables: {
+					userToken: token,
+					disposalToken: disposalToken,
+				},
+			});
+		}
+		else
+		{
+			alert("Invalid QRCode.");
+		}
 	};
 
 	const onSuccessModalClose = () => {
