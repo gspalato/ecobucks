@@ -64,7 +64,8 @@ const Screen: React.FC<any> = ({ navigation }) => {
 	}, []);
 
 	const handleBarCodeScanned: BarCodeScannedCallback = (data) => {
-		if (data.type !== 'org.iso.QRCode') {
+		let qrcode = ['org.iso.QRCode', '256', 256];
+		if (!qrcode.some(e => e == data.type)) {
 			setScanned(false);
 			return;
 		}
@@ -116,11 +117,10 @@ const Screen: React.FC<any> = ({ navigation }) => {
 					StyleSheet.absoluteFillObject,
 				]}
 			>
-				<Camera
+				<BarCodeScanner
 					onBarCodeScanned={
 						scanned ? undefined : handleBarCodeScanned
 					}
-					ratio='16:9'
 					style={[
 						tw`mt-0 h-full flex-1 p-0`,
 						StyleSheet.absoluteFillObject,

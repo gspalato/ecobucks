@@ -29,7 +29,7 @@ export default Component;
 const styles = {
 	button: [tw`flex items-center justify-center rounded-lg bg-[#11da33] p-3`],
 	text: [
-		tw`overflow-visible leading-none text-[#ffffff]`,
+		tw`overflow-visible  text-[#ffffff]`,
 		{ fontSize: getFontSize(17), fontFamily: 'Syne_700Bold' },
 	],
 };

@@ -96,7 +96,7 @@ const Screen: React.FC = () => {
 		<View style={tw`flex-1 items-center justify-center`}>
 			<Text
 				style={[
-					tw`pb-10 leading-none text-[#11da33]`,
+					tw`pb-10  text-[#11da33]`,
 					{
 						fontSize: getFontSize(55),
 						fontFamily: 'SpaceGrotesk_700Bold',

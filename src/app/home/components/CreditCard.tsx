@@ -25,7 +25,7 @@ const Component: React.FC<ICreditCardProps> = (props) => {
 				priority='high'
 				transition={500}
 			/>
-			<Text style={Styles.text.credit}>${credits || '0'}</Text>
+			<Text style={Styles.text.credit}>${Math.floor(credits) || '0'}</Text>
 			<View style={Styles.detail.container}>
 				<Text style={Styles.detail.name}>{name}</Text>
 				<Text style={Styles.detail.number}>•••• •••• •••• ••••</Text>
@@ -43,7 +43,7 @@ const Styles = {
 	button: [tw`rounded-lg bg-[#11da33] p-3`],
 	text: {
 		credit: [
-			tw`text-white w-1/2 p-5 leading-none`,
+			tw`text-white w-full p-5 `,
 			{
 				fontSize: getFontSize(40),
 				fontFamily: 'Bricolage Grotesque Bold',
@@ -53,11 +53,11 @@ const Styles = {
 	detail: {
 		container: [tw`absolute bottom-0 w-full pb-5`],
 		name: [
-			tw`text-white w-3/4 p-5 pb-2 leading-none`,
+			tw`text-white w-3/4 p-5 pb-2 `,
 			{ fontSize: getFontSize(18), fontFamily: 'Syne_700Bold' },
 		],
 		number: [
-			tw`text-white w-full px-5 leading-none`,
+			tw`text-white w-full px-5 `,
 			{ fontSize: getFontSize(18), fontFamily: 'Inter_400Regular' },
 		],
 	},
