@@ -46,7 +46,7 @@ const Screen = () => {
 					]}
 					textStyle={[
 						tw`text-black`,
-						{ fontFamily: 'BricolageGrotesque_400Regular' },
+						{ fontFamily: 'Syne_600SemiBold' },
 					]}
 					onPress={() => router.push('/settings/changeCardColor')}
 				/>

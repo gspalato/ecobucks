@@ -1,5 +1,6 @@
 import { useLazyQuery } from '@apollo/client';
 import { BlurView } from '@candlefinance/blur-view';
+import AsyncStorage from '@react-native-async-storage/async-storage';
 import { router, useFocusEffect } from 'expo-router';
 import * as SecureStore from 'expo-secure-store';
 import React, { useCallback, useEffect, useState } from 'react';
@@ -17,6 +18,7 @@ import Topbar from '@/components/Topbar';
 import { useAuthToken } from '@lib/auth';
 import * as GetEcobucksProfile from '@lib/graphql/queries/getEcobucksProfile';
 
+import Gradients from '@/lib/cardGradients';
 import { getFontSize } from '@/lib/fonts';
 import { usePlatform } from '@/lib/platform';
 
@@ -28,6 +30,7 @@ import RecentTransactionList from './components/RecentTransactionList';
 
 const Screen: React.FC = () => {
 	const [token, setToken] = useState<string | null>(null);
+	const [cardGradient, setCardGradient] = useState<string | null>();
 
 	const [profile, setProfile] = useState<Profile | null>(null);
 	const [success, setSuccess] = useState<boolean | null>(null);
@@ -74,9 +77,19 @@ const Screen: React.FC = () => {
 	}, [success]);
 
 	useEffect(fetchProfile, [token]);
+
 	useFocusEffect(
 		useCallback(() => {
-			console.log('focused.');
+			// Fetch user selected card gradient background.
+			AsyncStorage.getItem('card-gradient', (e, r) => {
+				if (e) {
+					AsyncStorage.setItem('card-gradient', 'Gradient20');
+					setCardGradient('Gradient20');
+				}
+
+				if (r) setCardGradient(r);
+			});
+
 			const update = async () => {
 				const token = await SecureStore.getItemAsync('token');
 				if (!token) router.replace('/');
@@ -127,6 +140,7 @@ const Screen: React.FC = () => {
 						<View style={Styles.creditCardContainer}>
 							<CreditCard
 								credits={profile.credits}
+								gradient={Gradients[cardGradient!]}
 								name={profile.name}
 							/>
 						</View>

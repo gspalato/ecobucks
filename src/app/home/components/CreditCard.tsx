@@ -4,40 +4,31 @@ import tw from 'twrnc';
 
 import { getFontSize } from '@/lib/fonts';
 
-import CardGradient1 from '@assets/gradients/gradient1.png';
-import CardGradient2 from '@assets/gradients/gradient2.png';
-import CardGradient7 from '@assets/gradients/gradient7.png';
-import CardGradient12 from '@assets/gradients/gradient12.png';
-import CardGradient20 from '@assets/gradients/gradient20.png';
-
 type CreditCardProps = {
 	credits: number;
+	gradient: any;
 	name: string;
-}
+};
 
 const Component: React.FC<CreditCardProps> = (props) => {
-	const { credits, name } = props;
-
-	const CardGradientOptions = [
-		CardGradient1,
-		CardGradient2,
-		CardGradient7,
-		CardGradient12,
-		CardGradient20
-	];
-
-	const SelectedGradient = CardGradientOptions[Math.floor(Math.random() * CardGradientOptions.length)]
+	const { credits, gradient, name } = props;
 
 	return (
 		<Animated.View style={Styles.card}>
 			<Image
-				source={SelectedGradient}
+				source={gradient}
 				style={tw`absolute h-full w-full rounded-2xl`}
 				contentPosition={{ top: -10 }}
 				priority='high'
 				transition={750}
 			/>
-			<Text adjustsFontSizeToFit numberOfLines={2}  style={Styles.text.credit}>${Math.floor(credits) || '0'}</Text>
+			<Text
+				adjustsFontSizeToFit
+				numberOfLines={2}
+				style={Styles.text.credit}
+			>
+				${Math.floor(credits) || '0'}
+			</Text>
 			<View style={Styles.detail.container}>
 				<Text style={Styles.detail.name}>{name}</Text>
 				<Text style={Styles.detail.number}>•••• •••• •••• ••••</Text>
