@@ -48,7 +48,8 @@ const Screen = () => {
 						tw`text-black`,
 						{ fontFamily: 'BricolageGrotesque_400Regular' },
 					]}
-				></CustomButton>
+					onPress={() => router.push('/settings/changeCardColor')}
+				/>
 			</ScrollView>
 			<Button title='Log Out' onPress={logout} />
 		</SafeView>
