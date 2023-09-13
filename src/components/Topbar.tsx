@@ -41,6 +41,7 @@ const Component: React.FC<ModernTopbarProps> = (props) => {
 						<IconButton path='/add/' icon='add' style={tw`px-0`} />
 					</>
 				)}
+				<IconButton path='/settings' icon='settings' />
 			</View>
 		</View>
 	);
