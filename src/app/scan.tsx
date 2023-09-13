@@ -14,7 +14,7 @@ import * as ClaimDisposalAndCredits from '@lib/graphql/mutations/claimDisposalAn
 
 import Constants from '@/constants';
 
-const Screen: React.FC<any> = ({ navigation }) => {
+const Screen: React.FC = () => {
 	const [hasPermission, setHasPermission] = useState<boolean | null>(null);
 	const [scanned, setScanned] = useState<boolean>(false);
 
@@ -25,7 +25,6 @@ const Screen: React.FC<any> = ({ navigation }) => {
 	const [displaySuccessModal, setDisplaySuccessModal] = useState(false);
 	const [claimedCredits, setClaimedCredits] = useState<number | null>(null);
 
-	const { setProfile } = useAuth();
 	useAuthToken(setToken);
 
 	const [claim, { loading }] =
@@ -64,7 +63,7 @@ const Screen: React.FC<any> = ({ navigation }) => {
 
 	const handleBarCodeScanned: BarCodeScannedCallback = (data) => {
 		let qrcode = ['org.iso.QRCode', '256', 256];
-		if (!qrcode.some(e => e == data.type)) {
+		if (!qrcode.some((e) => e == data.type)) {
 			setScanned(false);
 			return;
 		}
@@ -74,8 +73,7 @@ const Screen: React.FC<any> = ({ navigation }) => {
 		Haptics.notificationAsync(Haptics.NotificationFeedbackType.Success);
 
 		let disposalToken;
-		if (data.data.startsWith(Constants.CLAIM_DISPOSAL_QRCODE_PREFIX))
-		{
+		if (data.data.startsWith(Constants.CLAIM_DISPOSAL_QRCODE_PREFIX)) {
 			disposalToken = data.data.slice(
 				Constants.CLAIM_DISPOSAL_QRCODE_PREFIX.length,
 			);
@@ -86,10 +84,8 @@ const Screen: React.FC<any> = ({ navigation }) => {
 					disposalToken: disposalToken,
 				},
 			});
-		}
-		else
-		{
-			alert("Invalid QRCode.");
+		} else {
+			alert('Invalid QRCode.');
 		}
 	};
 

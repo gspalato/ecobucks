@@ -11,8 +11,8 @@ import tw from 'twrnc';
 
 import Checkmark from '@/components/Checkmark';
 
-import { usePlatform } from '@/lib/platform';
 import { getFontSize } from '@/lib/fonts';
+import { usePlatform } from '@/lib/platform';
 
 type ClaimSuccessModalProps = {
 	credits: number;
@@ -89,6 +89,10 @@ const Styles = {
 	screen: [tw`flex-1 items-center justify-center bg-[#11da33]`],
 	text: [
 		tw`mx-auto text-center`,
-		{ fontSize: getFontSize(45), fontFamily: 'Bricolage Grotesque Bold', color: '#ffffff' },
+		{
+			fontSize: getFontSize(45),
+			fontFamily: 'BricolageGrotesque_700Bold',
+			color: '#ffffff',
+		},
 	],
 };

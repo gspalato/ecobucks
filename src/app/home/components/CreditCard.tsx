@@ -58,7 +58,7 @@ const Styles = {
 			tw`text-white w-full p-5 `,
 			{
 				fontSize: getFontSize(40),
-				fontFamily: 'Bricolage Grotesque Bold',
+				fontFamily: 'BricolageGrotesque_700Bold',
 			},
 		],
 	},
