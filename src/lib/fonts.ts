@@ -10,6 +10,13 @@ import {
 	Inter_900Black,
 } from '@expo-google-fonts/inter';
 import {
+	RedRose_300Light,
+	RedRose_400Regular,
+	RedRose_500Medium,
+	RedRose_600SemiBold,
+	RedRose_700Bold,
+} from '@expo-google-fonts/red-rose';
+import {
 	SpaceGrotesk_300Light,
 	SpaceGrotesk_400Regular,
 	SpaceGrotesk_500Medium,
@@ -44,6 +51,12 @@ export default {
 	Inter_700Bold,
 	Inter_800ExtraBold,
 	Inter_900Black,
+
+	RedRose_300Light,
+	RedRose_400Regular,
+	RedRose_500Medium,
+	RedRose_600SemiBold,
+	RedRose_700Bold,
 
 	SpaceGrotesk_300Light,
 	SpaceGrotesk_400Regular,

@@ -14,6 +14,7 @@
     "@candlefinance/blur-view": "^0.4.1",
     "@expo-google-fonts/dev": "^0.2.3",
     "@expo-google-fonts/inter": "^0.2.3",
+    "@expo-google-fonts/red-rose": "^0.2.3",
     "@expo-google-fonts/space-grotesk": "^0.2.3",
     "@expo-google-fonts/syne": "^0.2.3",
     "@expo/vector-icons": "^13.0.0",

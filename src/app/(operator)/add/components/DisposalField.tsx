@@ -83,6 +83,7 @@ const Component = (props: {
 				useNativeAnimations={false}
 			>
 				<Input
+					inputMode='decimal'
 					style={tw`mx-auto`}
 					onChangeText={(text) =>
 						update((prev) => {

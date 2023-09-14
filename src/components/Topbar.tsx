@@ -27,7 +27,7 @@ const Component: React.FC<ModernTopbarProps> = (props) => {
 				</Text>
 			</View>
 			<View style={Styles.buttons.container}>
-				<IconButton path='/map/' icon='map' />
+				<IconButton path='/map/' icon='map-outline' />
 				<IconButton
 					path='/scan/'
 					icon='scan'
@@ -39,7 +39,7 @@ const Component: React.FC<ModernTopbarProps> = (props) => {
 						<IconButton path='/add/' icon='add' style={tw`px-0`} />
 					</>
 				)}
-				<IconButton path='/settings' icon='settings' />
+				<IconButton path='/settings' icon='settings-outline' />
 			</View>
 		</View>
 	);

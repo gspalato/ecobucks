@@ -20,7 +20,7 @@ const Component: React.FC<CreditCardProps> = (props) => {
 				style={tw`absolute h-full w-full rounded-2xl`}
 				contentPosition={{ top: -10 }}
 				priority='high'
-				transition={750}
+				transition={250}
 			/>
 			<Text
 				adjustsFontSizeToFit

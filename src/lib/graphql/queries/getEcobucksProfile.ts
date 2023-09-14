@@ -10,6 +10,11 @@ export const Query = gql`
 			username
 			credits
 			isOperator
+			transactions {
+				claimId
+				credits
+				description
+			}
 		}
 	}
 `;

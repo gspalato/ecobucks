@@ -13,6 +13,7 @@ import tw from 'twrnc';
 
 import HeaderPadding from '@/components/HeaderPadding';
 import ClaimSuccessModal from '@/components/modals/ClaimSuccessModal';
+import SafeView from '@/components/SafeView';
 import Topbar from '@/components/Topbar';
 
 import { useAuthToken } from '@lib/auth';
@@ -38,9 +39,6 @@ const Screen: React.FC = () => {
 	const [displaySuccessModal, setDisplaySuccessModal] = useState(false);
 
 	useAuthToken(setToken);
-
-	const paddings = useSafeAreaInsets();
-	const { isAndroid, SafeAreaStyle } = usePlatform();
 
 	const [fetch] = useLazyQuery<GetEcobucksProfile.ReturnType>(
 		GetEcobucksProfile.Query,
@@ -75,8 +73,6 @@ const Screen: React.FC = () => {
 	useEffect(() => {
 		if (success === false) router.replace('/');
 	}, [success]);
-
-	useEffect(fetchProfile, [token]);
 
 	useFocusEffect(
 		useCallback(() => {
@@ -126,9 +122,7 @@ const Screen: React.FC = () => {
 					onPress={() => setDisplaySuccessModal(false)}
 				/>
 			)}
-			<SafeAreaView
-				style={[Styles.safeArea, SafeAreaStyle, isAndroid && tw`pt-0`]}
-			>
+			<SafeView style={[Styles.safeArea]}>
 				<View style={Styles.safeAreaContent}>
 					<HeaderPadding>
 						<Topbar
@@ -149,36 +143,16 @@ const Screen: React.FC = () => {
 							Recent Transactions
 						</Text>
 						<RecentTransactionList
-							style={[
-								Styles.transactions.list,
-								{ paddingBottom: paddings.bottom },
-							]}
-							transactions={[
-								{
-									action: 'claim',
-									weight: 1,
-									credits: 500,
-									type: DisposalType.BATTERY,
-								},
-								{
-									action: 'spend',
-									credits: 375,
-								},
-								{
-									action: 'claim',
-									weight: 1,
-									credits: 500,
-									type: DisposalType.BATTERY,
-								},
-								{
-									action: 'spend',
-									credits: 1000 - 375,
-								},
-							]}
+							style={[Styles.transactions.list]}
+							transactions={profile.transactions.map((t) => ({
+								action: t.claimId != null ? 'claim' : 'spend',
+								credits: t.credits,
+								description: t.description,
+							}))}
 						/>
 					</View>
 				</View>
-			</SafeAreaView>
+			</SafeView>
 		</>
 	);
 };
@@ -196,7 +170,7 @@ const Styles = {
 	transactions: {
 		list: [tw`w-full`],
 		title: [
-			tw`text-black/80 pt-15 px-1 pb-4 text-left`,
+			tw`text-black/80 pt-15 px-1 pb-4 text-center`,
 			{ fontSize: getFontSize(22), fontFamily: 'Syne_600SemiBold' },
 		],
 	},
