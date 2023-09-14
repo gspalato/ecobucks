@@ -21,6 +21,17 @@ const Screen = () => {
 		setSelected(gradient);
 	};
 
+	useEffect(() => {
+		AsyncStorage.getItem('card-gradient', (e, r) => {
+			if (e) {
+				console.log(e);
+				return;
+			}
+
+			if (r) setSelected(r);
+		});
+	}, []);
+
 	return (
 		<SafeView style={[tw`flex-1`]}>
 			<HeaderPadding style={tw`justify-center`}>

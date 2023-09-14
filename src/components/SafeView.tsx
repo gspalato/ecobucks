@@ -1,21 +1,23 @@
-import { usePlatform } from "@/lib/platform";
-import { StyleProp, ViewStyle } from "react-native"
-import { SafeAreaView } from "react-native-safe-area-context";
+import { StyleProp, ViewStyle } from 'react-native';
+import { SafeAreaView } from 'react-native-safe-area-context';
+import tw from 'twrnc';
+
+import { usePlatform } from '@/lib/platform';
 
 type SafeViewProps = {
-    style?: StyleProp<ViewStyle>;
+	style?: StyleProp<ViewStyle>;
 } & React.PropsWithChildren;
 
 const Component: React.FC<SafeViewProps> = (props) => {
-    const { children, style } = props;
-    
-    const { SafeAreaStyle } = usePlatform();
+	const { children, style } = props;
 
-    return (
-        <SafeAreaView style={[SafeAreaStyle, style]}>
-            {children}
-        </SafeAreaView>
-    );
-}
+	const { isAndroid, SafeAreaStyle } = usePlatform();
+
+	return (
+		<SafeAreaView style={[SafeAreaStyle, style, isAndroid && tw`pt-0`]}>
+			{children}
+		</SafeAreaView>
+	);
+};
 
 export default Component;

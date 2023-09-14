@@ -30,21 +30,23 @@ const Component: React.FC<CardColorOptionsProps> = (props) => {
 				priority='high'
 				transition={750}
 			/>
-			<View
-				style={
-					isSelected && [
-						tw`absolute flex aspect-video h-full w-full items-center justify-center rounded-2xl bg-[#00000088]`,
-					]
-				}
-			>
-				<Checkmark
-					animate
-					duration={100}
-					height={25}
-					width={25}
-					color='#ffffff'
-				/>
-			</View>
+			{isSelected && (
+				<View
+					style={
+						isSelected && [
+							tw`absolute flex aspect-video h-full w-full items-center justify-center rounded-2xl bg-[#00000088]`,
+						]
+					}
+				>
+					<Checkmark
+						animate
+						duration={100}
+						height={25}
+						width={25}
+						color='#ffffff'
+					/>
+				</View>
+			)}
 		</TouchableOpacity>
 	);
 };

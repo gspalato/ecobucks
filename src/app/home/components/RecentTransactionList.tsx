@@ -1,3 +1,4 @@
+import { useCallback, useMemo } from 'react';
 import { StyleProp, Text, View, ViewStyle } from 'react-native';
 import { FlatList, ScrollView } from 'react-native-gesture-handler';
 import tw from 'twrnc';
@@ -6,17 +7,11 @@ import { getFontSize } from '@/lib/fonts';
 
 import { DisposalType } from '@/types/DisposalClaim';
 
-type Transaction =
-	| {
-			action: 'claim';
-			weight?: number;
-			credits: number;
-			type: DisposalType;
-	  }
-	| {
-			action: 'spend';
-			credits: number;
-	  };
+type Transaction = {
+	action: 'claim' | 'spend';
+	credits: number;
+	description: string;
+};
 
 type RecentTransactionListProps = {
 	style?: StyleProp<ViewStyle>;
@@ -33,9 +28,9 @@ const DisposalTypeName = {
 const Component: React.FC<RecentTransactionListProps> = (props) => {
 	const { style, transactions } = props;
 
-	return (
-		<ScrollView style={[Styles.container, style]}>
-			{transactions.reverse().map((item, i) => (
+	const transactionComponents = useMemo(
+		() =>
+			transactions.reverse().map((item, i) => (
 				<View
 					key={item.action + i}
 					style={Styles.transactionItem.container}
@@ -45,11 +40,7 @@ const Component: React.FC<RecentTransactionListProps> = (props) => {
 							{item.action == 'claim' ? 'Claimed' : 'Spent'}{' '}
 						</Text>
 						<Text style={Styles.transactionItem.detail.description}>
-							{item.action == 'claim'
-								? `Safely disposed ${item.weight}kg of ${
-										DisposalTypeName[item.type]
-								  } waste.`
-								: 'Spent on rewards'}
+							{item.description}
 						</Text>
 					</View>
 					<View style={Styles.transactionItem.credit.container}>
@@ -58,7 +49,24 @@ const Component: React.FC<RecentTransactionListProps> = (props) => {
 						</Text>
 					</View>
 				</View>
-			))}
+			)),
+		[],
+	);
+
+	return (
+		<ScrollView style={[Styles.container, style]}>
+			{transactions.length > 0 ? (
+				transactionComponents
+			) : (
+				<Text
+					style={[
+						tw`text-center text-[#00000022]`,
+						{ fontSize: getFontSize(10) },
+					]}
+				>
+					Nothing...
+				</Text>
+			)}
 		</ScrollView>
 	);
 };
