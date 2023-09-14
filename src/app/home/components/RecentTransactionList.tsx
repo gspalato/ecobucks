@@ -60,11 +60,11 @@ const Component: React.FC<RecentTransactionListProps> = (props) => {
 			) : (
 				<Text
 					style={[
-						tw`text-center text-[#00000022]`,
-						{ fontSize: getFontSize(10) },
+						tw`text-center text-[#00000044]`,
+						{ fontSize: getFontSize(15) },
 					]}
 				>
-					Nothing...
+					You haven't done any transaction recently.
 				</Text>
 			)}
 		</ScrollView>
@@ -85,7 +85,7 @@ const Styles = {
 		detail: {
 			container: [tw`flex-1 flex-col justify-center`],
 			title: [
-				tw`pb-2 `,
+				tw`pb-2`,
 				{ fontSize: getFontSize(17), fontFamily: 'Syne_500Medium' },
 			],
 			description: [

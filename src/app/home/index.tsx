@@ -169,7 +169,7 @@ const Styles = {
 	transactions: {
 		list: [tw`w-full`],
 		title: [
-			tw`text-black/80 pt-15 px-1 pb-4 text-left`,
+			tw`text-black/80 pt-15 px-1 pb-4 text-center`,
 			{ fontSize: getFontSize(22), fontFamily: 'Syne_600SemiBold' },
 		],
 	},
