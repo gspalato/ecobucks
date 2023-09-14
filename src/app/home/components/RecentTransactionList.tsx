@@ -50,7 +50,7 @@ const Component: React.FC<RecentTransactionListProps> = (props) => {
 					</View>
 				</View>
 			)),
-		[],
+		[transactions],
 	);
 
 	return (

@@ -1,7 +1,7 @@
 import { router } from 'expo-router';
 import * as SecureStore from 'expo-secure-store';
 import { Button, Text, View } from 'react-native';
-import { ScrollView } from 'react-native-gesture-handler';
+import { ScrollView, TouchableOpacity } from 'react-native-gesture-handler';
 import tw from 'twrnc';
 
 import BackButton from '@/components/BackButton';
@@ -9,9 +9,12 @@ import CustomButton from '@/components/Button';
 import HeaderPadding from '@/components/HeaderPadding';
 import SafeView from '@/components/SafeView';
 
-import { fontSizes } from '@/lib/fonts';
+import { fontSizes, getFontSize } from '@/lib/fonts';
+import { usePlatform } from '@/lib/platform';
 
 const Screen = () => {
+	const { isIOS } = usePlatform();
+
 	const logout = () => {
 		SecureStore.deleteItemAsync('token').then(() => {
 			router.replace('/');
@@ -40,18 +43,31 @@ const Screen = () => {
 			</HeaderPadding>
 			<ScrollView style={tw`flex-1`}>
 				<CustomButton
-					text='Change card color'
+					text='Change Card Style'
 					buttonStyle={[
 						tw`bg-transparent border-b border-[#00000011]`,
 					]}
 					textStyle={[
 						tw`text-black`,
-						{ fontFamily: 'Syne_600SemiBold' },
+						{ fontFamily: 'Inter_600SemiBold' },
 					]}
 					onPress={() => router.push('/settings/changeCardColor')}
 				/>
 			</ScrollView>
-			<Button title='Log Out' onPress={logout} />
+			{isIOS ? (
+				<Button title='Log Out' onPress={logout} />
+			) : (
+				<TouchableOpacity style={[tw`w-full bg-none`]} onPress={logout}>
+					<Text
+						style={[
+							tw`text-center text-[#3478f6]`,
+							{ fontSize: getFontSize(16) },
+						]}
+					>
+						Log Out
+					</Text>
+				</TouchableOpacity>
+			)}
 		</SafeView>
 	);
 };
