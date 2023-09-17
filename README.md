@@ -12,7 +12,7 @@
   <br />
 
   <a href="https://github.com/gspalato/ecobucks">
-    <img src="https://raw.githubusercontent.com/gspalato/ecobucks/master/.project/icon_text.png" alt="Logo" width="150" height="150">
+    <img src="https://raw.githubusercontent.com/gspalato/ecobucks/master/.project/icon_text.png" alt="Logo" width="100%">
   </a>
 
 <h3 align="center"><b>Ecobucks</b></h3>
