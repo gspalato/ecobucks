@@ -16,14 +16,13 @@ import ClaimSuccessModal from '@/components/modals/ClaimSuccessModal';
 import SafeView from '@/components/SafeView';
 import Topbar from '@/components/Topbar';
 
-import { useAuthToken } from '@lib/auth';
+import { useAuthToken, useProfile } from '@lib/auth';
 import * as GetEcobucksProfile from '@lib/graphql/queries/getEcobucksProfile';
 
 import Gradients from '@/lib/cardGradients';
 import { getFontSize } from '@/lib/fonts';
 import { usePlatform } from '@/lib/platform';
 
-import { DisposalType } from '@/types/DisposalClaim';
 import { Profile } from '@/types/Profile';
 
 import CreditCard from './components/CreditCard';
@@ -33,13 +32,16 @@ const Screen: React.FC = () => {
 	const [token, setToken] = useState<string | null>(null);
 	const [cardGradient, setCardGradient] = useState<string | null>();
 
-	const [profile, setProfile] = useState<Profile | null>(null);
+	//const [profile, setProfile] = useState<Profile | null>(null);
 	const [success, setSuccess] = useState<boolean | null>(null);
 
 	const [displaySuccessModal, setDisplaySuccessModal] = useState(false);
 
 	useAuthToken(setToken);
 
+	const { profile, fetch } = useProfile(token);
+
+	/*
 	const [fetch] = useLazyQuery<GetEcobucksProfile.ReturnType>(
 		GetEcobucksProfile.Query,
 		{
@@ -69,6 +71,7 @@ const Screen: React.FC = () => {
 			},
 		});
 	};
+	*/
 
 	useEffect(() => {
 		if (success === false) router.replace('/');
@@ -91,7 +94,6 @@ const Screen: React.FC = () => {
 				const token = await SecureStore.getItemAsync('token');
 				if (!token) router.replace('/');
 
-				console.log('has token. fetching again...');
 				fetch({
 					variables: {
 						token,
