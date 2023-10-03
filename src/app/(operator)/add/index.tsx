@@ -2,22 +2,21 @@ import { useMutation } from '@apollo/client';
 import { Feather } from '@expo/vector-icons';
 import { router } from 'expo-router';
 import React, { useState } from 'react';
-import { SafeAreaView, Text, TouchableOpacity, View } from 'react-native';
+import { SafeAreaView, TouchableOpacity, View } from 'react-native';
 import { ScrollView } from 'react-native-gesture-handler';
 import tw from 'twrnc';
 
 import Button from '@/components/Button';
-import HeaderPadding from '@/components/HeaderPadding';
+import DefaultHeader from '@/components/DefaultHeader';
 import ClaimSuccessModal from '@/components/modals/ClaimSuccessModal';
 
 import { useAuthToken } from '@/lib/auth';
-import { fontSizes, getFontSize } from '@/lib/fonts';
+import { getFontSize } from '@/lib/fonts';
 import * as RegisterDisposal from '@/lib/graphql/mutations/registerDisposal';
 import { usePlatform } from '@/lib/platform';
 
 import { DisposalType } from '@/types/DisposalClaim';
 
-import BackButton from './components/BackButton';
 import DisposalField from './components/DisposalField';
 
 export type DisposalField = {
@@ -115,24 +114,7 @@ const Screen: React.FC = () => {
 				/>
 			)}
 			<SafeAreaView style={[tw`flex-1`, SafeAreaStyle]}>
-				<HeaderPadding style={tw`justify-center`}>
-					<BackButton style={[tw`pl-2`]} />
-					<Text
-						numberOfLines={1}
-						adjustsFontSizeToFit
-						style={[
-							tw`absolute w-full items-center justify-center text-center text-2xl`,
-							{
-								fontFamily: 'Syne_700Bold',
-								alignSelf: 'center',
-								pointerEvents: 'none',
-								fontSize: fontSizes.title,
-							},
-						]}
-					>
-						Register Client Disposal
-					</Text>
-				</HeaderPadding>
+				<DefaultHeader title='Register Disposal' />
 				<View style={tw`flex-1`}>
 					<ScrollView style={[tw`h-full w-full flex-1`]}>
 						{disposalFields.map((item, index) => (
@@ -202,7 +184,7 @@ const Styles = {
 	],
 	registerButton: {
 		button: [
-			tw`h-13 mx-auto w-80 rounded-lg border-transparent bg-[#11da33] p-3 text-center`,
+			tw`h-13 border-transparent mx-auto w-80 rounded-lg bg-[#11da33] p-3 text-center`,
 			{
 				fontSize: getFontSize(17),
 			},
