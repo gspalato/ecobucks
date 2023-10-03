@@ -1,10 +1,11 @@
-import { Feather } from '@expo/vector-icons';
 import * as Location from 'expo-location';
-import { router } from 'expo-router';
 import React, { useEffect, useState } from 'react';
-import { Pressable, StyleSheet, View } from 'react-native';
+import { View } from 'react-native';
 import MapView from 'react-native-maps';
 import tw from 'twrnc';
+
+import DefaultHeader from '@/components/DefaultHeader';
+import SafeView from '@/components/SafeView';
 
 const Screen: React.FC<any> = ({ navigation }) => {
 	const [location, setLocation] = useState<Location.LocationObject | null>(
@@ -28,28 +29,21 @@ const Screen: React.FC<any> = ({ navigation }) => {
 	return (
 		<>
 			<View style={tw`flex-1`}>
-				<BackButton />
 				<MapView
 					style={tw`absolute z-0 h-full w-full`}
 					showsUserLocation={true}
 				/>
 			</View>
+			<SafeView style={[tw`absolute w-full flex-1`]}>
+				<DefaultHeader
+					headerStyle={tw`w-full justify-center`}
+					backButtonColor='#ffffff'
+					titleStyle={[tw`text-white`]}
+					title='Map'
+				/>
+			</SafeView>
 		</>
 	);
 };
 
 export default Screen;
-
-const BackButton: React.FC = () => {
-	const onPress = () => {
-		router.replace('/home/');
-	};
-
-	return (
-		<Pressable onPress={onPress}>
-			<View style={[tw`absolute z-10 p-1`]}>
-				<Feather size={35} name='chevron-left' color={'#ffffff'} />
-			</View>
-		</Pressable>
-	);
-};
