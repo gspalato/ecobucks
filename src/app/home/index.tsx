@@ -79,6 +79,7 @@ const Screen: React.FC = () => {
 			// Fetch user selected card gradient background.
 			AsyncStorage.getItem('card-gradient', (e, r) => {
 				if (e) {
+					console.log(e);
 					AsyncStorage.setItem('card-gradient', 'Gradient20');
 					setCardGradient('Gradient20');
 				}
