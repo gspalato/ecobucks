@@ -1,10 +1,19 @@
+import { Image } from 'expo-image';
 import { useEffect, useRef, useState } from 'react';
 import { Animated, Modal, Pressable, Text, View } from 'react-native';
 import tw from 'twrnc';
 
 import { getFontSize } from '@/lib/fonts';
 
-const Component = () => {
+import EcobucksGradient from '@assets/gradients/gradient20.png';
+
+type SplashScreenProps = {
+	show?: boolean;
+};
+
+const Component: React.FC<SplashScreenProps> = (props) => {
+	let { show, ...rest } = props;
+
 	const [tapped, setTapped] = useState(false);
 	const [playedOnce, setPlayedOnce] = useState(false);
 
@@ -42,6 +51,12 @@ const Component = () => {
 			<Pressable style={[tw`flex-1`]} onPress={handleScreenTap}>
 				<Animated.View style={[Styles.container, { opacity }]}>
 					<Text style={Styles.text}>ecobucks</Text>
+					<Image
+						contentFit='cover'
+						source={EcobucksGradient}
+						style={Styles.background}
+						transition={100}
+					/>
 				</Animated.View>
 			</Pressable>
 		</Modal>
@@ -54,6 +69,7 @@ export default Component;
 
 const Styles = {
 	container: [tw`flex flex-1 items-center justify-center bg-[#11da33]`],
+	background: [tw`absolute flex-1`],
 	text: [
 		tw`text-[#ffffff]`,
 		{ fontFamily: 'SpaceGrotesk_700Bold', fontSize: getFontSize(55) },

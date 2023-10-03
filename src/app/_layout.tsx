@@ -1,6 +1,7 @@
 import { ApolloProvider } from '@apollo/client';
 import { loadDevMessages, loadErrorMessages } from '@apollo/client/dev';
 import { registerRootComponent } from 'expo';
+import { Asset } from 'expo-asset';
 import { useFonts } from 'expo-font';
 import * as NavigationBar from 'expo-navigation-bar';
 import { SplashScreen } from 'expo-router';
@@ -16,6 +17,8 @@ import SplashScreenComponent from '@/components/modals/SplashScreen';
 import { AuthProvider } from '@lib/auth';
 import client from '@lib/graphql/client';
 
+import useAssets from '@/lib/assets';
+import Gradients from '@/lib/assets/gradients';
 import fonts from '@/lib/fonts';
 
 SplashScreen.preventAutoHideAsync();
@@ -29,8 +32,11 @@ export const unstable_settings = {
 };
 
 const App: React.FC = () => {
-	const [loaded, setLoaded] = useState(false);
+	const [assetsLoaded, setAssetsLoaded] = useState(true);
+
 	const [fontsLoaded, error] = useFonts(fonts);
+
+	const [showSplashScreen, setShowSplashScreen] = useState(true);
 
 	useEffect(() => {
 		if (Platform.OS != 'android') return;
@@ -45,9 +51,14 @@ const App: React.FC = () => {
 		console.log(error);
 	}, [error]);
 
+	useEffect(() => {}, []);
+
 	useEffect(() => {
-		if (fontsLoaded) SplashScreen.hideAsync();
-	}, [fontsLoaded]);
+		if (assetsLoaded && fontsLoaded) {
+			SplashScreen.hideAsync();
+			setShowSplashScreen(false);
+		}
+	}, [assetsLoaded, fontsLoaded]);
 
 	if (!fontsLoaded) return;
 
@@ -57,7 +68,7 @@ const App: React.FC = () => {
 			<ApolloProvider client={client}>
 				<AuthProvider>
 					<ModalProvider stack={modalStack}>
-						<SplashScreenComponent />
+						<SplashScreenComponent show={showSplashScreen} />
 						<Stack screenOptions={{ headerShown: false }} />
 					</ModalProvider>
 				</AuthProvider>

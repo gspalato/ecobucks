@@ -7,7 +7,6 @@ import {
 	View,
 } from 'react-native';
 import { ViewStyle } from 'react-native/Libraries/StyleSheet/StyleSheetTypes';
-import tw from 'twrnc';
 
 type BackButtonProps = {
 	color?: string | OpaqueColorValue;
