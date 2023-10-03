@@ -1,14 +1,9 @@
 import { useLazyQuery } from '@apollo/client';
-import { BlurView } from '@candlefinance/blur-view';
 import AsyncStorage from '@react-native-async-storage/async-storage';
 import { router, useFocusEffect } from 'expo-router';
 import * as SecureStore from 'expo-secure-store';
 import React, { useCallback, useEffect, useState } from 'react';
 import { ActivityIndicator, Platform, Text, View } from 'react-native';
-import {
-	SafeAreaView,
-	useSafeAreaInsets,
-} from 'react-native-safe-area-context';
 import tw from 'twrnc';
 
 import HeaderPadding from '@/components/HeaderPadding';
@@ -19,9 +14,8 @@ import Topbar from '@/components/Topbar';
 import { useAuthToken, useProfile } from '@lib/auth';
 import * as GetEcobucksProfile from '@lib/graphql/queries/getEcobucksProfile';
 
-import Gradients from '@/lib/cardGradients';
+import Gradients from '@/lib/assets/gradients';
 import { getFontSize } from '@/lib/fonts';
-import { usePlatform } from '@/lib/platform';
 
 import { Profile } from '@/types/Profile';
 

@@ -24,6 +24,10 @@ import {
 	SpaceGrotesk_700Bold,
 } from '@expo-google-fonts/space-grotesk';
 import {
+	SpaceMono_400Regular,
+	SpaceMono_700Bold,
+} from '@expo-google-fonts/space-mono';
+import {
 	Syne_400Regular,
 	Syne_500Medium,
 	Syne_600SemiBold,
@@ -63,6 +67,9 @@ export default {
 	SpaceGrotesk_500Medium,
 	SpaceGrotesk_600SemiBold,
 	SpaceGrotesk_700Bold,
+
+	SpaceMono_400Regular,
+	SpaceMono_700Bold,
 
 	Syne_400Regular,
 	Syne_500Medium,

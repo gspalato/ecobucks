@@ -1266,6 +1266,11 @@
   resolved "https://registry.npmjs.org/@expo-google-fonts/space-grotesk/-/space-grotesk-0.2.3.tgz"
   integrity sha512-UYEMIrzegR02pauH7gVMI7j6cUroTtJug6dH/aQFjMNz0UwZe6GUcrEtJDmsUHJjEZdxbYgHhaiIwswWVo0CMA==
 
+"@expo-google-fonts/space-mono@^0.2.3":
+  version "0.2.3"
+  resolved "https://registry.yarnpkg.com/@expo-google-fonts/space-mono/-/space-mono-0.2.3.tgz#e9ef34b85a3b3f403958c56f03eb583c365fa3f1"
+  integrity sha512-OpypFAHHAfIPipJXUIE1g0AF9juPciPPsUheCLyqgNNbxfVTiQjFFiTQI5up4Q2Xj9waNwoeFMBj0e6dvWi/mw==
+
 "@expo-google-fonts/syne@^0.2.3":
   version "0.2.3"
   resolved "https://registry.npmjs.org/@expo-google-fonts/syne/-/syne-0.2.3.tgz"

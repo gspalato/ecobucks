@@ -7,7 +7,9 @@ import React, { useEffect, useState } from 'react';
 import { Button, StyleSheet, Text, View } from 'react-native';
 import tw from 'twrnc';
 
+import DefaultHeader from '@/components/DefaultHeader';
 import ClaimSuccessModal from '@/components/modals/ClaimSuccessModal';
+import SafeView from '@/components/SafeView';
 
 import { useAuth, useAuthToken } from '@lib/auth';
 import * as ClaimDisposalAndCredits from '@lib/graphql/mutations/claimDisposalAndCredits';
@@ -128,6 +130,14 @@ const Screen: React.FC = () => {
 					]}
 				/>
 			</View>
+			<SafeView style={[tw`absolute w-full flex-1`]}>
+				<DefaultHeader
+					headerStyle={tw`w-full justify-center`}
+					backButtonColor='#ffffff'
+					titleStyle={[tw`text-white`]}
+					title='Scan'
+				/>
+			</SafeView>
 		</>
 	);
 };

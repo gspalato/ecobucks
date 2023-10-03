@@ -8,7 +8,7 @@ import BackButton from '@/components/BackButton';
 import HeaderPadding from '@/components/HeaderPadding';
 import SafeView from '@/components/SafeView';
 
-import Gradients from '@/lib/cardGradients';
+import Gradients from '@/lib/assets/gradients';
 import { fontSizes } from '@/lib/fonts';
 
 import CardColorOption from './components/CardColorOption';
