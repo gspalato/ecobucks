@@ -11,7 +11,7 @@ type GetGeneric<Type> = Type extends Icon<infer Options, infer Name>
 	: never;
 
 type BaseIconButtonProps = {
-	path: Parameters<Router['push']>[0];
+	path: Parameters<Router['replace']>[0];
 	style?: StyleProp<ViewStyle>;
 };
 
