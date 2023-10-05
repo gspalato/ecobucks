@@ -26,7 +26,6 @@ const Screen: React.FC = () => {
 
 	const [token, setToken] = useState<string | null>(null);
 
-	useExpireAuthToken();
 	useAuthToken(setToken);
 
 	const [login, { loading }] = useMutation(Authenticate.Mutation, {

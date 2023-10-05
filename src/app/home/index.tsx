@@ -159,8 +159,8 @@ const Styles = {
 	safeArea: [tw`flex-1`, { alignItems: 'center', overflow: 'hidden' }],
 	safeAreaContent: [tw`w-full flex-1 overflow-hidden`],
 	creditCardContainer: [
-		tw`h-auto w-auto rounded-2xl`,
-		Platform.OS === 'ios' && tw`shadow-md`,
+		tw`mx-auto mt-5 flex aspect-video w-[95%] items-center justify-center rounded-2xl`,
+		Platform.OS === 'ios' && tw`bg-white shadow-md`,
 	],
 	contentContainer: [tw`flex w-full px-4 py-0`],
 	transactions: {

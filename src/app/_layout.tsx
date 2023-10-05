@@ -32,7 +32,7 @@ export const unstable_settings = {
 };
 
 const App: React.FC = () => {
-	const [assetsLoaded, setAssetsLoaded] = useState(true);
+	const { loaded: assetsLoaded, ...Assets } = useAssets();
 
 	const [fontsLoaded, error] = useFonts(fonts);
 
@@ -51,7 +51,13 @@ const App: React.FC = () => {
 		console.log(error);
 	}, [error]);
 
-	useEffect(() => {}, []);
+	useEffect(() => {
+		Object.values(Gradients).forEach((g) => {
+			Assets.preload(g);
+		});
+
+		Assets.wait();
+	}, []);
 
 	useEffect(() => {
 		if (assetsLoaded && fontsLoaded) {

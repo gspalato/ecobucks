@@ -40,7 +40,7 @@ const Component: React.FC<SplashScreenProps> = (props) => {
 		setTimeout(() => fadeOut(handleAnimationFinish), 3000);
 	}, []);
 
-	const isModalVisible = !playedOnce && !tapped;
+	const isModalVisible = show || (!playedOnce && !tapped);
 
 	return (
 		<Modal

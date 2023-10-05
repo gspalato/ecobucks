@@ -41,7 +41,7 @@ export default Component;
 
 const Styles = {
 	card: [
-		tw`mx-auto mt-5 flex aspect-video w-[95%] items-start justify-start overflow-hidden rounded-2xl border border-[#ffffff11] bg-[#00000022]`,
+		tw`mx-auto flex aspect-video w-full items-start justify-start overflow-hidden rounded-2xl border border-[#ffffff11] bg-[#00000033]`,
 	],
 	button: [tw`rounded-lg bg-[#11da33] p-3`],
 	text: {

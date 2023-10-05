@@ -69,7 +69,7 @@ export default Component;
 
 const Styles = {
 	button: [
-		tw`leading-0 w-90 h-13 mx-auto mb-4 flex-row items-center justify-between rounded-lg border border-[#00000022] bg-[#0000011] p-3`,
+		tw`w-90 h-13 mx-auto mb-4 flex-row items-center justify-between rounded-lg border border-[#00000022] bg-[#0000011] p-3`,
 	],
 	text: [
 		tw`text-[#000000]`,

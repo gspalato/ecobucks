@@ -64,7 +64,7 @@ const Component: React.FC<RecentTransactionListProps> = (props) => {
 						{ fontSize: getFontSize(15) },
 					]}
 				>
-					You haven't done any transaction recently.
+					You haven't done any transactions recently.
 				</Text>
 			)}
 		</ScrollView>
