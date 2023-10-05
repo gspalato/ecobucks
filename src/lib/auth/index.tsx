@@ -1,3 +1,8 @@
+import {
+	LazyQueryExecFunction,
+	OperationVariables,
+	useLazyQuery,
+} from '@apollo/client';
 import * as SecureStore from 'expo-secure-store';
 import React, {
 	createContext,
@@ -7,6 +12,8 @@ import React, {
 	useMemo,
 	useState,
 } from 'react';
+
+import * as GetEcobucksProfile from '@lib/graphql/queries/getEcobucksProfile';
 
 import { Profile } from '@/types/Profile';
 
@@ -66,10 +73,56 @@ const useExpireAuthToken = (callback?: () => void) => {
 	}, [callback]);
 };
 
+const useProfile = (
+	token: string | null,
+	callback?: (profile: Profile | null) => void,
+): {
+	profile: Profile | null;
+	fetch: LazyQueryExecFunction<
+		GetEcobucksProfile.ReturnType,
+		OperationVariables
+	>;
+} => {
+	const [profile, setProfile] = useState<Profile | null>(null);
+
+	const [fetch] = useLazyQuery<GetEcobucksProfile.ReturnType>(
+		GetEcobucksProfile.Query,
+		{
+			fetchPolicy: 'no-cache',
+			onCompleted(data) {
+				setProfile(data.ecobucksProfile);
+				callback?.(data.ecobucksProfile);
+			},
+			onError(e) {
+				alert(
+					`Failed to fetch profile.\n${e.message}\n${
+						e.cause
+					}\n${e.graphQLErrors.map((e) => e.message)}`,
+				);
+				setProfile(null);
+				callback?.(null);
+			},
+		},
+	);
+
+	useEffect(() => {
+		if (!token) return;
+
+		fetch({
+			variables: {
+				token,
+			},
+		});
+	}, [token]);
+
+	return { profile, fetch };
+};
+
 export {
 	AuthProvider,
 	useAuth,
 	useAuthToken,
 	useExpireAuthToken,
+	useProfile,
 	useSetAuthToken,
 };

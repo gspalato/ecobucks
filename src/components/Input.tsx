@@ -18,7 +18,7 @@ export default Component;
 
 const Styles = {
 	input: [
-		tw`leading-0 w-90 h-13 mx-10 mb-4 rounded-lg border border-[#00000022] p-3`,
+		tw`w-90 h-13 mx-10 mb-4 rounded-lg border border-[#00000022] p-3`,
 		{
 			fontSize: getFontSize(15),
 			fontFamily: 'Inter_400Regular',

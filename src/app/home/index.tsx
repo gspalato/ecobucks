@@ -15,7 +15,7 @@ import ClaimSuccessModal from '@/components/modals/ClaimSuccessModal';
 import SafeView from '@/components/SafeView';
 import Topbar from '@/components/Topbar';
 
-import { useAuthToken } from '@lib/auth';
+import { useAuthToken, useProfile } from '@lib/auth';
 import * as GetEcobucksProfile from '@lib/graphql/queries/getEcobucksProfile';
 
 import Gradients from '@/lib/assets/gradients';
@@ -27,13 +27,16 @@ const Screen: React.FC = () => {
 	const [token, setToken] = useState<string | null>(null);
 	const [cardGradient, setCardGradient] = useState<string | null>();
 
-	const [profile, setProfile] = useState<Profile | null>(null);
+	//const [profile, setProfile] = useState<Profile | null>(null);
 	const [success, setSuccess] = useState<boolean | null>(null);
 
 	const [displaySuccessModal, setDisplaySuccessModal] = useState(false);
 
 	useAuthToken(setToken);
 
+	const { profile, fetch } = useProfile(token);
+
+	/*
 	const [fetch] = useLazyQuery<GetEcobucksProfile.ReturnType>(
 		GetEcobucksProfile.Query,
 		{
@@ -63,6 +66,7 @@ const Screen: React.FC = () => {
 			},
 		});
 	};
+	*/
 
 	useEffect(() => {
 		if (success === false) router.replace('/');
@@ -85,7 +89,6 @@ const Screen: React.FC = () => {
 				const token = await SecureStore.getItemAsync('token');
 				if (!token) router.replace('/');
 
-				console.log('has token. fetching again...');
 				fetch({
 					variables: {
 						token,
@@ -157,8 +160,8 @@ const Styles = {
 	safeArea: [tw`flex-1`, { alignItems: 'center', overflow: 'hidden' }],
 	safeAreaContent: [tw`w-full flex-1 overflow-hidden`],
 	creditCardContainer: [
-		tw`h-auto w-auto rounded-2xl`,
-		Platform.OS === 'ios' && tw`shadow-md`,
+		tw`mx-auto mt-5 flex aspect-video w-[95%] items-center justify-center rounded-2xl`,
+		Platform.OS === 'ios' && tw`bg-white shadow-md`,
 	],
 	contentContainer: [tw`flex w-full px-4 py-0`],
 	transactions: {
