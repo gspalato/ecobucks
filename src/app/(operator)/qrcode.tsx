@@ -6,6 +6,7 @@ import { SafeAreaView } from 'react-native-safe-area-context';
 import tw from 'twrnc';
 
 import Button from '@/components/Button';
+import GradientMask from '@/components/GradientMask';
 import HeaderPadding from '@/components/HeaderPadding';
 
 import { fontSizes, getFontSize } from '@/lib/fonts';
@@ -17,7 +18,7 @@ const Screen = () => {
 	const { id, credits } = useLocalSearchParams();
 
 	if (!id || typeof id !== 'string') return;
-	if (!credits || typeof credits !== 'number') return;
+	if (!credits || typeof credits !== 'string') return;
 
 	return (
 		<SafeAreaView style={tw`flex-1`}>
@@ -55,6 +56,7 @@ const Screen = () => {
 					enableLinearGradient
 					linearGradient={['#00bbff', '#11da33']}
 				/>
+				<Text style={Styles.credits}>+${credits}</Text>
 			</View>
 		</SafeAreaView>
 	);
@@ -67,6 +69,14 @@ const Styles = {
 	container: [tw`flex-1 items-center justify-center`],
 	qrcode: [
 		tw`absolute bottom-0 left-0 right-0 top-0 items-center justify-center`,
+	],
+	credits: [
+		tw`pt-4`,
+		{
+			color: '#11da33',
+			fontFamily: 'BricolageGrotesque_700Bold',
+			fontSize: getFontSize(25),
+		},
 	],
 	proceedButton: {
 		button: [

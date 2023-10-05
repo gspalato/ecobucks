@@ -33,6 +33,7 @@ const Component: React.FC<ModernTopbarProps> = (props) => {
 					icon='scan'
 					style={!isOperator && tw`pr-0`}
 				/>
+				<IconButton path='/store/' icon='gift-outline' />
 				{isOperator && (
 					<>
 						<View style={tw`my-1 border-l border-[#00000011]`} />
