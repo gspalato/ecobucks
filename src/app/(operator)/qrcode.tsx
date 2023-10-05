@@ -14,9 +14,10 @@ import BackButton from './add/components/BackButton';
 import Constants from '@/constants';
 
 const Screen = () => {
-	const { id } = useLocalSearchParams();
+	const { id, credits } = useLocalSearchParams();
 
 	if (!id || typeof id !== 'string') return;
+	if (!credits || typeof credits !== 'number') return;
 
 	return (
 		<SafeAreaView style={tw`flex-1`}>

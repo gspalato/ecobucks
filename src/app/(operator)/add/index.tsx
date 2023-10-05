@@ -92,7 +92,10 @@ const Screen: React.FC = () => {
 
 				router.replace({
 					pathname: '/(operator)/qrcode',
-					params: { id: data.registerDisposal.disposal.token },
+					params: {
+						id: data.registerDisposal.disposal.token,
+						credits: data.registerDisposal.disposal.credits,
+					},
 				});
 			},
 			onError: (error) => {
