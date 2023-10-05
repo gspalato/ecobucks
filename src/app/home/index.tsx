@@ -6,10 +6,13 @@ import React, { useCallback, useEffect, useState } from 'react';
 import { ActivityIndicator, Platform, Text, View } from 'react-native';
 import tw from 'twrnc';
 
+import CreditCard from '@components/CreditCard';
+import RecentTransactionList from '@components/RecentTransactionList';
+
+import Tabbar from '@/components/CustomTabbar';
 import HeaderPadding from '@/components/HeaderPadding';
 import ClaimSuccessModal from '@/components/modals/ClaimSuccessModal';
 import SafeView from '@/components/SafeView';
-import Tabbar from '@/components/Tabbar';
 import Topbar from '@/components/Topbar';
 
 import { useAuthToken } from '@lib/auth';
@@ -19,9 +22,6 @@ import Gradients from '@/lib/assets/gradients';
 import { getFontSize } from '@/lib/fonts';
 
 import { Profile } from '@/types/Profile';
-
-import CreditCard from './components/CreditCard';
-import RecentTransactionList from './components/RecentTransactionList';
 
 const Screen: React.FC = () => {
 	const [token, setToken] = useState<string | null>(null);
@@ -146,7 +146,6 @@ const Screen: React.FC = () => {
 						/>
 					</View>
 				</View>
-				<Tabbar />
 			</SafeView>
 		</>
 	);

@@ -21,7 +21,7 @@ const Component: React.FC<BackButtonProps> = (props) => {
 	};
 
 	return (
-		<TouchableOpacity hitSlop={50} onPress={onPress}>
+		<TouchableOpacity hitSlop={20} onPress={onPress}>
 			<View style={style}>
 				<Feather size={35} name='chevron-left' color={color} />
 			</View>

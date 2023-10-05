@@ -20,6 +20,8 @@ type DefaultHeaderProps = {
 
 	title: string;
 	titleStyle?: StyleProp<TextStyle>;
+
+	showBackButton?: boolean;
 } & React.PropsWithChildren;
 
 const Component: React.FC<DefaultHeaderProps> = (props) => {
@@ -28,16 +30,19 @@ const Component: React.FC<DefaultHeaderProps> = (props) => {
 		backButtonStyle,
 		children,
 		headerStyle,
+		showBackButton = true,
 		title,
 		titleStyle,
 	} = props;
 
 	return (
 		<HeaderPadding style={[tw`justify-center`, headerStyle]}>
-			<BackButton
-				style={[tw`pl-2`, backButtonStyle]}
-				color={backButtonColor}
-			/>
+			{showBackButton && (
+				<BackButton
+					style={[tw`pl-2`, backButtonStyle]}
+					color={backButtonColor}
+				/>
+			)}
 			<Text
 				numberOfLines={1}
 				adjustsFontSizeToFit
