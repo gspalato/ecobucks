@@ -27,16 +27,10 @@ const Component: React.FC<ModernTopbarProps> = (props) => {
 				</Text>
 			</View>
 			<View style={Styles.buttons.container}>
-				<IconButton path='/map/' icon='map-outline' />
-				<IconButton
-					path='/scan/'
-					icon='scan'
-					style={!isOperator && tw`pr-0`}
-				/>
 				{isOperator && (
 					<>
-						<View style={tw`my-1 border-l border-[#00000011]`} />
 						<IconButton path='/add/' icon='add' style={tw`px-0`} />
+						<View style={tw`my-1 border-l border-[#00000011]`} />
 					</>
 				)}
 				<IconButton path='/settings' icon='settings-outline' />

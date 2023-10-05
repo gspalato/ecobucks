@@ -9,6 +9,7 @@ import tw from 'twrnc';
 import HeaderPadding from '@/components/HeaderPadding';
 import ClaimSuccessModal from '@/components/modals/ClaimSuccessModal';
 import SafeView from '@/components/SafeView';
+import Tabbar from '@/components/Tabbar';
 import Topbar from '@/components/Topbar';
 
 import { useAuthToken, useProfile } from '@lib/auth';
@@ -148,6 +149,7 @@ const Screen: React.FC = () => {
 						/>
 					</View>
 				</View>
+				<Tabbar />
 			</SafeView>
 		</>
 	);
