@@ -5,17 +5,25 @@ import tw from 'twrnc';
 type TabButtonProps = {
 	icon: string;
 	name: string;
-	tab: string;
+	focused: boolean;
+
+	onPress: () => void;
+	onLongPress: () => void;
 };
 
 const Component: React.FC<TabButtonProps> = (props) => {
-	const { icon, name, tab } = props;
+	const { icon, name, onPress, onLongPress, focused } = props;
 
 	const selectedColor = '#000000ff';
 	const unselectedColor = '#00000044';
 
 	return (
-		<TouchableOpacity hitSlop={50} style={Styles.tabButton.container}>
+		<TouchableOpacity
+			hitSlop={50}
+			style={Styles.tabButton.container}
+			onPress={onPress}
+			onLongPress={onLongPress}
+		>
 			<Ionicons name={icon} size={25} color={unselectedColor} />
 			<Text
 				style={[

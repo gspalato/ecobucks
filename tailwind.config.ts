@@ -3,13 +3,14 @@ module.exports = {
 	content: ['./src/**/*.{html,js,jsx,ts,tsx}'],
 	theme: {
 		colors: {
+			background: '#f2f2f2',
 			accent: '#11da33',
 		},
 		fontFamily: {
 			sans: ['Inter_400Regular', 'sans-serif'],
-			'sans-bold': ['Inter Bold', 'sans-serif'],
-			display: ['SpaceGrotesk_400Regular', 'sans-serif'],
-			'display-bold': ['SpaceGrotesk_700Bold', 'sans-serif'],
+			'sans-bold': ['Inter_700Bold', 'sans-serif'],
+			display: ['Syne_400Regular', 'sans-serif'],
+			'display-bold': ['Syne_700Bold', 'sans-serif'],
 		},
 		extend: {
 			spacing: {

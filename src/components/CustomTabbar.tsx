@@ -1,20 +1,78 @@
-import { Ionicons } from '@expo/vector-icons';
-import { BlurView } from 'expo-blur';
-import { StyleProp, Text, View, ViewStyle } from 'react-native';
-import { TouchableOpacity } from 'react-native-gesture-handler';
+import {
+	NavigationHelpers,
+	ParamListBase,
+	TabNavigationState,
+} from '@react-navigation/native';
+import { StyleProp, View, ViewStyle } from 'react-native';
+import { Text, TouchableOpacity } from 'react-native';
 import tw from 'twrnc';
 
 import TabButton from './TabButton';
-import { useTabs } from './Tabs';
 
 type TabbarProps = {
-	style?: StyleProp<ViewStyle>;
+	state: TabNavigationState<ParamListBase>;
+	descriptors: any /*BottomTabDescriptorMap*/;
+	navigation: NavigationHelpers<
+		ParamListBase,
+		any /*BottomTabNavigationEventMap*/
+	>;
 };
 
+const CComponent: React.FC<TabbarProps> = ({
+	state,
+	descriptors,
+	navigation,
+}: any) => {
+	return (
+		<View style={Styles.container}>
+			{state.routes.map((route: any, index: number) => {
+				const { options } = descriptors[route.key];
+				const label =
+					options.tabBarLabel !== undefined
+						? options.tabBarLabel
+						: options.title !== undefined
+						? options.title
+						: route.name;
+
+				const isFocused = state.index === index;
+
+				const onPress = () => {
+					const event = navigation.emit({
+						type: 'tabPress',
+						target: route.key,
+						canPreventDefault: true,
+					});
+
+					if (!isFocused && !event.defaultPrevented) {
+						// The `merge: true` option makes sure that the params inside the tab screen are preserved
+						navigation.navigate({ name: route.name, merge: true });
+					}
+				};
+
+				const onLongPress = () => {
+					navigation.emit({
+						type: 'tabLongPress',
+						target: route.key,
+					});
+				};
+
+				return (
+					<TabButton
+						name={label}
+						icon=''
+						onPress={onPress}
+						onLongPress={onLongPress}
+						focused={isFocused}
+					/>
+				);
+			})}
+		</View>
+	);
+};
+
+/*
 const Component: React.FC<TabbarProps> = (props) => {
 	const { style } = props;
-
-	const { currentTab, setCurrentTab } = useTabs();
 
 	return (
 		<View style={[Styles.container, style]}>
@@ -25,8 +83,9 @@ const Component: React.FC<TabbarProps> = (props) => {
 		</View>
 	);
 };
+*/
 
-export default Component;
+export default CComponent;
 
 const Styles = {
 	container: [

@@ -7,13 +7,15 @@ import { ActivityIndicator, Platform, Text, View } from 'react-native';
 import tw from 'twrnc';
 
 import CreditCard from '@components/CreditCard';
+import HeaderPadding from '@components/HeaderPadding';
+import ClaimSuccessModal from '@components/modals/ClaimSuccessModal';
 import RecentTransactionList from '@components/RecentTransactionList';
+import SafeView from '@components/SafeView';
+import Screen from '@components/Screen';
+import Topbar from '@components/Topbar';
 
 import Tabbar from '@/components/CustomTabbar';
-import HeaderPadding from '@/components/HeaderPadding';
-import ClaimSuccessModal from '@/components/modals/ClaimSuccessModal';
-import SafeView from '@/components/SafeView';
-import Topbar from '@/components/Topbar';
+import Loading from '@/components/Loading';
 
 import { useAuthToken } from '@lib/auth';
 import * as GetEcobucksProfile from '@lib/graphql/queries/getEcobucksProfile';
@@ -23,7 +25,7 @@ import { getFontSize } from '@/lib/fonts';
 
 import { Profile } from '@/types/Profile';
 
-const Screen: React.FC = () => {
+const Component: React.FC = () => {
 	const [token, setToken] = useState<string | null>(null);
 	const [cardGradient, setCardGradient] = useState<string | null>();
 
@@ -53,16 +55,6 @@ const Screen: React.FC = () => {
 			},
 		},
 	);
-
-	const fetchProfile = () => {
-		if (!token) return;
-
-		fetch({
-			variables: {
-				token,
-			},
-		});
-	};
 
 	useEffect(() => {
 		if (success === false) router.replace('/');
@@ -97,25 +89,10 @@ const Screen: React.FC = () => {
 		}, []),
 	);
 
-	if (!profile)
-		return (
-			<ActivityIndicator
-				size='small'
-				color='#11da33'
-				style={tw`flex-1`}
-			/>
-		);
+	if (!profile) return <Loading />;
 
 	return (
-		<>
-			{displaySuccessModal && (
-				<ClaimSuccessModal
-					credits={100}
-					visible={displaySuccessModal}
-					onClose={() => setDisplaySuccessModal(false)}
-					onPress={() => setDisplaySuccessModal(false)}
-				/>
-			)}
+		<Screen tab transition>
 			<SafeView style={[Styles.safeArea]}>
 				<View style={Styles.safeAreaContent}>
 					<HeaderPadding>
@@ -147,11 +124,11 @@ const Screen: React.FC = () => {
 					</View>
 				</View>
 			</SafeView>
-		</>
+		</Screen>
 	);
 };
 
-export default Screen;
+export default Component;
 
 const Styles = {
 	safeArea: [tw`flex-1`, { alignItems: 'center', overflow: 'hidden' }],

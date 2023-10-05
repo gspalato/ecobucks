@@ -4,10 +4,15 @@ import { View } from 'react-native';
 import MapView from 'react-native-maps';
 import tw from 'twrnc';
 
-import DefaultHeader from '@/components/DefaultHeader';
-import SafeView from '@/components/SafeView';
+import DefaultHeader from '@components/DefaultHeader';
+import SafeView from '@components/SafeView';
+import Screen from '@components/Screen';
 
-const Screen: React.FC<any> = ({ navigation }) => {
+import Loading from '@/components/Loading';
+
+const Component: React.FC<any> = ({ navigation }) => {
+	const [loading, setLoading] = useState(true);
+
 	const [location, setLocation] = useState<Location.LocationObject | null>(
 		null,
 	);
@@ -27,7 +32,7 @@ const Screen: React.FC<any> = ({ navigation }) => {
 	}, []);
 
 	return (
-		<>
+		<Screen tab transition>
 			<View style={tw`flex-1`}>
 				<MapView
 					style={tw`absolute z-0 h-full w-full`}
@@ -42,8 +47,8 @@ const Screen: React.FC<any> = ({ navigation }) => {
 					title='Map'
 				/>
 			</SafeView>
-		</>
+		</Screen>
 	);
 };
 
-export default Screen;
+export default Component;

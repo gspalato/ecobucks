@@ -14,10 +14,14 @@ const styles = StyleSheet.create({
 	},
 });
 
-export default function TabBar(props) {
+const Component: React.FC = (props) => {
 	return (
 		<BlurView tint='light' intensity={90} style={styles.blurView}>
 			<View {...props} style={styles.bottomTabBar} />
 		</BlurView>
 	);
-}
+};
+
+export default Component;
+
+const Styles = {};

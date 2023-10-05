@@ -18,23 +18,31 @@ const Component = () => {
 		<Tabs
 			screenOptions={{
 				headerShown: false,
-				tabBarStyle: [{ borderTopWidth: 0, marginBottom: 5 }],
+				tabBarStyle: [
+					{
+						borderTopWidth: 0,
+						marginBottom: 5,
+						marginHorizontal: 5,
+					},
+				],
 				tabBarBackground: () => <BlurView />,
 				tabBarActiveTintColor: '#000000',
 				tabBarLabelStyle: [
 					{ fontFamily: 'Syne_700Bold', fontSize: getFontSize(12) },
 				],
 			}}
+			safeAreaInsets={{ left: 30, right: 30 }}
+			tabBar={(props) => null}
 		>
 			<Tabs.Screen
 				name='index'
 				options={{
 					title: 'Home',
-					tabBarIcon: (props) => (
+					tabBarIcon: ({ focused, size }) => (
 						<Ionicons
-							name='home-outline'
-							color={getIconColor(props.focused)}
-							size={props.size}
+							name={focused ? 'home' : 'home-outline'}
+							color={getIconColor(focused)}
+							size={size}
 						/>
 					),
 				}}
@@ -43,11 +51,11 @@ const Component = () => {
 				name='scan'
 				options={{
 					title: 'Scan',
-					tabBarIcon: (props) => (
+					tabBarIcon: ({ focused, size }) => (
 						<Ionicons
 							name='scan'
-							color={getIconColor(props.focused)}
-							size={props.size}
+							color={getIconColor(focused)}
+							size={size}
 						/>
 					),
 					tabBarStyle: [{ display: 'none' }],
@@ -57,11 +65,11 @@ const Component = () => {
 				name='map'
 				options={{
 					title: 'Map',
-					tabBarIcon: (props) => (
+					tabBarIcon: ({ focused, size }) => (
 						<Ionicons
-							name='map-outline'
-							color={getIconColor(props.focused)}
-							size={props.size}
+							name={focused ? 'map' : 'map-outline'}
+							color={getIconColor(focused)}
+							size={size}
 						/>
 					),
 					tabBarStyle: [{ display: 'none' }],
@@ -71,11 +79,11 @@ const Component = () => {
 				name='store'
 				options={{
 					title: 'Store',
-					tabBarIcon: (props) => (
+					tabBarIcon: ({ focused, size }) => (
 						<Ionicons
-							name='gift-outline'
-							color={getIconColor(props.focused)}
-							size={props.size}
+							name={focused ? 'gift' : 'gift-outline'}
+							color={getIconColor(focused)}
+							size={size}
 						/>
 					),
 				}}

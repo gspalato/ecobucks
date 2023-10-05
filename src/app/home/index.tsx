@@ -9,14 +9,12 @@ import tw from 'twrnc';
 import CreditCard from '@components/CreditCard';
 import RecentTransactionList from '@components/RecentTransactionList';
 
-import Tabbar from '@/components/CustomTabbar';
 import HeaderPadding from '@/components/HeaderPadding';
 import ClaimSuccessModal from '@/components/modals/ClaimSuccessModal';
 import SafeView from '@/components/SafeView';
 import Topbar from '@/components/Topbar';
 
 import { useAuthToken, useProfile } from '@lib/auth';
-import * as GetEcobucksProfile from '@lib/graphql/queries/getEcobucksProfile';
 
 import Gradients from '@/lib/assets/gradients';
 import { getFontSize } from '@/lib/fonts';

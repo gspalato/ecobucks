@@ -65,8 +65,8 @@ const Screen: React.FC = () => {
 		},
 		onCompleted: (data) => {
 			console.log(data);
-			if (data.checkAuth.successful) {
-				router.replace('/main/');
+			if (data.checkAuthentication.successful) {
+				router.replace('/(tabs)');
 			}
 		},
 		onError: (e) => {},
@@ -88,7 +88,7 @@ const Screen: React.FC = () => {
 	useEffect(() => {
 		if (!token || !success) return;
 
-		if (token && success) router.replace('/main/');
+		if (token && success) router.replace('/(tabs)');
 	}, [token, success]);
 
 	return (

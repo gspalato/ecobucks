@@ -1,22 +1,22 @@
 import { useMutation } from '@apollo/client';
 import { BarCodeScannedCallback, BarCodeScanner } from 'expo-barcode-scanner';
-import { Camera } from 'expo-camera';
 import * as Haptics from 'expo-haptics';
 import { router } from 'expo-router';
 import React, { useEffect, useState } from 'react';
-import { Button, StyleSheet, Text, View } from 'react-native';
+import { StyleSheet, Text, View } from 'react-native';
 import tw from 'twrnc';
 
-import DefaultHeader from '@/components/DefaultHeader';
-import ClaimSuccessModal from '@/components/modals/ClaimSuccessModal';
-import SafeView from '@/components/SafeView';
+import DefaultHeader from '@components/DefaultHeader';
+import ClaimSuccessModal from '@components/modals/ClaimSuccessModal';
+import SafeView from '@components/SafeView';
+import Screen from '@components/Screen';
 
-import { useAuth, useAuthToken } from '@lib/auth';
+import { useAuthToken } from '@lib/auth';
 import * as ClaimDisposalAndCredits from '@lib/graphql/mutations/claimDisposalAndCredits';
 
 import Constants from '@/constants';
 
-const Screen: React.FC = () => {
+const Component: React.FC = () => {
 	const [hasPermission, setHasPermission] = useState<boolean | null>(null);
 	const [scanned, setScanned] = useState<boolean>(false);
 
@@ -105,7 +105,7 @@ const Screen: React.FC = () => {
 	}
 
 	return (
-		<>
+		<Screen tab transition>
 			{displaySuccessModal && (
 				<ClaimSuccessModal
 					credits={claimedCredits!}
@@ -138,8 +138,8 @@ const Screen: React.FC = () => {
 					title='Scan'
 				/>
 			</SafeView>
-		</>
+		</Screen>
 	);
 };
 
-export default Screen;
+export default Component;
