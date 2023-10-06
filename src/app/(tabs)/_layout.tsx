@@ -1,6 +1,7 @@
 import { Ionicons } from '@expo/vector-icons';
 import { BlurView } from 'expo-blur';
 import { Tabs } from 'expo-router';
+import { StyleSheet } from 'react-native';
 import { View } from 'react-native';
 import tw from 'twrnc';
 
@@ -20,19 +21,25 @@ const Component = () => {
 				headerShown: false,
 				tabBarStyle: [
 					{
+						position: 'absolute',
 						borderTopWidth: 0,
-						marginBottom: 5,
-						marginHorizontal: 5,
+						marginBottom: 0,
+						paddingHorizontal: 5,
 					},
 				],
-				tabBarBackground: () => <BlurView />,
+				tabBarBackground: () => (
+					<BlurView
+						tint='light'
+						intensity={20}
+						style={StyleSheet.absoluteFill}
+					/>
+				),
 				tabBarActiveTintColor: '#000000',
 				tabBarLabelStyle: [
 					{ fontFamily: 'Syne_700Bold', fontSize: getFontSize(12) },
 				],
 			}}
 			safeAreaInsets={{ left: 30, right: 30 }}
-			tabBar={(props) => null}
 		>
 			<Tabs.Screen
 				name='index'
