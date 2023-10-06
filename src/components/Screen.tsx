@@ -30,7 +30,9 @@ const Component: React.FC<ScreenProps> = (props) => {
 
 	return (
 		<Animated.View
-			sharedTransitionTag={tab ? 'tabscreen' : 'screen'}
+			sharedTransitionTag={
+				tab ? 'transitionBetweenTabs' : 'transitionBetweenScreens'
+			}
 			style={[Styles.container, style, { opacity }]}
 		>
 			{children}
