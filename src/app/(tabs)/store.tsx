@@ -15,7 +15,7 @@ import { getFontSize } from '@/lib/fonts';
 const Component: React.FC = (props) => {
 	return (
 		<Screen tab transition>
-			<SafeView style={[tw`flex-1 bg-[#00ff0022]`]}>
+			<SafeView edges={['top']} style={[tw`flex-1`]}>
 				<DefaultHeader title='Store' />
 				<ScrollView
 					style={Styles.list}
@@ -61,5 +61,5 @@ const Component: React.FC = (props) => {
 export default Component;
 
 const Styles = {
-	list: [tw`mb-0 bg-[#ff000055] p-4 pb-0`],
+	list: [tw`mb-0 p-4 pb-0`],
 };
