@@ -1,7 +1,7 @@
 import { Image } from 'expo-image';
+import { useFocusEffect } from 'expo-router';
 import { Text, TouchableOpacity, View } from 'react-native';
 import { ScrollView } from 'react-native-gesture-handler';
-import Animated, { FadeIn } from 'react-native-reanimated';
 import tw from 'twrnc';
 
 import DefaultHeader from '@components/DefaultHeader';
@@ -9,51 +9,136 @@ import SafeView from '@components/SafeView';
 import Screen from '@components/Screen';
 
 import Gradients from '@lib/assets/gradients';
+import { useHeaderLayout, useTabBarLayout } from '@lib/layout';
 
 import { getFontSize } from '@/lib/fonts';
 
+const TestRewards = [
+	{
+		image: Gradients.Gradient20,
+		name: 'Example Reward',
+		price: 100,
+	},
+	{
+		image: Gradients.Gradient20,
+		name: 'Example Reward',
+		price: 200,
+	},
+	{
+		image: Gradients.Gradient20,
+		name: 'Example Reward',
+		price: 300,
+	},
+	{
+		image: Gradients.Gradient20,
+		name: 'Example Reward',
+		price: 400,
+	},
+	{
+		image: Gradients.Gradient20,
+		name: 'Example Reward',
+		price: 500,
+	},
+	{
+		image: Gradients.Gradient20,
+		name: 'Example Reward',
+		price: 600,
+	},
+	{
+		image: Gradients.Gradient20,
+		name: 'Example Reward',
+		price: 700,
+	},
+];
+
 const Component: React.FC = (props) => {
+	const {
+		height: headerHeight,
+		setBlurIntensity: setHeaderBlurIntensity,
+		setBlurTint: setHeaderBlurTint,
+	} = useHeaderLayout();
+	const {
+		height: tabBarHeight,
+		setBlurIntensity: setTabBarBlurIntensity,
+		setBlurTint: setTabBarBlurTint,
+	} = useTabBarLayout();
+
+	useFocusEffect(() => {
+		setHeaderBlurIntensity?.(40);
+		setTabBarBlurIntensity?.(40);
+		setTabBarBlurTint?.('dark');
+
+		return () => {
+			setHeaderBlurIntensity?.(20);
+			setTabBarBlurIntensity?.(20);
+			setTabBarBlurTint?.('light');
+		};
+	});
+
 	return (
-		<Screen tab transition>
-			<SafeView edges={['top']} style={[tw`flex-1`]}>
-				<DefaultHeader title='Store' />
+		<Screen transition>
+			<View style={[tw`flex-1`]}>
 				<ScrollView
-					style={Styles.list}
-					contentContainerStyle={{
+					style={{
 						flexGrow: 1,
-						justifyContent: 'space-between',
+					}}
+					contentContainerStyle={{
+						display: 'flex',
+						alignItems: 'center',
+						paddingTop: headerHeight,
+						paddingBottom: tabBarHeight,
 					}}
 				>
-					<TouchableOpacity>
-						<Animated.View
+					{TestRewards.map((p, i) => (
+						<TouchableOpacity
+							key={i}
 							style={[
-								tw`flex h-60 w-[47.5%] rounded-md bg-[#f4f4f4] p-2 shadow-md`,
+								tw`flex-1`,
+								{
+									borderRadius: 10,
+									display: 'flex',
+									flexGrow: 1,
+									gap: 15,
+									margin: 2.5,
+									marginHorizontal: 'auto',
+									marginBottom: 10,
+									padding: 15,
+									width: '80%',
+								},
 							]}
 						>
 							<Image
-								style={[
-									tw`mx-auto aspect-square w-full rounded-md`,
-								]}
-								source={Gradients.Gradient20}
-								placeholder={'#00000022'}
+								source={Gradients[`Gradient${(i + 1) % 27}`]}
+								style={tw`aspect-square w-full rounded-md`}
 							/>
-							<Text
-								ellipsizeMode='tail'
-								style={[
-									{
-										paddingTop: 10,
-										textAlign: 'center',
+							<View style={{ display: 'flex', gap: 5 }}>
+								<Text
+									style={{
 										fontFamily: 'Syne_700Bold',
+										fontSize: getFontSize(18),
+										textAlign: 'center',
+									}}
+								>
+									{p.name}
+								</Text>
+								<Text
+									style={{
+										fontFamily:
+											'BricolageGrotesque_700Bold',
 										fontSize: getFontSize(17),
-									},
-								]}
-							>
-								Example
-							</Text>
-						</Animated.View>
-					</TouchableOpacity>
+										textAlign: 'center',
+									}}
+								>
+									${p.price}
+								</Text>
+							</View>
+						</TouchableOpacity>
+					))}
 				</ScrollView>
-			</SafeView>
+			</View>
+			<View style={[tw`absolute w-full flex-1`]}>
+				<DefaultHeader title='Store' blurIntensity={40} />
+			</View>
 		</Screen>
 	);
 };
@@ -61,5 +146,5 @@ const Component: React.FC = (props) => {
 export default Component;
 
 const Styles = {
-	list: [tw`mb-0 p-4 pb-0`],
+	list: [tw`mb-0 p-2 pb-0`],
 };
