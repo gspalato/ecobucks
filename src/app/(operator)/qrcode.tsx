@@ -6,7 +6,6 @@ import { SafeAreaView } from 'react-native-safe-area-context';
 import tw from 'twrnc';
 
 import Button from '@/components/Button';
-import GradientMask from '@/components/GradientMask';
 import Header from '@/components/Header';
 
 import { fontSizes, getFontSize } from '@/lib/fonts';
@@ -45,7 +44,7 @@ const Screen = () => {
 					text='Proceed'
 					buttonStyle={Styles.proceedButton.button}
 					textStyle={Styles.proceedButton.text}
-					onPress={() => router.replace('/home/')}
+					onPress={() => router.replace('/(tabs)')}
 				/>
 			</View>
 			<View style={[Styles.qrcode, { pointerEvents: 'none' }]}>

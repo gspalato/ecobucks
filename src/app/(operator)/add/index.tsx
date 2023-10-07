@@ -72,7 +72,7 @@ const Screen: React.FC = () => {
 	const onSuccessModalClose = () => {
 		setDisplaySuccessModal(false);
 		setClaimedCredits(null);
-		router.push('/home/');
+		router.push('/(tabs)');
 	};
 
 	const [register] = useMutation<RegisterDisposal.ReturnType>(
