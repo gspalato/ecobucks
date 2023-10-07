@@ -5,7 +5,8 @@ import { ScrollView } from 'react-native-gesture-handler';
 import tw from 'twrnc';
 
 import BackButton from '@/components/BackButton';
-import HeaderPadding from '@/components/HeaderPadding';
+import DefaultHeader from '@/components/DefaultHeader';
+import Header from '@/components/Header';
 import SafeView from '@/components/SafeView';
 
 import Gradients from '@/lib/assets/gradients';
@@ -33,25 +34,8 @@ const Screen = () => {
 	}, []);
 
 	return (
-		<SafeView style={[tw`flex-1`]}>
-			<HeaderPadding style={tw`justify-center`}>
-				<BackButton style={[tw`pl-2`]} />
-				<Text
-					numberOfLines={1}
-					adjustsFontSizeToFit
-					style={[
-						tw`absolute w-full items-center justify-center text-center text-2xl`,
-						{
-							fontFamily: 'Syne_700Bold',
-							alignSelf: 'center',
-							pointerEvents: 'none',
-							fontSize: fontSizes.title,
-						},
-					]}
-				>
-					Change Card Color
-				</Text>
-			</HeaderPadding>
+		<SafeView safeHeader style={[tw`flex-1`]}>
+			<DefaultHeader title='Change Card Color' />
 			<ScrollView
 				style={[tw`flex-1`]}
 				contentContainerStyle={[tw`flex items-center justify-center`]}
