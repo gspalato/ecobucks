@@ -8,7 +8,7 @@ import tw from 'twrnc';
 
 import Button from '@/components/Button';
 import DefaultHeader from '@/components/DefaultHeader';
-import ClaimSuccessModal from '@/components/modals/ClaimSuccessModal';
+import ClaimSuccessModal from '@/components/Modals/ClaimSuccessModal';
 
 import { useAuthToken } from '@/lib/auth';
 import { getFontSize } from '@/lib/fonts';
