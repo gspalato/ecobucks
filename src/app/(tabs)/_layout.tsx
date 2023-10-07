@@ -1,42 +1,41 @@
-import { Ionicons } from '@expo/vector-icons';
+import { MaterialCommunityIcons } from '@expo/vector-icons';
 import { BlurView } from 'expo-blur';
 import { Tabs } from 'expo-router';
 import { StyleSheet } from 'react-native';
-import { View } from 'react-native';
-import tw from 'twrnc';
-
-import SafeView from '@/components/SafeView';
-import TabBar from '@/components/Tabbar';
-import TabButton from '@/components/TabButton';
 
 import { getFontSize } from '@/lib/fonts';
+import { TabBarProvider, useTabBarLayout } from '@/lib/layout';
 
 const Component = () => {
-	const getIconColor = (selected: boolean) =>
-		selected ? '#000000' : '#00000044';
+	const activeColor = '#000000cc';
+	const inactiveColor = '#00000077';
+
+	const getColor = (selected: boolean) =>
+		selected ? activeColor : inactiveColor;
+
+	const { blurIntensity, blurTint, _setHeight, _setWidth } =
+		useTabBarLayout();
 
 	return (
 		<Tabs
 			screenOptions={{
 				headerShown: false,
-				tabBarStyle: [
-					{
-						position: 'absolute',
-						borderTopWidth: 0,
-						marginBottom: 0,
-						paddingHorizontal: 5,
-					},
-				],
+				tabBarStyle: Styles.tabBar as any,
 				tabBarBackground: () => (
-					<BlurView
-						tint='light'
-						intensity={20}
-						style={StyleSheet.absoluteFill}
+					<BlurBackground
+						intensity={blurIntensity}
+						tint={blurTint}
+						_setHeight={_setHeight}
+						_setWidth={_setWidth}
 					/>
 				),
-				tabBarActiveTintColor: '#000000',
+				tabBarActiveTintColor: activeColor,
+				tabBarInactiveTintColor: inactiveColor,
 				tabBarLabelStyle: [
-					{ fontFamily: 'Syne_700Bold', fontSize: getFontSize(12) },
+					{
+						fontFamily: 'Syne_700Bold',
+						fontSize: getFontSize(12),
+					},
 				],
 			}}
 			safeAreaInsets={{ left: 30, right: 30 }}
@@ -46,50 +45,30 @@ const Component = () => {
 				options={{
 					title: 'Home',
 					tabBarIcon: ({ focused, size }) => (
-						<Ionicons
+						<MaterialCommunityIcons
 							name={focused ? 'home' : 'home-outline'}
-							color={getIconColor(focused)}
+							color={getColor(focused)}
 							size={size}
 						/>
 					),
-				}}
-			/>
-			<Tabs.Screen
-				name='scan'
-				options={{
-					title: 'Scan',
-					tabBarIcon: ({ focused, size }) => (
-						<Ionicons
-							name='scan'
-							color={getIconColor(focused)}
-							size={size}
-						/>
-					),
-					tabBarStyle: [{ display: 'none' }],
-				}}
-			/>
-			<Tabs.Screen
-				name='map'
-				options={{
-					title: 'Map',
-					tabBarIcon: ({ focused, size }) => (
-						<Ionicons
-							name={focused ? 'map' : 'map-outline'}
-							color={getIconColor(focused)}
-							size={size}
-						/>
-					),
-					tabBarStyle: [{ display: 'none' }],
 				}}
 			/>
 			<Tabs.Screen
 				name='store'
 				options={{
 					title: 'Store',
+					tabBarBackground: () => (
+						<BlurBackground
+							intensity={60}
+							tint='light'
+							_setHeight={_setHeight}
+							_setWidth={_setWidth}
+						/>
+					),
 					tabBarIcon: ({ focused, size }) => (
-						<Ionicons
-							name={focused ? 'gift' : 'gift-outline'}
-							color={getIconColor(focused)}
+						<MaterialCommunityIcons
+							name={focused ? 'store' : 'store-outline'}
+							color={getColor(focused)}
 							size={size}
 						/>
 					),
@@ -102,7 +81,32 @@ const Component = () => {
 export default Component;
 
 const Styles = {
-	tabs: {
-		container: [tw`absolute bottom-0`],
-	},
+	tabBar: [
+		{
+			position: 'absolute',
+			borderTopWidth: 0,
+			marginBottom: 0,
+			paddingHorizontal: 25,
+		},
+	],
+};
+
+const BlurBackground: React.FC<{
+	intensity: number;
+	tint: 'light' | 'dark' | 'default';
+	[key: string]: any;
+}> = (props) => {
+	const { intensity, tint, ...rest } = props;
+
+	return (
+		<BlurView
+			tint={tint}
+			intensity={intensity ?? 20}
+			style={StyleSheet.absoluteFill}
+			onLayout={(e) => {
+				rest?._setHeight?.(e.nativeEvent.layout.height);
+				rest?._setWidth?.(e.nativeEvent.layout.width);
+			}}
+		/>
+	);
 };
