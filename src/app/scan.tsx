@@ -1,22 +1,24 @@
 import { useMutation } from '@apollo/client';
 import { BarCodeScannedCallback, BarCodeScanner } from 'expo-barcode-scanner';
-import { Camera } from 'expo-camera';
 import * as Haptics from 'expo-haptics';
 import { router } from 'expo-router';
 import React, { useEffect, useState } from 'react';
-import { Button, StyleSheet, Text, View } from 'react-native';
+import { StyleSheet, Text, View } from 'react-native';
 import tw from 'twrnc';
 
-import DefaultHeader from '@/components/DefaultHeader';
-import ClaimSuccessModal from '@/components/modals/ClaimSuccessModal';
-import SafeView from '@/components/SafeView';
+import DefaultHeader from '@components/DefaultHeader';
+import ClaimSuccessModal from '@components/Modals/ClaimSuccessModal';
+import SafeView from '@components/SafeView';
+import Screen from '@components/Screen';
 
-import { useAuth, useAuthToken } from '@lib/auth';
+import Loading from '@/components/Loading';
+
+import { useAuthToken } from '@lib/auth';
 import * as ClaimDisposalAndCredits from '@lib/graphql/mutations/claimDisposalAndCredits';
 
 import Constants from '@/constants';
 
-const Screen: React.FC = () => {
+const Component: React.FC = () => {
 	const [hasPermission, setHasPermission] = useState<boolean | null>(null);
 	const [scanned, setScanned] = useState<boolean>(false);
 
@@ -49,7 +51,7 @@ const Screen: React.FC = () => {
 				onError(e) {
 					alert(`Failed to claim.\n${e.message}`);
 					setSuccess(false);
-					router.replace('/home/');
+					router.replace('/(tabs)');
 				},
 			},
 		);
@@ -94,18 +96,18 @@ const Screen: React.FC = () => {
 	const onSuccessModalClose = () => {
 		setDisplaySuccessModal(false);
 		setClaimedCredits(null);
-		router.push('/home/');
+		router.push('/(tabs)');
 	};
 
 	if (hasPermission === null) {
-		return <Text>Requesting for camera permission</Text>;
+		return <Loading />;
 	}
 	if (hasPermission === false) {
 		return <Text>No access to camera</Text>;
 	}
 
 	return (
-		<>
+		<Screen>
 			{displaySuccessModal && (
 				<ClaimSuccessModal
 					credits={claimedCredits!}
@@ -130,16 +132,18 @@ const Screen: React.FC = () => {
 					]}
 				/>
 			</View>
-			<SafeView style={[tw`absolute w-full flex-1`]}>
+			<View style={[tw`absolute w-full flex-1`]}>
 				<DefaultHeader
-					headerStyle={tw`w-full justify-center`}
 					backButtonColor='#ffffff'
+					blurTint='dark'
+					blurIntensity={0}
+					headerStyle={tw`w-full justify-center`}
 					titleStyle={[tw`text-white`]}
 					title='Scan'
 				/>
-			</SafeView>
-		</>
+			</View>
+		</Screen>
 	);
 };
 
-export default Screen;
+export default Component;

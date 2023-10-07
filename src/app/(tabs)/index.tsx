@@ -3,19 +3,16 @@ import AsyncStorage from '@react-native-async-storage/async-storage';
 import { router, useFocusEffect } from 'expo-router';
 import * as SecureStore from 'expo-secure-store';
 import React, { useCallback, useEffect, useState } from 'react';
-import { ActivityIndicator, Platform, Text, View } from 'react-native';
+import { Platform, Text, View } from 'react-native';
 import tw from 'twrnc';
 
 import CreditCard from '@components/CreditCard';
-import HeaderPadding from '@components/HeaderPadding';
-import ClaimSuccessModal from '@components/modals/ClaimSuccessModal';
+import Header from '@components/Header';
+import Loading from '@components/Loading';
 import RecentTransactionList from '@components/RecentTransactionList';
 import SafeView from '@components/SafeView';
 import Screen from '@components/Screen';
 import Topbar from '@components/Topbar';
-
-import Tabbar from '@/components/CustomTabbar';
-import Loading from '@/components/Loading';
 
 import { useAuthToken } from '@lib/auth';
 import * as GetEcobucksProfile from '@lib/graphql/queries/getEcobucksProfile';
@@ -92,16 +89,16 @@ const Component: React.FC = () => {
 	if (!profile) return <Loading />;
 
 	return (
-		<Screen tab transition>
-			<SafeView style={[Styles.safeArea]}>
+		<Screen transition>
+			<View style={[Styles.safeArea]}>
 				<View style={Styles.safeAreaContent}>
-					<HeaderPadding>
+					<Header>
 						<Topbar
 							name={profile.name}
 							isOperator={profile.isOperator}
-							containerStyle={tw`px-3 pb-0`}
+							containerStyle={[tw`px-3 pb-0`]}
 						/>
-					</HeaderPadding>
+					</Header>
 					<View style={Styles.contentContainer}>
 						<View style={Styles.creditCardContainer}>
 							<CreditCard
@@ -123,7 +120,7 @@ const Component: React.FC = () => {
 						/>
 					</View>
 				</View>
-			</SafeView>
+			</View>
 		</Screen>
 	);
 };
@@ -133,10 +130,7 @@ export default Component;
 const Styles = {
 	safeArea: [tw`flex-1`, { alignItems: 'center', overflow: 'hidden' }],
 	safeAreaContent: [tw`w-full flex-1 overflow-hidden`],
-	creditCardContainer: [
-		tw`h-auto w-auto rounded-2xl`,
-		Platform.OS === 'ios' && tw`shadow-md`,
-	],
+	creditCardContainer: [tw`h-auto w-auto rounded-2xl`],
 	contentContainer: [tw`flex w-full px-4 py-0`],
 	transactions: {
 		list: [tw`w-full`],

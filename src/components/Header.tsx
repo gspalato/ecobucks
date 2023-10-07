@@ -3,7 +3,7 @@ import { StyleProp, View, ViewStyle } from 'react-native';
 import { useSafeAreaInsets } from 'react-native-safe-area-context';
 import tw from 'twrnc';
 
-import { HeaderProvider, useHeader } from '@/lib/layout/header';
+import { HeaderProvider, useHeaderLayout } from '@/lib/layout/header';
 
 type HeaderProps = {
 	blurIntensity?: number;
@@ -23,7 +23,7 @@ const Component: React.FC<HeaderProps> = (props) => {
 
 	const paddings = useSafeAreaInsets();
 
-	const { _setHeight, _setWidth } = useHeader();
+	const { _setHeight, _setWidth } = useHeaderLayout();
 
 	return (
 		<HeaderProvider>

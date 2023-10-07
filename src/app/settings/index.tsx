@@ -21,7 +21,7 @@ const Screen = () => {
 	};
 
 	return (
-		<SafeView style={[tw`flex-1`]}>
+		<SafeView safeHeader style={[tw`flex-1`]}>
 			<DefaultHeader title='Settings' />
 			<ScrollView style={tw`flex-1`}>
 				<CustomButton
