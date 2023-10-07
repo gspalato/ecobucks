@@ -11,8 +11,8 @@ import { useEffect, useState } from 'react';
 import { Platform, StatusBar } from 'react-native';
 import { ModalProvider } from 'react-native-modalfy';
 
-import { modalStack } from '@/components/modals';
-import SplashScreenComponent from '@/components/modals/SplashScreen';
+import { modalStack } from '@/components/Modals';
+import SplashScreenComponent from '@/components/Modals/SplashScreen';
 
 import { AuthProvider } from '@lib/auth';
 import client from '@lib/graphql/client';
@@ -20,6 +20,7 @@ import client from '@lib/graphql/client';
 import useAssets from '@/lib/assets';
 import Gradients from '@/lib/assets/gradients';
 import fonts from '@/lib/fonts';
+import { HeaderProvider, TabBarProvider } from '@/lib/layout';
 
 SplashScreen.preventAutoHideAsync();
 
@@ -74,8 +75,14 @@ const App: React.FC = () => {
 			<ApolloProvider client={client}>
 				<AuthProvider>
 					<ModalProvider stack={modalStack}>
-						<SplashScreenComponent show={showSplashScreen} />
-						<Stack screenOptions={{ headerShown: false }} />
+						<HeaderProvider>
+							<TabBarProvider>
+								<SplashScreenComponent
+									show={showSplashScreen}
+								/>
+								<Stack screenOptions={{ headerShown: false }} />
+							</TabBarProvider>
+						</HeaderProvider>
 					</ModalProvider>
 				</AuthProvider>
 			</ApolloProvider>
