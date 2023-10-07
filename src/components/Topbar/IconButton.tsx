@@ -1,7 +1,6 @@
 import { Ionicons } from '@expo/vector-icons';
 import { Icon } from '@expo/vector-icons/build/createIconSet';
 import { router } from 'expo-router';
-import { Href } from 'expo-router/build/link/href';
 import { Router } from 'expo-router/build/types';
 import { StyleProp, TouchableOpacity, View, ViewStyle } from 'react-native';
 import tw from 'twrnc';
@@ -35,7 +34,7 @@ const Component: React.FC<IconButtonProps> = (props) => {
 	const { path, style } = props;
 
 	return (
-		<TouchableOpacity onPress={() => router.replace(path)}>
+		<TouchableOpacity onPress={() => router.replace(path as any)}>
 			<View style={[tw`p-1`, style]}>
 				{isNamed && (
 					<Ionicons

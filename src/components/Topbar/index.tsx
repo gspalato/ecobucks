@@ -1,3 +1,4 @@
+import { BlurView } from 'expo-blur';
 import { StyleProp, Text, View, ViewStyle } from 'react-native';
 import tw from 'twrnc';
 
@@ -27,10 +28,12 @@ const Component: React.FC<ModernTopbarProps> = (props) => {
 				</Text>
 			</View>
 			<View style={Styles.buttons.container}>
+				<IconButton path='/scan' icon='scan' />
+				<IconButton path='/map' icon='map-outline' />
+				<View style={tw`my-1 border-l border-[#00000011]`} />
 				{isOperator && (
 					<>
 						<IconButton path='/add/' icon='add' style={tw`px-0`} />
-						<View style={tw`my-1 border-l border-[#00000011]`} />
 					</>
 				)}
 				<IconButton path='/settings' icon='settings-outline' />
@@ -49,11 +52,11 @@ const Styles = {
 		container: [tw`flex flex-1 flex-row gap-2`],
 		text: {
 			greeting: [
-				tw`text-black/80 text-center `,
+				tw`text-black/80 text-center`,
 				{ fontSize: getFontSize(22), fontFamily: 'Syne_600SemiBold' },
 			],
 			name: [
-				tw`overflow-hidden text-center  text-[#11da33]`,
+				tw`flex flex-1 overflow-hidden text-left text-[#11da33]`,
 				{ fontSize: getFontSize(22), fontFamily: 'Syne_700Bold' },
 			],
 		},
