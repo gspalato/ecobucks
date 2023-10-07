@@ -21,6 +21,10 @@ import Gradient20 from '@assets/gradients/gradient20.png';
 import Gradient21 from '@assets/gradients/gradient21.png';
 import Gradient22 from '@assets/gradients/gradient22.png';
 import Gradient23 from '@assets/gradients/gradient23.png';
+import Gradient24 from '@assets/gradients/gradient24.png';
+import Gradient25 from '@assets/gradients/gradient25.png';
+import Gradient26 from '@assets/gradients/gradient26.png';
+import Gradient27 from '@assets/gradients/gradient27.png';
 
 type CardGradientList = {
 	[key: string]: number;
@@ -50,6 +54,10 @@ const Gradients: CardGradientList = {
 	Gradient21,
 	Gradient22,
 	Gradient23,
+	Gradient24,
+	Gradient25,
+	Gradient26,
+	Gradient27,
 };
 
 export default Gradients;
