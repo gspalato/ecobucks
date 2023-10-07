@@ -7,7 +7,7 @@ import tw from 'twrnc';
 
 import Button from '@/components/Button';
 import GradientMask from '@/components/GradientMask';
-import HeaderPadding from '@/components/HeaderPadding';
+import Header from '@/components/Header';
 
 import { fontSizes, getFontSize } from '@/lib/fonts';
 
@@ -22,7 +22,7 @@ const Screen = () => {
 
 	return (
 		<SafeAreaView style={tw`flex-1`}>
-			<HeaderPadding style={tw`justify-center`}>
+			<Header style={tw`justify-center`}>
 				<BackButton style={[tw`pl-2`]} />
 				<Text
 					numberOfLines={1}
@@ -39,7 +39,7 @@ const Screen = () => {
 				>
 					Claim your credits!
 				</Text>
-			</HeaderPadding>
+			</Header>
 			<View style={tw`flex-1 justify-end`}>
 				<Button
 					text='Proceed'
