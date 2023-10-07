@@ -3,6 +3,7 @@ import {
 	StyleProp,
 	Text,
 	TextStyle,
+	View,
 	ViewStyle,
 } from 'react-native';
 
@@ -10,13 +11,18 @@ import { fontSizes } from '@/lib/fonts';
 import tw from '@/lib/tailwind';
 
 import BackButton from './BackButton';
-import HeaderPadding from './HeaderPadding';
+import Header from './Header';
 
 type DefaultHeaderProps = {
 	headerStyle?: StyleProp<ViewStyle>;
 
 	backButtonColor?: string | OpaqueColorValue;
 	backButtonStyle?: StyleProp<ViewStyle>;
+
+	blurIntensity?: number;
+	blurTint?: 'light' | 'dark' | 'default';
+
+	containerStyle?: StyleProp<ViewStyle>;
 
 	title: string;
 	titleStyle?: StyleProp<TextStyle>;
@@ -28,6 +34,9 @@ const Component: React.FC<DefaultHeaderProps> = (props) => {
 	const {
 		backButtonColor,
 		backButtonStyle,
+		containerStyle,
+		blurIntensity,
+		blurTint,
 		children,
 		headerStyle,
 		showBackButton = true,
@@ -36,31 +45,37 @@ const Component: React.FC<DefaultHeaderProps> = (props) => {
 	} = props;
 
 	return (
-		<HeaderPadding style={[tw`justify-center`, headerStyle]}>
-			{showBackButton && (
-				<BackButton
-					style={[tw`pl-2`, backButtonStyle]}
-					color={backButtonColor}
-				/>
-			)}
-			<Text
-				numberOfLines={1}
-				adjustsFontSizeToFit
-				style={[
-					tw`absolute w-full items-center justify-center text-center text-2xl`,
-					{
-						fontFamily: 'Syne_700Bold',
-						alignSelf: 'center',
-						pointerEvents: 'none',
-						fontSize: fontSizes.title,
-					},
-					titleStyle,
-				]}
-			>
-				{title}
-			</Text>
-			{children}
-		</HeaderPadding>
+		<Header
+			blurIntensity={blurIntensity}
+			blurTint={blurTint}
+			style={[tw`justify-center`, headerStyle]}
+		>
+			<View style={[tw`justify-center`, containerStyle]}>
+				{showBackButton && (
+					<BackButton
+						style={[tw`pl-2`, backButtonStyle]}
+						color={backButtonColor}
+					/>
+				)}
+				<Text
+					numberOfLines={1}
+					adjustsFontSizeToFit
+					style={[
+						tw`absolute w-full items-center justify-center text-center text-2xl`,
+						{
+							fontFamily: 'Syne_700Bold',
+							alignSelf: 'center',
+							pointerEvents: 'none',
+							fontSize: fontSizes.title,
+						},
+						titleStyle,
+					]}
+				>
+					{title}
+				</Text>
+				{children}
+			</View>
+		</Header>
 	);
 };
 
