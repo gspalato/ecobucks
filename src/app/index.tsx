@@ -9,7 +9,7 @@ import Button from '@components/Button';
 
 import Input from '@/components/Input';
 
-import { useAuthToken, useExpireAuthToken, useSetAuthToken } from '@lib/auth';
+import { useAuthToken } from '@lib/auth';
 import { Authenticate } from '@lib/graphql/mutations';
 
 import { getFontSize } from '@/lib/fonts';
