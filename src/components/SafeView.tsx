@@ -25,12 +25,7 @@ const Component: React.FC<SafeViewProps> = (props) => {
 		<SafeAreaView
 			{...rest}
 			edges={safeHeader ? ['bottom'] : ['top', 'bottom']}
-			style={[
-				SafeAreaStyle,
-				style,
-				isAndroid && { paddingTop: 0 },
-				{ marginBottom: paddings.bottom },
-			]}
+			style={[SafeAreaStyle, style, isAndroid && { paddingTop: 0 }]}
 		>
 			{children}
 		</SafeAreaView>

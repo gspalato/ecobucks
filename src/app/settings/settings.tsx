@@ -42,6 +42,7 @@ const Component: React.FC<Props> = (props) => {
 						backgroundColor: '#ffffff00',
 						borderBottomWidth: 1,
 						borderColor: '#00000011',
+						width: '100%',
 					}}
 					textStyle={{
 						color: '#000000',
