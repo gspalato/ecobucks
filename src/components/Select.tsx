@@ -1,3 +1,5 @@
+import { Swipeable, TouchableOpacity } from 'react-native-gesture-handler';
+
 import { Ionicons } from '@expo/vector-icons';
 import { isValidElement, useRef, useState } from 'react';
 import {
@@ -7,11 +9,12 @@ import {
 	useWindowDimensions,
 	ViewStyle,
 } from 'react-native';
-import { Swipeable, TouchableOpacity } from 'react-native-gesture-handler';
 import { useModal } from 'react-native-modalfy';
 import tw from 'twrnc';
 
 import { getFontSize } from '@/lib/fonts';
+
+import SelectSheet from './SelectSheet';
 
 export type SelectItemDefinition = {
 	key: string;
@@ -26,26 +29,34 @@ interface ISelectProps {
 	textStyle?: StyleProp<TextStyle>;
 
 	items: SelectItemDefinition[];
-	setItem: (item: SelectItemDefinition) => void;
+	selectedItem: SelectItemDefinition | undefined;
+	setItem: (
+		item: SelectItemDefinition | undefined,
+	) => void | React.Dispatch<
+		React.SetStateAction<SelectItemDefinition | undefined>
+	>;
 }
 
 const Component: React.FC<ISelectProps> = (props) => {
-	const { buttonStyle, items, placeholder, setItem, textStyle } = props;
+	const {
+		buttonStyle,
+		items,
+		placeholder,
+		selectedItem,
+		setItem,
+		textStyle,
+	} = props;
 
-	const [selected, setSelected] = useState<SelectItemDefinition | null>(null);
+	const [selected, setSelected] = useState<
+		SelectItemDefinition | undefined
+	>();
 
-	const dimensions = useWindowDimensions();
+	const selectSheetRef = useRef<any>();
 
-	const { openModal } = useModal();
+	const { height } = useWindowDimensions();
 
 	const onPress = () => {
-		openModal('SelectItemModal', {
-			items: items,
-			setItem: (item: SelectItemDefinition) => {
-				setSelected(item);
-				setItem(item);
-			},
-		});
+		selectSheetRef?.current?.open();
 	};
 
 	return (
@@ -55,10 +66,16 @@ const Component: React.FC<ISelectProps> = (props) => {
 				onPress={onPress}
 			>
 				<Text style={[Styles.text, textStyle]}>
-					{selected?.label || placeholder}
+					{selectedItem?.label || placeholder}
 				</Text>
 				<Ionicons name='chevron-down' size={20} color='#000000' />
 			</TouchableOpacity>
+			<SelectSheet
+				items={items}
+				onSelect={(item) => setItem(item) && setSelected(item)}
+				ref={selectSheetRef}
+				activeHeight={height * 0.5}
+			/>
 		</>
 	);
 };

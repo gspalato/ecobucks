@@ -1,3 +1,5 @@
+import { gestureHandlerRootHOC } from 'react-native-gesture-handler';
+
 import React, { isValidElement } from 'react';
 import {
 	FlatList,
@@ -57,7 +59,13 @@ const Component: React.FC<any> = ({
 									{info.item.icon}
 								</Text>
 							))}
-						<Text style={Styles.selectItem.text}>
+						<Text
+							style={{
+								fontFamily: 'Inter_400Regular',
+								fontSize: fontSizes.xl,
+								textAlign: 'center',
+							}}
+						>
 							{info.item.label}
 						</Text>
 					</TouchableOpacity>
@@ -77,9 +85,5 @@ const Styles = {
 			tw`flex w-full flex-row items-center justify-center border-b border-[#00000011] p-2`,
 		],
 		icon: [tw`absolute left-5`, { fontSize: fontSizes.xl }],
-		text: [
-			tw`text-center`,
-			{ fontFamily: 'Inter_400Regular', fontSize: fontSizes.xl },
-		],
 	},
 };

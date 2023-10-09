@@ -9,11 +9,14 @@ import BackButton from '@components/BackButton';
 import Button from '@components/Button';
 import Header from '@components/Header';
 
+import DefaultHeader from '@/components/DefaultHeader';
+
 import { fontSizes, getFontSize } from '@lib/fonts';
 
 import { RootStackParamList } from '@/lib/navigation/types';
 
 import Constants from '@/constants';
+import { Defaults } from '@/styles';
 
 type Props = StackScreenProps<RootStackParamList, 'QRCode'>;
 
@@ -22,44 +25,37 @@ const Screen: React.FC<Props> = (props) => {
 	const { id, credits } = route.params;
 
 	return (
-		<SafeAreaView style={tw`flex-1`}>
-			<Header style={tw`justify-center`}>
-				<BackButton style={[tw`pl-2`]} />
-				<Text
-					numberOfLines={1}
-					adjustsFontSizeToFit
-					style={[
-						tw`absolute w-full items-center justify-center text-center text-2xl`,
-						{
-							fontFamily: 'Syne_700Bold',
-							alignSelf: 'center',
-							pointerEvents: 'none',
-							fontSize: fontSizes.title,
-						},
-					]}
-				>
-					Claim your credits!
-				</Text>
-			</Header>
-			<View style={tw`flex-1 justify-end`}>
-				<Button
-					text='Proceed'
-					buttonStyle={Styles.proceedButton.button}
-					textStyle={Styles.proceedButton.text}
-					onPress={() => navigation.replace('Main')}
+		<>
+			<SafeAreaView style={tw`flex-1`}>
+				<View style={tw`flex-1 justify-end`}>
+					<Button
+						text='Proceed'
+						buttonStyle={{
+							height: 20 * Defaults.Spacing,
+							width: 100 * Defaults.Spacing,
+						}}
+						textStyle={Styles.proceedButton.text}
+						onPress={() => navigation.replace('Main')}
+					/>
+				</View>
+				<View style={[Styles.qrcode, { pointerEvents: 'none' }]}>
+					<QRCode
+						value={(Constants.CLAIM_DISPOSAL_QRCODE_PREFIX + id)!}
+						size={300}
+						backgroundColor='#f3f3f3'
+						enableLinearGradient
+						linearGradient={['#00bbff', '#11da33']}
+					/>
+					<Text style={Styles.credits}>+${credits}</Text>
+				</View>
+			</SafeAreaView>
+			<View style={[tw`absolute w-full flex-1`]}>
+				<DefaultHeader
+					title={'Claim your credits!'}
+					blurIntensity={90}
 				/>
 			</View>
-			<View style={[Styles.qrcode, { pointerEvents: 'none' }]}>
-				<QRCode
-					value={(Constants.CLAIM_DISPOSAL_QRCODE_PREFIX + id)!}
-					size={300}
-					backgroundColor='#f3f3f3'
-					enableLinearGradient
-					linearGradient={['#00bbff', '#11da33']}
-				/>
-				<Text style={Styles.credits}>+${credits}</Text>
-			</View>
-		</SafeAreaView>
+		</>
 	);
 };
 

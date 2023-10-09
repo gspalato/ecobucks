@@ -71,7 +71,7 @@ const Component: React.FC<TabButtonProps> = (props) => {
 
 	return (
 		<TouchableOpacity
-			hitSlop={50}
+			hitSlop={0}
 			style={{
 				display: 'flex',
 				alignItems: 'center',

@@ -2,6 +2,7 @@ import { StyleProp, ViewStyle } from 'react-native';
 import {
 	NativeSafeAreaViewProps,
 	SafeAreaView,
+	useSafeAreaInsets,
 } from 'react-native-safe-area-context';
 import tw from 'twrnc';
 
@@ -18,11 +19,18 @@ const Component: React.FC<SafeViewProps> = (props) => {
 
 	const { isAndroid, SafeAreaStyle } = usePlatform();
 
+	const paddings = useSafeAreaInsets();
+
 	return (
 		<SafeAreaView
 			{...rest}
 			edges={safeHeader ? ['bottom'] : ['top', 'bottom']}
-			style={[SafeAreaStyle, style, isAndroid && tw`pt-0`]}
+			style={[
+				SafeAreaStyle,
+				style,
+				isAndroid && { paddingTop: 0 },
+				{ marginBottom: paddings.bottom },
+			]}
 		>
 			{children}
 		</SafeAreaView>

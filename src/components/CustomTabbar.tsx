@@ -7,7 +7,7 @@ import { StyleProp, View, ViewStyle } from 'react-native';
 import { Text, TouchableOpacity } from 'react-native';
 import tw from 'twrnc';
 
-import TabButton from './Tabs/TabButton';
+import TabButton from './TabButton';
 
 type TabbarProps = {
 	state: TabNavigationState<ParamListBase>;

@@ -1,8 +1,10 @@
-import { StyleProp, Text, TextStyle, ViewStyle } from 'react-native';
 import { TouchableOpacity } from 'react-native-gesture-handler';
-import tw from 'twrnc';
+
+import { StyleProp, Text, TextStyle, ViewStyle } from 'react-native';
 
 import { getFontSize } from '@/lib/fonts';
+
+import { Colors, Defaults } from '@/styles';
 
 interface IButtonProps {
 	onPress?: () => void;
@@ -16,20 +18,36 @@ const Component: React.FC<IButtonProps> = (props) => {
 
 	return (
 		<TouchableOpacity
-			style={[styles.button, buttonStyle]}
+			style={[
+				{
+					alignItems: 'center',
+					backgroundColor: Colors.accent,
+					borderRadius: 3.5 * Defaults.Spacing,
+					display: 'flex',
+					height: 20 * Defaults.Spacing,
+					justifyContent: 'center',
+					padding: 4 * Defaults.Spacing,
+					width: 100 * Defaults.Spacing,
+				},
+				buttonStyle,
+			]}
 			onPress={onPress}
 		>
-			<Text style={[styles.text, textStyle]}>{text}</Text>
+			<Text
+				style={[
+					{
+						color: '#ffffff',
+						fontSize: getFontSize(17),
+						fontFamily: 'Syne_700Bold',
+						overflow: 'visible',
+					},
+					textStyle,
+				]}
+			>
+				{text}
+			</Text>
 		</TouchableOpacity>
 	);
 };
 
 export default Component;
-
-const styles = {
-	button: [tw`flex items-center justify-center rounded-lg bg-[#11da33] p-3`],
-	text: [
-		tw`overflow-visible  text-[#ffffff]`,
-		{ fontSize: getFontSize(17), fontFamily: 'Syne_700Bold' },
-	],
-};

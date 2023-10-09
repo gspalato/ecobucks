@@ -1,24 +1,30 @@
+import { ScrollView } from 'react-native-gesture-handler';
+
 import { useMutation } from '@apollo/client';
 import { Feather } from '@expo/vector-icons';
 import { StackScreenProps } from '@react-navigation/stack';
-import React, { useState } from 'react';
-import { SafeAreaView, TouchableOpacity, View } from 'react-native';
-import { ScrollView } from 'react-native-gesture-handler';
+import { LinearGradient } from 'expo-linear-gradient';
+import React, { useEffect, useRef, useState } from 'react';
+import { SafeAreaView, Text, TouchableOpacity, View } from 'react-native';
 import tw from 'twrnc';
+
+import DisposalField from '@components/DisposalField';
 
 import Button from '@/components/Button';
 import DefaultHeader from '@/components/DefaultHeader';
 import ClaimSuccessModal from '@/components/Modals/ClaimSuccessModal';
+import SafeView from '@/components/SafeView';
 
 import { useAuthToken } from '@/lib/auth';
 import { getFontSize } from '@/lib/fonts';
 import * as RegisterDisposal from '@/lib/graphql/mutations/registerDisposal';
+import { useHeaderLayout } from '@/lib/layout';
 import { RootStackParamList } from '@/lib/navigation/types';
 import { usePlatform } from '@/lib/platform';
 
 import { DisposalType } from '@/types/DisposalClaim';
 
-import DisposalField from '../(operator)/add/components/DisposalField';
+import { Colors, Defaults } from '@/styles';
 
 export type DisposalField = {
 	_id: number;
@@ -58,6 +64,10 @@ const Screen: React.FC<Props> = (props) => {
 	const [disposalFields, setDisposalFields] = useState<DisposalField[]>([
 		{ _id: 0, weight: undefined, disposalType: undefined },
 	]);
+
+	const [redeemButtonHeight, setRedeemButtonHeight] = useState(0);
+
+	const { height: headerHeight } = useHeaderLayout();
 
 	const addNewDisposalField = () => {
 		setDisposalFields((prev) => [
@@ -104,6 +114,9 @@ const Screen: React.FC<Props> = (props) => {
 				alert(
 					`Failed to register disposal (internal error).\n${error.message}`,
 				);
+				console.log(error.cause);
+				console.log(error.message);
+				console.log(error.stack);
 			},
 		},
 	);
@@ -118,55 +131,75 @@ const Screen: React.FC<Props> = (props) => {
 					onPress={onSuccessModalClose}
 				/>
 			)}
-			<SafeAreaView style={[tw`flex-1`, SafeAreaStyle]}>
-				<DefaultHeader title='Register Disposal' />
-				<View style={tw`flex-1`}>
-					<ScrollView style={[tw`h-full w-full flex-1`]}>
-						{disposalFields.map((item, index) => (
-							<DisposalField
-								key={index}
-								index={index}
-								onDelete={() =>
-									removeDisposalFieldByIndex(index)
-								}
-								update={setDisposalFields}
-							/>
-						))}
-						<TouchableOpacity onPress={addNewDisposalField}>
-							<View style={Styles.addButton}>
-								<Feather
-									size={24}
-									name='plus'
-									color={'#000000'}
-								/>
-							</View>
-						</TouchableOpacity>
-					</ScrollView>
+			<SafeAreaView
+				style={[
+					SafeAreaStyle,
+					{ flexGrow: 1, marginTop: headerHeight },
+				]}
+			>
+				<ScrollView style={{ flexGrow: 1, width: '100%' }}>
+					{disposalFields.map((item, index) => (
+						<DisposalField
+							key={index}
+							index={index}
+							onDelete={() => removeDisposalFieldByIndex(index)}
+							onUpdate={setDisposalFields}
+						/>
+					))}
+					<TouchableOpacity onPress={addNewDisposalField}>
+						<View style={Styles.addButton}>
+							<Feather size={24} name='plus' color={'#000000'} />
+						</View>
+					</TouchableOpacity>
+				</ScrollView>
+				<View
+					style={{
+						alignItems: 'center',
+						display: 'flex',
+						height: 70,
+						justifyContent: 'center',
+						paddingHorizontal: 20,
+						width: '100%',
+					}}
+				>
 					<Button
 						text='Register'
-						buttonStyle={Styles.registerButton.button}
-						textStyle={Styles.registerButton.text}
+						buttonStyle={{
+							height: 20 * Defaults.Spacing,
+							width: 100 * Defaults.Spacing,
+						}}
 						onPress={() => {
+							if (!token) {
+								alert('Authentication expired.');
+								return;
+							}
+
 							if (
-								disposalFields.some(
-									(item) =>
-										item.weight === undefined ||
-										item.disposalType === undefined,
-								)
-							)
-								return alert('Please fill in all fields.');
+								disposalFields.some((item) => {
+									console.log(
+										`DF ${item._id} ${item.disposalType} ${item.weight} `,
+									);
+									return !item.weight || !item.disposalType;
+								})
+							) {
+								alert('Please fill all fields.');
+								return;
+							}
 
 							register({
 								variables: {
-									operatorToken: token,
+									operatorToken: token!,
 									disposals: disposalFields.map((item) => ({
+										weight: item.weight!,
+										disposalType:
+											DISPOSAL_TYPE_ENUM_NAME[
+												item.disposalType!
+											],
 										credits:
-											(item.weight! / 1000) *
+											item.weight! *
 											PER_TYPE_RATE_KG[
 												item.disposalType!
 											],
-										weight: item.weight,
-										disposalType: item.disposalType,
 									})),
 								},
 							});
@@ -174,6 +207,9 @@ const Screen: React.FC<Props> = (props) => {
 					/>
 				</View>
 			</SafeAreaView>
+			<View style={[tw`absolute w-full flex-1`]}>
+				<DefaultHeader title={'Register Disposal'} blurIntensity={90} />
+			</View>
 		</>
 	);
 };

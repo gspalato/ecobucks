@@ -1,10 +1,13 @@
+import { GestureHandlerRootView } from 'react-native-gesture-handler';
+
 import { useLazyQuery } from '@apollo/client';
+import { PortalProvider } from '@gorhom/portal';
 import { createNativeStackNavigator } from '@react-navigation/native-stack';
 import { useFonts } from 'expo-font';
 import * as NavigationBar from 'expo-navigation-bar';
 import { useEffect, useState } from 'react';
 import { Platform } from 'react-native';
-import { GestureHandlerRootView } from 'react-native-gesture-handler';
+import { ModalProvider } from 'react-native-modalfy';
 
 import LoginScreen from '@app/login';
 import MainScreen from '@app/main';
@@ -14,6 +17,7 @@ import QRCodeScreen from '@app/operator/qrcode';
 import ScanScreen from '@app/scan';
 import SettingsScreen from '@app/settings';
 
+import { modalStack } from '@/components/Modals';
 import SplashScreenComponent from '@/components/Modals/SplashScreen';
 
 import useAssets from '@/lib/assets';
@@ -22,6 +26,8 @@ import { useAuthToken } from '@/lib/auth';
 import fonts from '@/lib/fonts';
 import { CheckAuth } from '@/lib/graphql/queries';
 import { RootStackParamList } from '@/lib/navigation/types';
+
+import { Colors } from '@/styles';
 
 const Stack = createNativeStackNavigator<RootStackParamList>();
 
@@ -84,17 +90,31 @@ const App = () => {
 
 	return (
 		<GestureHandlerRootView style={{ flexGrow: 1 }}>
-			<SplashScreenComponent show={showSplashScreen} />
-			<Stack.Navigator screenOptions={{ headerShown: false }}>
-				<Stack.Screen name='Login' component={LoginScreen} />
-				<Stack.Screen name='Main' component={MainScreen} />
-				<Stack.Screen name='Scan' component={ScanScreen} />
-				<Stack.Screen name='Map' component={MapScreen} />
-				<Stack.Screen name='Settings' component={SettingsScreen} />
+			<ModalProvider stack={modalStack}>
+				<PortalProvider>
+					<SplashScreenComponent show={showSplashScreen} />
+					<Stack.Navigator
+						screenOptions={{
+							headerShown: false,
+							contentStyle: {
+								backgroundColor: Colors.background,
+							},
+						}}
+					>
+						<Stack.Screen name='Login' component={LoginScreen} />
+						<Stack.Screen name='Main' component={MainScreen} />
+						<Stack.Screen name='Scan' component={ScanScreen} />
+						<Stack.Screen name='Map' component={MapScreen} />
+						<Stack.Screen
+							name='Settings'
+							component={SettingsScreen}
+						/>
 
-				<Stack.Screen name='Add' component={AddScreen} />
-				<Stack.Screen name='QRCode' component={QRCodeScreen} />
-			</Stack.Navigator>
+						<Stack.Screen name='Add' component={AddScreen} />
+						<Stack.Screen name='QRCode' component={QRCodeScreen} />
+					</Stack.Navigator>
+				</PortalProvider>
+			</ModalProvider>
 		</GestureHandlerRootView>
 	);
 };

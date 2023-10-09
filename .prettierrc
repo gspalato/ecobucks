@@ -12,6 +12,8 @@
 	"semi": true,
 	"arrowParens": "always",
 	"importOrder": [
+		"react-native-gesture-handler",
+		"<THIRD_PARTY_MODULES>",
 		"^@app/(.*)$",
 		"^@/app/(.*)$",
 		"^@components/(.*)$",

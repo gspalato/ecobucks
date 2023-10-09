@@ -4,17 +4,19 @@ import {
 } from 'react-native-gesture-handler';
 
 import { Feather } from '@expo/vector-icons';
-import { BlurView } from '@react-native-community/blur';
-import { Animated, TextInput, View } from 'react-native';
+import { useState } from 'react';
+import { Animated } from 'react-native';
 import tw from 'twrnc';
 
-import Select from '@components/Select';
+import { DisposalField } from '@/app/operator/add';
+
+import Select, { SelectItemDefinition } from '@components/Select';
 
 import Input from '@/components/Input';
 
 import { DisposalType } from '@/types/DisposalClaim';
 
-const disposalOptions = [
+const disposalOptions: SelectItemDefinition[] = [
 	{
 		key: 'recyclable',
 		icon: '♻️',
@@ -38,15 +40,22 @@ const disposalOptions = [
 
 const Component = (props: {
 	index: number;
-	onDelete?: () => void;
-	update: React.Dispatch<React.SetStateAction<DisposalField[]>>;
-}) => {
-	const { index, onDelete, update } = props;
 
-	const onSelect = (item: any) => {
-		update((prev) => {
+	onDelete?: () => void;
+	onUpdate: React.Dispatch<React.SetStateAction<DisposalField[]>>;
+}) => {
+	const { index, onDelete, onUpdate } = props;
+
+	const [selected, setSelected] = useState<
+		SelectItemDefinition | undefined
+	>();
+
+	const onSelect = (item: SelectItemDefinition | undefined) => {
+		setSelected(item);
+
+		onUpdate((prev) => {
 			const newDisposalFields = [...prev];
-			newDisposalFields[index].disposalType = item.value;
+			newDisposalFields[index].disposalType = item!.value;
 			return newDisposalFields;
 		});
 	};
@@ -85,7 +94,7 @@ const Component = (props: {
 					inputMode='decimal'
 					style={tw`mx-auto`}
 					onChangeText={(text) =>
-						update((prev) => {
+						onUpdate((prev) => {
 							const newDisposalFields = [...prev];
 							newDisposalFields[index].weight = Number(text);
 							return newDisposalFields;
@@ -96,6 +105,7 @@ const Component = (props: {
 				/>
 				<Select
 					items={disposalOptions}
+					selectedItem={selected}
 					setItem={onSelect}
 					placeholder='Select Disposal Type'
 				/>

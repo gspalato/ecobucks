@@ -15,7 +15,7 @@ import { Animated, useWindowDimensions, View } from 'react-native';
 import Reanimated, { useSharedValue } from 'react-native-reanimated';
 import { useSafeAreaInsets } from 'react-native-safe-area-context';
 
-import TabButton from '@/components/Tabs/TabButton';
+import TabButton from '@/components/TabButton';
 
 import { Defaults } from '@/styles';
 
