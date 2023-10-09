@@ -67,7 +67,7 @@ const Component: React.FC<Props> = (props) => {
 					style={{
 						fontFamily: 'Syne_700Bold',
 						fontSize: getFontSize(30),
-						marginBottom: 10,
+						marginBottom: 30,
 						textAlign: 'center',
 						width: '100%',
 					}}

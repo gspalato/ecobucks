@@ -1,6 +1,7 @@
 import { MaterialCommunityIcons } from '@expo/vector-icons';
+import { Animated } from 'react-native';
 
-import { createAnimatedTabsNavigator } from '@/lib/navigation/tabsNavigation';
+import { createAnimatedTabsNavigator } from '@/lib/navigation/createAnimatedTabsNavigator';
 
 import HomeScreen from './home';
 import StoreScreen from './store';
@@ -13,36 +14,36 @@ export type MainTabsParamList = {
 const Tabs = createAnimatedTabsNavigator<MainTabsParamList>();
 
 const Component = () => {
+	const AnimatedIcon = Animated.createAnimatedComponent(
+		MaterialCommunityIcons,
+	);
+
 	return (
 		<Tabs.Navigator screenOptions={{ unmountOnBlur: false }}>
 			<Tabs.Screen
 				name='Home'
 				component={HomeScreen}
 				options={{
-					icon: (focused: boolean) => (
-						<MaterialCommunityIcons
-							name={focused ? 'home' : 'home-outline'}
-							color={focused ? '#000000' : '#00000088'}
+					icon: (focused: boolean, color: any) => (
+						<AnimatedIcon
+							name={'home-outline'}
 							size={27}
+							style={{ color }}
 						/>
 					),
-					color: (focused: boolean) =>
-						focused ? '#000000' : '#00000088',
 				}}
 			/>
 			<Tabs.Screen
 				name='Store'
 				component={StoreScreen}
 				options={{
-					icon: (focused: boolean) => (
-						<MaterialCommunityIcons
-							name={focused ? 'store' : 'store-outline'}
-							color={focused ? '#000000' : '#00000088'}
+					icon: (focused: boolean, color: any) => (
+						<AnimatedIcon
+							name={'store-outline'}
 							size={27}
+							style={{ color }}
 						/>
 					),
-					color: (focused: boolean) =>
-						focused ? '#000000' : '#00000088',
 				}}
 			/>
 		</Tabs.Navigator>

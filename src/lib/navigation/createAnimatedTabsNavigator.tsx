@@ -12,6 +12,7 @@ import { BlurView } from 'expo-blur';
 import * as React from 'react';
 import { useEffect, useRef } from 'react';
 import { Animated, useWindowDimensions, View } from 'react-native';
+import Reanimated, { useSharedValue } from 'react-native-reanimated';
 import { useSafeAreaInsets } from 'react-native-safe-area-context';
 
 import TabButton from '@/components/Tabs/TabButton';
@@ -22,8 +23,13 @@ import { useTabBarLayout } from '../layout';
 
 type AnimatedTabsNavigationOptions = {
 	name: string;
-	color: (focused: boolean) => string;
-	icon: (focused: boolean) => React.ReactNode;
+	icon: (
+		focused: boolean,
+		color: Animated.AnimatedInterpolation<string | number>,
+	) => React.ReactNode;
+
+	focusedColor?: string;
+	unfocusedColor?: string;
 };
 
 type AnimatedTabsNavigationEventMap = {
@@ -95,6 +101,7 @@ const AnimatedTabsNavigator: React.FC<AnimatedTabsNavigatorProps> = (props) => {
 		<NavigationContent>
 			<Animated.FlatList
 				ref={listRef}
+				extraData={state.key}
 				horizontal
 				pagingEnabled
 				bounces={false}
@@ -132,9 +139,18 @@ const AnimatedTabsNavigator: React.FC<AnimatedTabsNavigatorProps> = (props) => {
 						<TabButton
 							key={r.name}
 							icon={descriptors[r.key].options.icon}
-							color={descriptors[r.key].options.color}
+							unfocusedColor={
+								descriptors[r.key].options.unfocusedColor ??
+								'#00000088'
+							}
+							focusedColor={
+								descriptors[r.key].options.focusedColor ??
+								'#000000ff'
+							}
 							name={descriptors[r.key].options.name || r.name}
 							focused={r.key === state.routes[state.index].key}
+							routeIndex={i}
+							scrollX={scrollX}
 							onPress={() => {
 								const event = navigation.emit({
 									type: 'tabPress',

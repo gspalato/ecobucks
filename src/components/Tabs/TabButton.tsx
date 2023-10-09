@@ -1,20 +1,73 @@
 import { Ionicons } from '@expo/vector-icons';
-import { Text, TouchableOpacity } from 'react-native';
+import { useRef } from 'react';
+import {
+	Animated,
+	Text,
+	TouchableOpacity,
+	useWindowDimensions,
+} from 'react-native';
+import {
+	AnimatedStyleProp,
+	interpolateColor,
+	SharedValue,
+} from 'react-native-reanimated';
 import tw from 'twrnc';
+
+import { getFontSize } from '@/lib/fonts';
 
 import { Defaults } from '@/styles';
 
 type TabButtonProps = {
-	icon: (focused: boolean) => React.ReactNode;
-	color: (focused: boolean) => string;
+	icon: (
+		focused: boolean,
+		color: Animated.AnimatedInterpolation<string | number>,
+	) => React.ReactNode;
 	name: string;
 	focused: boolean;
+
+	focusedColor: string;
+	unfocusedColor: string;
+
+	routeIndex: number;
+	scrollX: Animated.Value;
 
 	onPress: () => void;
 };
 
 const Component: React.FC<TabButtonProps> = (props) => {
-	const { color, icon, name, onPress, focused } = props;
+	const {
+		focused,
+		focusedColor,
+		unfocusedColor,
+		icon,
+		name,
+		onPress,
+		routeIndex,
+		scrollX,
+	} = props;
+
+	const { width } = useWindowDimensions();
+
+	const inputRange =
+		routeIndex === 0
+			? [0, 0.5]
+			: [routeIndex - 0.5, routeIndex, routeIndex + 0.5];
+
+	const outputRange =
+		routeIndex === 0
+			? [focusedColor, unfocusedColor]
+			: [unfocusedColor, focusedColor, unfocusedColor];
+
+	const interpolatedColor = scrollX
+		.interpolate({
+			inputRange: [0, width, width * 2],
+			outputRange: [0, 1, 2],
+		})
+		.interpolate({
+			inputRange,
+			outputRange,
+			extrapolate: 'clamp',
+		});
 
 	return (
 		<TouchableOpacity
@@ -27,12 +80,14 @@ const Component: React.FC<TabButtonProps> = (props) => {
 			}}
 			onPress={onPress}
 		>
-			{icon(focused)}
-			<Text
-				style={[{ fontFamily: 'Syne_700Bold', color: color(focused) }]}
+			{icon(focused, interpolatedColor)}
+			<Animated.Text
+				style={[
+					{ fontFamily: 'Syne_700Bold', color: interpolatedColor },
+				]}
 			>
 				{name}
-			</Text>
+			</Animated.Text>
 		</TouchableOpacity>
 	);
 };

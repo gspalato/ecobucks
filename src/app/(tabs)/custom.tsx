@@ -5,7 +5,7 @@ import HomeScreen from '@app/(tabs)/index';
 
 import TabPage from '@/components/Tabs/TabPage';
 
-import { createAnimatedTabsNavigator } from '@/lib/navigation/tabsNavigation';
+import { createAnimatedTabsNavigator } from '@/lib/navigation/createAnimatedTabsNavigator';
 
 import Routes from './_routes';
 
