@@ -70,6 +70,7 @@ const AnimatedTabsNavigator: React.FC<AnimatedTabsNavigatorProps> = (props) => {
 						' ' +
 						getRouteFromIndex(offsetToIndex),
 				);
+
 				navigation.dispatch({
 					...TabActions.jumpTo(getRouteFromIndex(offsetToIndex)),
 				});
@@ -129,11 +130,11 @@ const AnimatedTabsNavigator: React.FC<AnimatedTabsNavigatorProps> = (props) => {
 								const event = navigation.emit({
 									type: 'tabPress',
 									target: r.key,
+									data: { blurring: false },
 									canPreventDefault: true,
 								});
 
 								if (!(event as any).defaultPrevented) {
-									console.log('default not prevented');
 									navigation.dispatch({
 										...TabActions.jumpTo(r.name),
 										target: state.key,

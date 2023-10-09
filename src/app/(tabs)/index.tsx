@@ -96,7 +96,7 @@ const Component: React.FC = () => {
 	if (!profile) return <Loading />;
 
 	return (
-		<Screen transition>
+		<Screen>
 			<View
 				style={{
 					alignItems: 'center',

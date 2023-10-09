@@ -19,7 +19,7 @@ const Tabs = createAnimatedTabsNavigator();
 
 const Component = () => {
 	return (
-		<Tabs.Navigator>
+		<Tabs.Navigator screenOptions={{ unmountOnBlur: false }}>
 			<Tabs.Screen
 				name='Home'
 				component={HomeScreen}

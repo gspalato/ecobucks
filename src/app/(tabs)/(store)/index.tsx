@@ -63,7 +63,7 @@ const Component: React.FC = (props) => {
 	if (loading) return <Loading />;
 
 	return (
-		<Screen transition>
+		<Screen>
 			<View style={{ flexGrow: 1 }}>
 				<FlatList
 					contentContainerStyle={{

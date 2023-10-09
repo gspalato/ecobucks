@@ -23,7 +23,10 @@ const Component: React.FC<ScreenProps> = (props) => {
 	const opacity = useSharedValue(0);
 
 	const transitionEffect = () => {
-		if (!transition) return;
+		if (!transition) {
+			opacity.value = 1;
+			return;
+		}
 
 		opacity.value = withTiming(1, {
 			duration: 150,
