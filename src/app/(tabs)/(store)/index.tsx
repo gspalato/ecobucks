@@ -1,12 +1,15 @@
 import { Image } from 'expo-image';
-import { useFocusEffect } from 'expo-router';
-import { Text, TouchableOpacity, View } from 'react-native';
+import { router, useFocusEffect } from 'expo-router';
+import { useState } from 'react';
+import { FlatList, Text, TouchableOpacity, View } from 'react-native';
 import { ScrollView } from 'react-native-gesture-handler';
 import tw from 'twrnc';
 
 import DefaultHeader from '@components/DefaultHeader';
 import SafeView from '@components/SafeView';
 import Screen from '@components/Screen';
+
+import Loading from '@/components/Loading';
 
 import Gradients from '@lib/assets/gradients';
 import { useHeaderLayout, useTabBarLayout } from '@lib/layout';
@@ -52,64 +55,61 @@ const TestRewards = [
 ];
 
 const Component: React.FC = (props) => {
-	const {
-		height: headerHeight,
-		setBlurIntensity: setHeaderBlurIntensity,
-		setBlurTint: setHeaderBlurTint,
-	} = useHeaderLayout();
-	const {
-		height: tabBarHeight,
-		setBlurIntensity: setTabBarBlurIntensity,
-		setBlurTint: setTabBarBlurTint,
-	} = useTabBarLayout();
+	const [loading, setLoading] = useState(false);
 
-	useFocusEffect(() => {
-		setHeaderBlurIntensity?.(40);
-		setTabBarBlurIntensity?.(40);
-		setTabBarBlurTint?.('dark');
+	const { height: headerHeight } = useHeaderLayout();
+	const { height: tabBarHeight } = useTabBarLayout();
 
-		return () => {
-			setHeaderBlurIntensity?.(20);
-			setTabBarBlurIntensity?.(20);
-			setTabBarBlurTint?.('light');
-		};
-	});
+	if (loading) return <Loading />;
 
 	return (
 		<Screen transition>
-			<View style={[tw`flex-1`]}>
-				<ScrollView
-					style={{
-						flexGrow: 1,
-					}}
+			<View style={{ flexGrow: 1 }}>
+				<FlatList
 					contentContainerStyle={{
 						display: 'flex',
+						flexDirection: 'column',
 						alignItems: 'center',
 						paddingTop: headerHeight,
 						paddingBottom: tabBarHeight,
 					}}
-				>
-					{TestRewards.map((p, i) => (
+					data={TestRewards}
+					renderItem={(info) => (
 						<TouchableOpacity
-							key={i}
+							key={info.index}
 							style={[
-								tw`flex-1`,
 								{
 									borderRadius: 10,
 									display: 'flex',
-									flexGrow: 1,
 									gap: 15,
 									margin: 2.5,
 									marginHorizontal: 'auto',
 									marginBottom: 10,
 									padding: 15,
-									width: '80%',
+									width: '90%',
 								},
 							]}
+							onPress={() =>
+								router.push({
+									pathname: '/(tabs)/(store)/reward',
+									params: {
+										id: info.index,
+										image: Gradients[
+											`Gradient${(info.index + 1) % 27}`
+										],
+										name: info.item.name,
+										price: info.item.price,
+									},
+								})
+							}
 						>
 							<Image
-								source={Gradients[`Gradient${(i + 1) % 27}`]}
-								style={tw`aspect-square w-full rounded-md`}
+								source={
+									Gradients[
+										`Gradient${(info.index + 1) % 27}`
+									]
+								}
+								style={tw`aspect-video w-full rounded-md`}
 							/>
 							<View style={{ display: 'flex', gap: 5 }}>
 								<Text
@@ -119,7 +119,7 @@ const Component: React.FC = (props) => {
 										textAlign: 'center',
 									}}
 								>
-									{p.name}
+									{info.item.name}
 								</Text>
 								<Text
 									style={{
@@ -129,15 +129,15 @@ const Component: React.FC = (props) => {
 										textAlign: 'center',
 									}}
 								>
-									${p.price}
+									${info.item.price}
 								</Text>
 							</View>
 						</TouchableOpacity>
-					))}
-				</ScrollView>
+					)}
+				/>
 			</View>
-			<View style={[tw`absolute w-full flex-1`]}>
-				<DefaultHeader title='Store' blurIntensity={40} />
+			<View style={{ flexGrow: 1, position: 'absolute', width: '100%' }}>
+				<DefaultHeader title='Store' blurIntensity={90} />
 			</View>
 		</Screen>
 	);

@@ -13,6 +13,7 @@ import { ModalProvider } from 'react-native-modalfy';
 
 import { modalStack } from '@/components/Modals';
 import SplashScreenComponent from '@/components/Modals/SplashScreen';
+import { TabProvider } from '@/components/Tabs/TabContext';
 
 import { AuthProvider } from '@lib/auth';
 import client from '@lib/graphql/client';
@@ -75,14 +76,18 @@ const App: React.FC = () => {
 			<ApolloProvider client={client}>
 				<AuthProvider>
 					<ModalProvider stack={modalStack}>
-						<HeaderProvider>
-							<TabBarProvider>
-								<SplashScreenComponent
-									show={showSplashScreen}
-								/>
-								<Stack screenOptions={{ headerShown: false }} />
-							</TabBarProvider>
-						</HeaderProvider>
+						<TabProvider>
+							<HeaderProvider>
+								<TabBarProvider>
+									<SplashScreenComponent
+										show={showSplashScreen}
+									/>
+									<Stack
+										screenOptions={{ headerShown: false }}
+									/>
+								</TabBarProvider>
+							</HeaderProvider>
+						</TabProvider>
 					</ModalProvider>
 				</AuthProvider>
 			</ApolloProvider>

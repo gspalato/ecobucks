@@ -54,12 +54,12 @@ const Component = () => {
 				}}
 			/>
 			<Tabs.Screen
-				name='store'
+				name='(store)'
 				options={{
 					title: 'Store',
 					tabBarBackground: () => (
 						<BlurBackground
-							intensity={60}
+							intensity={90}
 							tint='light'
 							_setHeight={_setHeight}
 							_setWidth={_setWidth}
@@ -72,6 +72,27 @@ const Component = () => {
 							size={size}
 						/>
 					),
+				}}
+			/>
+			<Tabs.Screen
+				name='custom'
+				options={{
+					title: 'Test',
+					tabBarBackground: () => (
+						<BlurBackground
+							intensity={90}
+							tint='light'
+							_setHeight={_setHeight}
+							_setWidth={_setWidth}
+						/>
+					),
+					tabBarStyle: { display: 'none' },
+				}}
+			/>
+			<Tabs.Screen
+				name='_routes'
+				options={{
+					href: null,
 				}}
 			/>
 		</Tabs>

@@ -53,7 +53,7 @@ const Component: React.FC<DefaultHeaderProps> = (props) => {
 			<View style={[tw`justify-center`, containerStyle]}>
 				{showBackButton && (
 					<BackButton
-						style={[tw`pl-2`, backButtonStyle]}
+						style={[tw`pl-0`, backButtonStyle]}
 						color={backButtonColor}
 					/>
 				)}

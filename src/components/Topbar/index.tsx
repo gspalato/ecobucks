@@ -32,11 +32,13 @@ const Component: React.FC<ModernTopbarProps> = (props) => {
 				<IconButton path='/map' icon='map-outline' />
 				<View style={tw`my-1 border-l border-[#00000011]`} />
 				{isOperator && (
-					<>
-						<IconButton path='/add/' icon='add' style={tw`px-0`} />
-					</>
+					<IconButton path='/add/' icon='add' style={tw`px-0`} />
 				)}
-				<IconButton path='/settings' icon='settings-outline' />
+				<IconButton
+					path='/settings'
+					icon='settings-outline'
+					style={tw`pr-0`}
+				/>
 			</View>
 		</View>
 	);

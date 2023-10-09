@@ -1,9 +1,10 @@
 import { useLazyQuery } from '@apollo/client';
+import { MaterialCommunityIcons } from '@expo/vector-icons';
 import AsyncStorage from '@react-native-async-storage/async-storage';
 import { router, useFocusEffect } from 'expo-router';
 import * as SecureStore from 'expo-secure-store';
 import React, { useCallback, useEffect, useState } from 'react';
-import { Platform, Text, View } from 'react-native';
+import { Platform, ScrollView, Text, View } from 'react-native';
 import tw from 'twrnc';
 
 import CreditCard from '@components/CreditCard';
@@ -14,11 +15,14 @@ import SafeView from '@components/SafeView';
 import Screen from '@components/Screen';
 import Topbar from '@components/Topbar';
 
+import TabBar from '@/components/Tabs/TabBar';
+
 import { useAuthToken } from '@lib/auth';
 import * as GetEcobucksProfile from '@lib/graphql/queries/getEcobucksProfile';
 
 import Gradients from '@/lib/assets/gradients';
 import { getFontSize } from '@/lib/fonts';
+import { useHeaderLayout, useTabBarLayout } from '@/lib/layout';
 
 import { Profile } from '@/types/Profile';
 
@@ -32,6 +36,9 @@ const Component: React.FC = () => {
 	const [displaySuccessModal, setDisplaySuccessModal] = useState(false);
 
 	useAuthToken(setToken);
+
+	const { height: headerHeight } = useHeaderLayout();
+	const { height: tabBarHeight } = useTabBarLayout();
 
 	const [fetch] = useLazyQuery<GetEcobucksProfile.ReturnType>(
 		GetEcobucksProfile.Query,
@@ -90,16 +97,23 @@ const Component: React.FC = () => {
 
 	return (
 		<Screen transition>
-			<View style={[Styles.safeArea]}>
-				<View style={Styles.safeAreaContent}>
-					<Header>
-						<Topbar
-							name={profile.name}
-							isOperator={profile.isOperator}
-							containerStyle={[tw`px-3 pb-0`]}
-						/>
-					</Header>
-					<View style={Styles.contentContainer}>
+			<View
+				style={{
+					alignItems: 'center',
+					flexGrow: 1,
+					overflow: 'hidden',
+				}}
+			>
+				<View
+					style={{ flexGrow: 1, overflow: 'hidden', width: '100%' }}
+				>
+					<ScrollView
+						style={Styles.contentContainer}
+						contentContainerStyle={{
+							paddingTop: headerHeight,
+							paddingBottom: tabBarHeight,
+						}}
+					>
 						<View style={Styles.creditCardContainer}>
 							<CreditCard
 								credits={profile.credits}
@@ -111,15 +125,27 @@ const Component: React.FC = () => {
 							Recent Transactions
 						</Text>
 						<RecentTransactionList
-							style={[Styles.transactions.list]}
+							style={{ width: '100%' }}
 							transactions={profile.transactions.map((t) => ({
 								action: t.claimId != null ? 'claim' : 'spend',
 								credits: t.credits,
 								description: t.description,
 							}))}
 						/>
-					</View>
+					</ScrollView>
 				</View>
+			</View>
+			<View style={{ flexGrow: 1, position: 'absolute', width: '100%' }}>
+				<Header blurIntensity={100}>
+					<Topbar
+						name={profile.name}
+						isOperator={profile.isOperator}
+						containerStyle={{
+							paddingHorizontal: 7.5,
+							paddingBottom: 0,
+						}}
+					/>
+				</Header>
 			</View>
 		</Screen>
 	);
@@ -128,12 +154,12 @@ const Component: React.FC = () => {
 export default Component;
 
 const Styles = {
-	safeArea: [tw`flex-1`, { alignItems: 'center', overflow: 'hidden' }],
-	safeAreaContent: [tw`w-full flex-1 overflow-hidden`],
+	safeArea: [{ alignItems: 'center', flexGrow: 1, overflow: 'hidden' }],
+	safeAreaContent: [{ flexGrow: 1, overflow: 'hidden', width: '100%' }],
 	creditCardContainer: [tw`h-auto w-auto rounded-2xl`],
 	contentContainer: [tw`flex w-full px-4 py-0`],
 	transactions: {
-		list: [tw`w-full`],
+		list: [{ width: '100%' }],
 		title: [
 			tw`text-black/80 pt-15 px-1 pb-4 text-center`,
 			{ fontSize: getFontSize(22), fontFamily: 'Syne_600SemiBold' },

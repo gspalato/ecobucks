@@ -54,7 +54,7 @@ const Component: React.FC<RecentTransactionListProps> = (props) => {
 	);
 
 	return (
-		<ScrollView style={[Styles.container, style]}>
+		<View style={[Styles.container, style]}>
 			{transactions.length > 0 ? (
 				transactionComponents
 			) : (
@@ -67,7 +67,7 @@ const Component: React.FC<RecentTransactionListProps> = (props) => {
 					You haven't done any transaction recently.
 				</Text>
 			)}
-		</ScrollView>
+		</View>
 	);
 };
 
@@ -76,7 +76,7 @@ Component.displayName = 'RecentTransactionList';
 export default Component;
 
 const Styles = {
-	container: tw`flex w-full flex-col gap-2`,
+	container: [tw`flex w-full flex-col gap-2`, { flexGrow: 1 }],
 	title: [tw`mb-3 text-center text-2xl`, { fontFamily: 'Syne_600SemiBold' }],
 	transactionItem: {
 		container: [

@@ -1,7 +1,7 @@
 import AsyncStorage from '@react-native-async-storage/async-storage';
 import { useEffect, useState } from 'react';
 import { Dimensions, Text } from 'react-native';
-import { ScrollView } from 'react-native-gesture-handler';
+import { FlatList, ScrollView } from 'react-native-gesture-handler';
 import tw from 'twrnc';
 
 import BackButton from '@/components/BackButton';
@@ -35,21 +35,19 @@ const Screen = () => {
 
 	return (
 		<SafeView safeHeader style={[tw`flex-1`]}>
-			<DefaultHeader title='Change Card Color' />
-			<ScrollView
-				style={[tw`flex-1`]}
-				contentContainerStyle={[tw`flex items-center justify-center`]}
-			>
-				{Object.keys(Gradients).map((gradient, i) => (
+			<DefaultHeader title='Change Card Style' />
+			<FlatList
+				data={Object.keys(Gradients)}
+				renderItem={(info) => (
 					<CardColorOption
-						key={i}
-						image={Gradients[gradient]}
-						index={i}
-						onPress={() => saveGradient(gradient)}
-						isSelected={gradient == selected}
+						key={info.index}
+						image={Gradients[info.item]}
+						index={info.index}
+						onPress={() => saveGradient(info.item)}
+						isSelected={info.item == selected}
 					/>
-				))}
-			</ScrollView>
+				)}
+			/>
 		</SafeView>
 	);
 };

@@ -1,4 +1,5 @@
 import { useFocusEffect } from 'expo-router';
+import { useEffect } from 'react';
 import { StyleProp, ViewStyle } from 'react-native';
 import Animated, {
 	FadeIn,
@@ -8,6 +9,8 @@ import Animated, {
 	withTiming,
 } from 'react-native-reanimated';
 import tw from 'twrnc';
+
+import { Defaults as DefaultStyles } from '@/styles';
 
 type ScreenProps = React.PropsWithChildren<{
 	style?: StyleProp<ViewStyle>;
@@ -19,7 +22,7 @@ const Component: React.FC<ScreenProps> = (props) => {
 
 	const opacity = useSharedValue(0);
 
-	useFocusEffect(() => {
+	const transitionEffect = () => {
 		if (!transition) return;
 
 		opacity.value = withTiming(1, {
@@ -31,13 +34,16 @@ const Component: React.FC<ScreenProps> = (props) => {
 				duration: 150,
 			});
 		};
-	});
+	};
+
+	useEffect(transitionEffect, []);
+	useFocusEffect(transitionEffect);
 
 	return (
 		<Animated.View
 			entering={FadeIn}
 			exiting={FadeOut}
-			style={[Styles.container, style, { opacity }]}
+			style={[DefaultStyles.View, Styles.container, style, { opacity }]}
 		>
 			{children}
 		</Animated.View>

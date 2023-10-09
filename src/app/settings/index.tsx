@@ -33,7 +33,7 @@ const Screen = () => {
 						tw`text-black`,
 						{ fontFamily: 'Syne_600SemiBold' },
 					]}
-					onPress={() => router.push('/settings/changeCardColor')}
+					onPress={() => router.push('/settings/changeCardStyle')}
 				/>
 			</ScrollView>
 			{isIOS ? (
