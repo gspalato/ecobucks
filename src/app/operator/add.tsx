@@ -1,6 +1,6 @@
-/*import { useMutation } from '@apollo/client';
+import { useMutation } from '@apollo/client';
 import { Feather } from '@expo/vector-icons';
-import { router } from 'expo-router';
+import { StackScreenProps } from '@react-navigation/stack';
 import React, { useState } from 'react';
 import { SafeAreaView, TouchableOpacity, View } from 'react-native';
 import { ScrollView } from 'react-native-gesture-handler';
@@ -13,11 +13,12 @@ import ClaimSuccessModal from '@/components/Modals/ClaimSuccessModal';
 import { useAuthToken } from '@/lib/auth';
 import { getFontSize } from '@/lib/fonts';
 import * as RegisterDisposal from '@/lib/graphql/mutations/registerDisposal';
+import { RootStackParamList } from '@/lib/navigation/types';
 import { usePlatform } from '@/lib/platform';
 
 import { DisposalType } from '@/types/DisposalClaim';
 
-import DisposalField from './components/DisposalField';
+import DisposalField from '../(operator)/add/components/DisposalField';
 
 export type DisposalField = {
 	_id: number;
@@ -41,7 +42,11 @@ const PER_TYPE_RATE_KG = {
 	[DisposalType.ELECTRONIC]: 1000,
 };
 
-const Screen: React.FC = () => {
+type Props = StackScreenProps<RootStackParamList, 'Add'>;
+
+const Screen: React.FC<Props> = (props) => {
+	const { navigation, route } = props;
+
 	const [token, setToken] = useState<string | null>(null);
 	useAuthToken(setToken);
 
@@ -72,7 +77,7 @@ const Screen: React.FC = () => {
 	const onSuccessModalClose = () => {
 		setDisplaySuccessModal(false);
 		setClaimedCredits(null);
-		router.push('/(tabs)');
+		navigation.push('Main');
 	};
 
 	const [register] = useMutation<RegisterDisposal.ReturnType>(
@@ -90,12 +95,9 @@ const Screen: React.FC = () => {
 					return;
 				}
 
-				router.replace({
-					pathname: '/(operator)/qrcode',
-					params: {
-						id: data.registerDisposal.disposal.token,
-						credits: data.registerDisposal.disposal.credits,
-					},
+				navigation.push('QRCode', {
+					id: data.registerDisposal.disposal.token,
+					credits: data.registerDisposal.disposal.credits,
 				});
 			},
 			onError: (error) => {
@@ -195,4 +197,3 @@ const Styles = {
 		text: [tw`text-[#ffffff]`, { fontSize: getFontSize(17) }],
 	},
 };
-*/

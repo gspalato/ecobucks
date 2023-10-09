@@ -1,33 +1,29 @@
 import { useLazyQuery } from '@apollo/client';
-import { NavigationContainer } from '@react-navigation/native';
-import { createStackNavigator } from '@react-navigation/stack';
+import { createNativeStackNavigator } from '@react-navigation/native-stack';
 import { useFonts } from 'expo-font';
 import * as NavigationBar from 'expo-navigation-bar';
-import { SplashScreen } from 'expo-router';
 import { useEffect, useState } from 'react';
 import { Platform } from 'react-native';
+import { GestureHandlerRootView } from 'react-native-gesture-handler';
 
 import LoginScreen from '@app/login';
+import MainScreen from '@app/main';
 import MapScreen from '@app/map';
+import AddScreen from '@app/operator/add';
+import QRCodeScreen from '@app/operator/qrcode';
 import ScanScreen from '@app/scan';
 import SettingsScreen from '@app/settings';
+
+import SplashScreenComponent from '@/components/Modals/SplashScreen';
 
 import useAssets from '@/lib/assets';
 import Gradients from '@/lib/assets/gradients';
 import { useAuthToken } from '@/lib/auth';
 import fonts from '@/lib/fonts';
 import { CheckAuth } from '@/lib/graphql/queries';
+import { RootStackParamList } from '@/lib/navigation/types';
 
-export type RootStackParamList = {
-	Login: undefined;
-	Home: undefined;
-	Main: undefined;
-	Scan: undefined;
-	Map: undefined;
-	Settings: undefined;
-};
-
-const Stack = createStackNavigator<RootStackParamList>();
+const Stack = createNativeStackNavigator<RootStackParamList>();
 
 const App = () => {
 	const [logged, setLogged] = useState(false);
@@ -64,7 +60,6 @@ const App = () => {
 
 	useEffect(() => {
 		if (assetsLoaded && fontsLoaded) {
-			SplashScreen.hideAsync();
 			setShowSplashScreen(false);
 		}
 	}, [assetsLoaded, fontsLoaded]);
@@ -88,13 +83,19 @@ const App = () => {
 	if (!fontsLoaded) return;
 
 	return (
-		<Stack.Navigator screenOptions={{ headerShown: false }}>
-			<Stack.Screen name='Login' component={LoginScreen} />
-			<Stack.Screen name='Main' component={() => <></>} />
-			<Stack.Screen name='Scan' component={ScanScreen} />
-			<Stack.Screen name='Map' component={MapScreen} />
-			<Stack.Screen name='Settings' component={SettingsScreen} />
-		</Stack.Navigator>
+		<GestureHandlerRootView style={{ flexGrow: 1 }}>
+			<SplashScreenComponent show={showSplashScreen} />
+			<Stack.Navigator screenOptions={{ headerShown: false }}>
+				<Stack.Screen name='Login' component={LoginScreen} />
+				<Stack.Screen name='Main' component={MainScreen} />
+				<Stack.Screen name='Scan' component={ScanScreen} />
+				<Stack.Screen name='Map' component={MapScreen} />
+				<Stack.Screen name='Settings' component={SettingsScreen} />
+
+				<Stack.Screen name='Add' component={AddScreen} />
+				<Stack.Screen name='QRCode' component={QRCodeScreen} />
+			</Stack.Navigator>
+		</GestureHandlerRootView>
 	);
 };
 

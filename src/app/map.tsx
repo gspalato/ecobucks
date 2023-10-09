@@ -1,3 +1,4 @@
+import { NativeStackScreenProps } from '@react-navigation/native-stack';
 import * as Location from 'expo-location';
 import React, { useEffect, useState } from 'react';
 import { View } from 'react-native';
@@ -7,9 +8,11 @@ import tw from 'twrnc';
 import DefaultHeader from '@components/DefaultHeader';
 import Screen from '@components/Screen';
 
-import Loading from '@/components/Loading';
+import { RootStackParamList } from '@/lib/navigation/types';
 
-const Component: React.FC<any> = ({ navigation }) => {
+type Props = NativeStackScreenProps<RootStackParamList, 'Map'>;
+
+const Component: React.FC<Props> = ({ navigation }) => {
 	const [loading, setLoading] = useState(true);
 
 	const [location, setLocation] = useState<Location.LocationObject | null>(

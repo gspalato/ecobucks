@@ -1,7 +1,6 @@
 import { Ionicons } from '@expo/vector-icons';
 import { Icon } from '@expo/vector-icons/build/createIconSet';
-import { router } from 'expo-router';
-import { Router } from 'expo-router/build/types';
+import { useNavigation } from '@react-navigation/native';
 import { StyleProp, TouchableOpacity, View, ViewStyle } from 'react-native';
 import tw from 'twrnc';
 
@@ -10,7 +9,7 @@ type GetGeneric<Type> = Type extends Icon<infer Options, infer Name>
 	: never;
 
 type BaseIconButtonProps = {
-	path: Parameters<Router['replace']>[0];
+	path: string;
 	style?: StyleProp<ViewStyle>;
 };
 
@@ -33,8 +32,10 @@ const Component: React.FC<IconButtonProps> = (props) => {
 
 	const { path, style } = props;
 
+	const navigation = useNavigation();
+
 	return (
-		<TouchableOpacity onPress={() => router.replace(path as any)}>
+		<TouchableOpacity onPress={() => navigation.navigate(path as never)}>
 			<View style={[tw`p-1`, style]}>
 				{isNamed && (
 					<Ionicons

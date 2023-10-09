@@ -1,10 +1,9 @@
-import { useFocusEffect } from 'expo-router';
+import { useFocusEffect } from '@react-navigation/native';
 import { useEffect } from 'react';
 import { StyleProp, ViewStyle } from 'react-native';
 import Animated, {
 	FadeIn,
 	FadeOut,
-	SharedTransition,
 	useSharedValue,
 	withTiming,
 } from 'react-native-reanimated';

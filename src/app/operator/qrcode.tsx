@@ -1,24 +1,25 @@
-/*
-import { router, useLocalSearchParams } from 'expo-router';
+import { StackScreenProps } from '@react-navigation/stack';
 import React from 'react';
 import { Text, View } from 'react-native';
 import QRCode from 'react-native-qrcode-svg';
 import { SafeAreaView } from 'react-native-safe-area-context';
 import tw from 'twrnc';
 
-import Button from '@/components/Button';
-import Header from '@/components/Header';
+import BackButton from '@components/BackButton';
+import Button from '@components/Button';
+import Header from '@components/Header';
 
-import { fontSizes, getFontSize } from '@/lib/fonts';
+import { fontSizes, getFontSize } from '@lib/fonts';
 
-import BackButton from './add/components/BackButton';
+import { RootStackParamList } from '@/lib/navigation/types';
+
 import Constants from '@/constants';
 
-const Screen = () => {
-	const { id, credits } = useLocalSearchParams();
+type Props = StackScreenProps<RootStackParamList, 'QRCode'>;
 
-	if (!id || typeof id !== 'string') return;
-	if (!credits || typeof credits !== 'string') return;
+const Screen: React.FC<Props> = (props) => {
+	const { navigation, route } = props;
+	const { id, credits } = route.params;
 
 	return (
 		<SafeAreaView style={tw`flex-1`}>
@@ -45,7 +46,7 @@ const Screen = () => {
 					text='Proceed'
 					buttonStyle={Styles.proceedButton.button}
 					textStyle={Styles.proceedButton.text}
-					onPress={() => router.replace('/(tabs)')}
+					onPress={() => navigation.replace('Main')}
 				/>
 			</View>
 			<View style={[Styles.qrcode, { pointerEvents: 'none' }]}>
@@ -88,4 +89,3 @@ const Styles = {
 		text: [tw`text-lg text-[#ffffff]`],
 	},
 };
-*/

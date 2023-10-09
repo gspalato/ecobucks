@@ -18,6 +18,8 @@ import TabButton from '@/components/Tabs/TabButton';
 
 import { Defaults } from '@/styles';
 
+import { useTabBarLayout } from '../layout';
+
 type AnimatedTabsNavigationOptions = {
 	name: string;
 	color: (focused: boolean) => string;
@@ -51,6 +53,9 @@ const AnimatedTabsNavigator: React.FC<AnimatedTabsNavigatorProps> = (props) => {
 			screenOptions,
 			initialRouteName,
 		});
+
+	const { blurIntensity, blurTint, _setHeight, _setWidth } =
+		useTabBarLayout();
 
 	const { width } = useWindowDimensions();
 	const paddings = useSafeAreaInsets();
@@ -117,6 +122,10 @@ const AnimatedTabsNavigator: React.FC<AnimatedTabsNavigatorProps> = (props) => {
 						paddingTop: 4 * Defaults.Spacing,
 						paddingBottom: paddings.bottom,
 						width: '100%',
+					}}
+					onLayout={(e) => {
+						_setHeight(e.nativeEvent.layout.height);
+						_setWidth(e.nativeEvent.layout.width);
 					}}
 				>
 					{state.routes.map((r, i) => (

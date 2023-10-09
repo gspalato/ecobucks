@@ -1,24 +1,30 @@
 import { useMutation } from '@apollo/client';
+import { NativeStackScreenProps } from '@react-navigation/native-stack';
 import { BarCodeScannedCallback, BarCodeScanner } from 'expo-barcode-scanner';
 import * as Haptics from 'expo-haptics';
-import { router } from 'expo-router';
 import React, { useEffect, useState } from 'react';
 import { StyleSheet, Text, View } from 'react-native';
 import tw from 'twrnc';
 
 import DefaultHeader from '@components/DefaultHeader';
-import ClaimSuccessModal from '@components/Modals/ClaimSuccessModal';
 import SafeView from '@components/SafeView';
 import Screen from '@components/Screen';
 
 import Loading from '@/components/Loading';
+import ClaimSuccessModal from '@/components/Modals/ClaimSuccessModal';
 
 import { useAuthToken } from '@lib/auth';
 import * as ClaimDisposalAndCredits from '@lib/graphql/mutations/claimDisposalAndCredits';
 
+import { RootStackParamList } from '@/lib/navigation/types';
+
 import Constants from '@/constants';
 
-const Component: React.FC = () => {
+type Props = NativeStackScreenProps<RootStackParamList, 'Scan'>;
+
+const Component: React.FC<Props> = (props) => {
+	const { navigation } = props;
+
 	const [hasPermission, setHasPermission] = useState<boolean | null>(null);
 	const [scanned, setScanned] = useState<boolean>(false);
 
@@ -51,7 +57,7 @@ const Component: React.FC = () => {
 				onError(e) {
 					alert(`Failed to claim.\n${e.message}`);
 					setSuccess(false);
-					router.replace('/(tabs)');
+					navigation.push('Main');
 				},
 			},
 		);
@@ -96,7 +102,7 @@ const Component: React.FC = () => {
 	const onSuccessModalClose = () => {
 		setDisplaySuccessModal(false);
 		setClaimedCredits(null);
-		router.push('/(tabs)');
+		navigation.push('Main');
 	};
 
 	if (hasPermission === null) {

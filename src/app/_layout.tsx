@@ -1,11 +1,9 @@
-import { ApolloProvider } from '@apollo/client';
+/*import { ApolloProvider } from '@apollo/client';
 import { loadDevMessages, loadErrorMessages } from '@apollo/client/dev';
 import { registerRootComponent } from 'expo';
 import { Asset } from 'expo-asset';
 import { useFonts } from 'expo-font';
 import * as NavigationBar from 'expo-navigation-bar';
-import { SplashScreen } from 'expo-router';
-import { Stack } from 'expo-router/stack';
 import React from 'react';
 import { useEffect, useState } from 'react';
 import { Platform, StatusBar } from 'react-native';
@@ -22,8 +20,6 @@ import useAssets from '@/lib/assets';
 import Gradients from '@/lib/assets/gradients';
 import fonts from '@/lib/fonts';
 import { HeaderProvider, TabBarProvider } from '@/lib/layout';
-
-SplashScreen.preventAutoHideAsync();
 
 loadErrorMessages();
 loadDevMessages();
@@ -63,7 +59,6 @@ const App: React.FC = () => {
 
 	useEffect(() => {
 		if (assetsLoaded && fontsLoaded) {
-			SplashScreen.hideAsync();
 			setShowSplashScreen(false);
 		}
 	}, [assetsLoaded, fontsLoaded]);
@@ -98,3 +93,4 @@ const App: React.FC = () => {
 registerRootComponent(App);
 
 export default App;
+*/

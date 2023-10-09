@@ -1,5 +1,5 @@
 import { Feather } from '@expo/vector-icons';
-import { router } from 'expo-router';
+import { useNavigation } from '@react-navigation/native';
 import {
 	OpaqueColorValue,
 	StyleProp,
@@ -16,8 +16,10 @@ type BackButtonProps = {
 const Component: React.FC<BackButtonProps> = (props) => {
 	const { color, style } = props;
 
+	const navigation = useNavigation();
+
 	const onPress = () => {
-		router.back();
+		navigation.goBack();
 	};
 
 	return (

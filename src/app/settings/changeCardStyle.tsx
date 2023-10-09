@@ -1,20 +1,27 @@
 import AsyncStorage from '@react-native-async-storage/async-storage';
+import { CompositeScreenProps } from '@react-navigation/native';
+import { NativeStackScreenProps } from '@react-navigation/native-stack';
 import { useEffect, useState } from 'react';
-import { Dimensions, Text } from 'react-native';
-import { FlatList, ScrollView } from 'react-native-gesture-handler';
+import { FlatList } from 'react-native-gesture-handler';
 import tw from 'twrnc';
 
-import BackButton from '@/components/BackButton';
 import DefaultHeader from '@/components/DefaultHeader';
-import Header from '@/components/Header';
 import SafeView from '@/components/SafeView';
 
 import Gradients from '@/lib/assets/gradients';
-import { fontSizes } from '@/lib/fonts';
+import {
+	RootStackParamList,
+	SettingsStackParamList,
+} from '@/lib/navigation/types';
 
 import CardColorOption from './components/CardColorOption';
 
-const Screen = () => {
+type Props = CompositeScreenProps<
+	NativeStackScreenProps<SettingsStackParamList, 'ChangeCardStyle'>,
+	NativeStackScreenProps<RootStackParamList, 'Main'>
+>;
+
+const Component: React.FC<Props> = () => {
 	const [selected, setSelected] = useState<string>('');
 
 	const saveGradient = (gradient: string) => {
@@ -52,6 +59,4 @@ const Screen = () => {
 	);
 };
 
-export default Screen;
-
-const Styles = {};
+export default Component;

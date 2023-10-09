@@ -1,6 +1,5 @@
 import { useLazyQuery, useMutation } from '@apollo/client';
-import { useNavigation } from '@react-navigation/native';
-import { StackScreenProps } from '@react-navigation/stack';
+import { NativeStackScreenProps } from '@react-navigation/native-stack';
 import * as SecureStore from 'expo-secure-store';
 import { useEffect, useState } from 'react';
 import { Text, View } from 'react-native';
@@ -15,12 +14,11 @@ import { Authenticate } from '@lib/graphql/mutations';
 
 import { getFontSize } from '@/lib/fonts';
 import { CheckAuth } from '@/lib/graphql/queries';
+import { RootStackParamList } from '@/lib/navigation/types';
 
 import { AuthenticationPayload } from '@/types/AuthenticationPayload';
 
-import { RootStackParamList } from './app';
-
-type Props = StackScreenProps<RootStackParamList, 'Login'>;
+type Props = NativeStackScreenProps<RootStackParamList, 'Login'>;
 
 const Screen: React.FC<Props> = (props) => {
 	const { navigation } = props;
@@ -73,7 +71,7 @@ const Screen: React.FC<Props> = (props) => {
 		onCompleted: (data) => {
 			console.log(data);
 			if (data.checkAuthentication.successful) {
-				navigation.replace('Home');
+				navigation.replace('Main');
 			}
 		},
 		onError: (e) => {},
@@ -95,7 +93,7 @@ const Screen: React.FC<Props> = (props) => {
 	useEffect(() => {
 		if (!token || !success) return;
 
-		if (token && success) navigation.replace('Home');
+		if (token && success) navigation.replace('Main');
 	}, [token, success]);
 
 	return (

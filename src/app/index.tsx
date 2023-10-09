@@ -1,24 +1,16 @@
 import { ApolloProvider, useLazyQuery } from '@apollo/client';
 import { loadDevMessages, loadErrorMessages } from '@apollo/client/dev';
 import { NavigationContainer } from '@react-navigation/native';
-import { createStackNavigator } from '@react-navigation/stack';
 import { registerRootComponent } from 'expo';
-import { useFonts } from 'expo-font';
-import { SplashScreen } from 'expo-router';
 import { StatusBar } from 'expo-status-bar';
-import { useEffect, useState } from 'react';
-import { Platform } from 'react-native';
 import { ModalProvider } from 'react-native-modalfy';
 
 import { modalStack } from '@/components/Modals';
 
 import client from '@lib/graphql/client';
 
-import useAssets from '@/lib/assets';
-import Gradients from '@/lib/assets/gradients';
-import { AuthProvider, useAuthToken } from '@/lib/auth';
-import fonts from '@/lib/fonts';
-import { CheckAuth } from '@/lib/graphql/queries';
+import { AuthProvider } from '@/lib/auth';
+import { HeaderProvider, TabBarProvider } from '@/lib/layout';
 
 import App from './app';
 
@@ -32,9 +24,13 @@ const Root = () => {
 			<ApolloProvider client={client}>
 				<AuthProvider>
 					<ModalProvider stack={modalStack}>
-						<NavigationContainer>
-							<App />
-						</NavigationContainer>
+						<HeaderProvider>
+							<TabBarProvider>
+								<NavigationContainer>
+									<App />
+								</NavigationContainer>
+							</TabBarProvider>
+						</HeaderProvider>
 					</ModalProvider>
 				</AuthProvider>
 			</ApolloProvider>
