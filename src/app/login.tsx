@@ -1,52 +1,6 @@
-import { ApolloProvider, useLazyQuery } from '@apollo/client';
-import { loadDevMessages, loadErrorMessages } from '@apollo/client/dev';
-import { NavigationContainer } from '@react-navigation/native';
-import { createStackNavigator } from '@react-navigation/stack';
-import { registerRootComponent } from 'expo';
-import { useFonts } from 'expo-font';
-import { SplashScreen } from 'expo-router';
-import { StatusBar } from 'expo-status-bar';
-import { useEffect, useState } from 'react';
-import { Platform } from 'react-native';
-import { ModalProvider } from 'react-native-modalfy';
-
-import { modalStack } from '@/components/Modals';
-
-import client from '@lib/graphql/client';
-
-import useAssets from '@/lib/assets';
-import Gradients from '@/lib/assets/gradients';
-import { AuthProvider, useAuthToken } from '@/lib/auth';
-import fonts from '@/lib/fonts';
-import { CheckAuth } from '@/lib/graphql/queries';
-
-import App from './app';
-
-loadErrorMessages();
-loadDevMessages();
-
-const Root = () => {
-	return (
-		<>
-			<StatusBar translucent backgroundColor='transparent' />
-			<ApolloProvider client={client}>
-				<AuthProvider>
-					<ModalProvider stack={modalStack}>
-						<NavigationContainer>
-							<App />
-						</NavigationContainer>
-					</ModalProvider>
-				</AuthProvider>
-			</ApolloProvider>
-		</>
-	);
-};
-
-registerRootComponent(Root);
-
-/*
 import { useLazyQuery, useMutation } from '@apollo/client';
-import { router } from 'expo-router';
+import { useNavigation } from '@react-navigation/native';
+import { StackScreenProps } from '@react-navigation/stack';
 import * as SecureStore from 'expo-secure-store';
 import { useEffect, useState } from 'react';
 import { Text, View } from 'react-native';
@@ -64,7 +18,13 @@ import { CheckAuth } from '@/lib/graphql/queries';
 
 import { AuthenticationPayload } from '@/types/AuthenticationPayload';
 
-const Screen: React.FC = () => {
+import { RootStackParamList } from './app';
+
+type Props = StackScreenProps<RootStackParamList, 'Login'>;
+
+const Screen: React.FC<Props> = (props) => {
+	const { navigation } = props;
+
 	const [username, setUsername] = useState<string>('');
 	const [password, setPassword] = useState<string>('');
 
@@ -113,7 +73,7 @@ const Screen: React.FC = () => {
 		onCompleted: (data) => {
 			console.log(data);
 			if (data.checkAuthentication.successful) {
-				router.replace('/(tabs)');
+				navigation.replace('Home');
 			}
 		},
 		onError: (e) => {},
@@ -135,7 +95,7 @@ const Screen: React.FC = () => {
 	useEffect(() => {
 		if (!token || !success) return;
 
-		if (token && success) router.replace('/(tabs)');
+		if (token && success) navigation.replace('Home');
 	}, [token, success]);
 
 	return (
@@ -181,4 +141,3 @@ const Screen: React.FC = () => {
 };
 
 export default Screen;
-*/

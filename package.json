@@ -1,7 +1,7 @@
 {
   "name": "ecobucks",
   "version": "1.0.0",
-  "main": "expo-router/entry",
+  "main": "./src/app/index.tsx",
   "scripts": {
     "start": "expo start",
     "start:no-cache": "expo start -c",
