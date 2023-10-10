@@ -21,7 +21,7 @@ const Component: React.FC<IButtonProps> = (props) => {
 			style={[
 				{
 					alignItems: 'center',
-					backgroundColor: Colors.accent,
+					backgroundColor: Colors.Accent,
 					borderRadius: 3.5 * Defaults.Spacing,
 					display: 'flex',
 					height: 20 * Defaults.Spacing,

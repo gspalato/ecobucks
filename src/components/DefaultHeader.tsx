@@ -48,12 +48,12 @@ const Component: React.FC<DefaultHeaderProps> = (props) => {
 		<Header
 			blurIntensity={blurIntensity}
 			blurTint={blurTint}
-			style={[tw`justify-center`, headerStyle]}
+			style={[{ justifyContent: 'center' }, headerStyle]}
 		>
-			<View style={[tw`justify-center`, containerStyle]}>
+			<View style={[{ justifyContent: 'center' }, containerStyle]}>
 				{showBackButton && (
 					<BackButton
-						style={[tw`pl-0`, backButtonStyle]}
+						style={[{ paddingLeft: 0 }, backButtonStyle]}
 						color={backButtonColor}
 					/>
 				)}

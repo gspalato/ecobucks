@@ -136,7 +136,7 @@ const Component: React.FC<BottomSheetProps> = (props, ref) => {
 						Styles.container,
 						animationStyle,
 						{
-							backgroundColor: Colors.background,
+							backgroundColor: Colors.Background,
 							height: activeHeight,
 							shadowColor: '#000000',
 							shadowOffset: {

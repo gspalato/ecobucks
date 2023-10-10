@@ -17,8 +17,8 @@ import QRCodeScreen from '@app/operator/qrcode';
 import ScanScreen from '@app/scan';
 import SettingsScreen from '@app/settings';
 
-import { modalStack } from '@/components/Modals';
-import SplashScreenComponent from '@/components/Modals/SplashScreen';
+import { modalStack } from '@components/Modals';
+import SplashScreenComponent from '@components/Modals/SplashScreen';
 
 import useAssets from '@/lib/assets';
 import Gradients from '@/lib/assets/gradients';
@@ -97,7 +97,8 @@ const App = () => {
 						screenOptions={{
 							headerShown: false,
 							contentStyle: {
-								backgroundColor: Colors.background,
+								backgroundColor: Colors.Background,
+								flex: 1,
 							},
 						}}
 					>

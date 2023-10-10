@@ -26,8 +26,14 @@ const Screen: React.FC<Props> = (props) => {
 
 	return (
 		<>
-			<SafeAreaView style={tw`flex-1`}>
-				<View style={tw`flex-1 justify-end`}>
+			<SafeAreaView style={{ flexGrow: 1 }}>
+				<View
+					style={{
+						alignItems: 'center',
+						flexGrow: 1,
+						justifyContent: 'flex-end',
+					}}
+				>
 					<Button
 						text='Proceed'
 						buttonStyle={{

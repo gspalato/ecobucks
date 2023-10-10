@@ -5,7 +5,7 @@ import {
 
 import { Feather } from '@expo/vector-icons';
 import { useState } from 'react';
-import { Animated } from 'react-native';
+import { Animated, View } from 'react-native';
 import tw from 'twrnc';
 
 import { DisposalField } from '@/app/operator/add';
@@ -15,6 +15,8 @@ import Select, { SelectItemDefinition } from '@components/Select';
 import Input from '@/components/Input';
 
 import { DisposalType } from '@/types/DisposalClaim';
+
+import { Defaults } from '@/styles';
 
 const disposalOptions: SelectItemDefinition[] = [
 	{
@@ -81,36 +83,33 @@ const Component = (props: {
 	};
 
 	return (
-		<GestureHandlerRootView>
-			<Swipeable
-				key={index}
-				onSwipeableOpen={onDelete}
-				containerStyle={tw`w-full flex-row justify-end`}
-				childrenContainerStyle={tw`min-h-40 mt-4 w-full border-b border-[#00000011] p-5`}
-				renderRightActions={renderRightActions}
-				useNativeAnimations={false}
-			>
-				<Input
-					inputMode='decimal'
-					style={tw`mx-auto`}
-					onChangeText={(text) =>
-						onUpdate((prev) => {
-							const newDisposalFields = [...prev];
-							newDisposalFields[index].weight = Number(text);
-							return newDisposalFields;
-						})
-					}
-					placeholder='Weight (grams)'
-					placeholderTextColor='#00000055'
-				/>
-				<Select
-					items={disposalOptions}
-					selectedItem={selected}
-					setItem={onSelect}
-					placeholder='Select Disposal Type'
-				/>
-			</Swipeable>
-		</GestureHandlerRootView>
+		<Animated.View
+			style={{
+				height: 40 * Defaults.Spacing,
+				width: '100%',
+				padding: 5 * Defaults.Spacing,
+			}}
+		>
+			<Input
+				inputMode='decimal'
+				style={tw`mx-auto`}
+				onChangeText={(text) =>
+					onUpdate((prev) => {
+						const newDisposalFields = [...prev];
+						newDisposalFields[index].weight = Number(text);
+						return newDisposalFields;
+					})
+				}
+				placeholder='Weight (grams)'
+				placeholderTextColor='#00000055'
+			/>
+			<Select
+				items={disposalOptions}
+				selectedItem={selected}
+				setItem={onSelect}
+				placeholder='Select Disposal Type'
+			/>
+		</Animated.View>
 	);
 };
 

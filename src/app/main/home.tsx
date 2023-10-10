@@ -110,7 +110,7 @@ const Component: React.FC<Props> = (props) => {
 			<View
 				style={{
 					alignItems: 'center',
-					backgroundColor: Colors.background,
+					backgroundColor: Colors.Background,
 					flexGrow: 1,
 					overflow: 'hidden',
 				}}

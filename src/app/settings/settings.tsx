@@ -16,6 +16,8 @@ import {
 import { usePlatform } from '@/lib/platform';
 import tw from '@/lib/tailwind';
 
+import { Defaults } from '@/styles';
+
 type Props = CompositeScreenProps<
 	NativeStackScreenProps<SettingsStackParamList, 'Settings'>,
 	NativeStackScreenProps<RootStackParamList, 'Main'>
@@ -33,7 +35,7 @@ const Component: React.FC<Props> = (props) => {
 	};
 
 	return (
-		<SafeView safeHeader style={[tw`flex-1`]}>
+		<SafeView safeHeader style={[Defaults.View, { flex: 1 }]}>
 			<DefaultHeader title='Settings' />
 			<ScrollView style={tw`flex-1`}>
 				<CustomButton

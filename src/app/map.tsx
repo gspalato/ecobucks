@@ -41,14 +41,18 @@ const Component: React.FC<Props> = ({ navigation }) => {
 					showsUserLocation={true}
 				/>
 			</View>
-			<View style={[tw`absolute w-full flex-1`]}>
+			<View style={{ flex: 1, position: 'absolute', width: '100%' }}>
 				<DefaultHeader
-					backButtonColor='#ffffff'
+					backButtonColor='#000000'
 					blurIntensity={0}
 					blurTint='dark'
-					headerStyle={tw`w-full justify-center`}
+					headerStyle={{
+						backgroundColor: '#00000000',
+						justifyContent: 'center',
+						width: '100%',
+					}}
 					title='Map'
-					titleStyle={[tw`text-white`]}
+					titleStyle={{ color: '#000000' }}
 				/>
 			</View>
 		</Screen>

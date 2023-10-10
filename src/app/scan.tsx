@@ -138,13 +138,17 @@ const Component: React.FC<Props> = (props) => {
 					]}
 				/>
 			</View>
-			<View style={[tw`absolute w-full flex-1`]}>
+			<View style={{ flex: 1, position: 'absolute', width: '100%' }}>
 				<DefaultHeader
 					backButtonColor='#ffffff'
 					blurTint='dark'
 					blurIntensity={0}
-					headerStyle={tw`w-full justify-center`}
-					titleStyle={[tw`text-white`]}
+					headerStyle={{
+						backgroundColor: '#00000000',
+						justifyContent: 'center',
+						width: '100%',
+					}}
+					titleStyle={{ color: 'white' }}
 					title='Scan'
 				/>
 			</View>

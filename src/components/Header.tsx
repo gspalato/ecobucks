@@ -4,6 +4,7 @@ import { useSafeAreaInsets } from 'react-native-safe-area-context';
 import tw from 'twrnc';
 
 import { HeaderProvider, useHeaderLayout } from '@/lib/layout/header';
+import { usePlatform } from '@/lib/platform';
 
 type HeaderProps = {
 	blurIntensity?: number;
@@ -21,6 +22,7 @@ const Component: React.FC<HeaderProps> = (props) => {
 		style,
 	} = props;
 
+	const { isAndroid } = usePlatform();
 	const paddings = useSafeAreaInsets();
 
 	const { _setHeight, _setWidth } = useHeaderLayout();
@@ -28,11 +30,13 @@ const Component: React.FC<HeaderProps> = (props) => {
 	return (
 		<HeaderProvider>
 			<BlurView
-				intensity={blurIntensity ?? 20}
+				blurReductionFactor={100}
+				intensity={isAndroid ? 0 : blurIntensity ?? 20}
 				tint={blurTint}
 				style={[
 					Styles.container,
 					{
+						backgroundColor: isAndroid ? '#ffffff' : '#ffffff00',
 						width: '100%',
 						paddingTop: 20 + (safe ? paddings.top : 0),
 						paddingBottom: 15,

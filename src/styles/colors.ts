@@ -1,5 +1,5 @@
 export default {
-	accent: '#11da33',
-	background: '#f9f9f9',
-	text: '#000000',
+	Accent: '#11da33',
+	Background: '#ffffff',
+	Text: '#000000',
 };

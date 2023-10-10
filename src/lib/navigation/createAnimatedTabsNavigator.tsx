@@ -20,6 +20,7 @@ import TabButton from '@/components/TabButton';
 import { Defaults } from '@/styles';
 
 import { useTabBarLayout } from '../layout';
+import { usePlatform } from '../platform';
 
 type AnimatedTabsNavigationOptions = {
 	name: string;
@@ -30,6 +31,9 @@ type AnimatedTabsNavigationOptions = {
 
 	focusedColor?: string;
 	unfocusedColor?: string;
+
+	tabBarBlur?: number | false;
+	tabBarTransparent?: boolean;
 };
 
 type AnimatedTabsNavigationEventMap = {
@@ -39,7 +43,10 @@ type AnimatedTabsNavigationEventMap = {
 	};
 };
 
-type AnimatedTabsNavigationConfig = {};
+type AnimatedTabsNavigationConfig = {
+	tabBarBlur?: number | false;
+	tabBarTransparent?: boolean;
+};
 
 type AnimatedTabsNavigatorProps = DefaultNavigatorOptions<
 	ParamListBase,
@@ -51,7 +58,13 @@ type AnimatedTabsNavigatorProps = DefaultNavigatorOptions<
 	AnimatedTabsNavigationConfig;
 
 const AnimatedTabsNavigator: React.FC<AnimatedTabsNavigatorProps> = (props) => {
-	const { initialRouteName, children, screenOptions } = props;
+	const {
+		initialRouteName,
+		children,
+		screenOptions,
+		tabBarBlur,
+		tabBarTransparent,
+	} = props;
 
 	const { state, navigation, descriptors, NavigationContent } =
 		useNavigationBuilder(TabRouter, {
@@ -59,6 +72,8 @@ const AnimatedTabsNavigator: React.FC<AnimatedTabsNavigatorProps> = (props) => {
 			screenOptions,
 			initialRouteName,
 		});
+
+	const { isAndroid } = usePlatform();
 
 	const { blurIntensity, blurTint, _setHeight, _setWidth } =
 		useTabBarLayout();
@@ -94,6 +109,9 @@ const AnimatedTabsNavigator: React.FC<AnimatedTabsNavigatorProps> = (props) => {
 		});
 	}, [state.index]);
 
+	const perConfigTabBarBlur = tabBarBlur ? tabBarBlur : null;
+	const perConfigTabBarTransparent = tabBarTransparent && '#ffffff00';
+
 	return (
 		<NavigationContent>
 			<Animated.FlatList
@@ -119,9 +137,14 @@ const AnimatedTabsNavigator: React.FC<AnimatedTabsNavigatorProps> = (props) => {
 			/>
 			<View style={{ position: 'absolute', bottom: 0, width }}>
 				<BlurView
+					blurReductionFactor={100}
 					tint='light'
-					intensity={90}
+					intensity={isAndroid ? 0 : perConfigTabBarBlur || 20}
 					style={{
+						backgroundColor:
+							perConfigTabBarTransparent || isAndroid
+								? '#ffffff'
+								: '#ffffff00',
 						display: 'flex',
 						flexDirection: 'row',
 						justifyContent: 'space-around',

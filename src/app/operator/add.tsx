@@ -1,19 +1,25 @@
-import { ScrollView } from 'react-native-gesture-handler';
+import { ScrollView, Swipeable } from 'react-native-gesture-handler';
 
 import { useMutation } from '@apollo/client';
 import { Feather } from '@expo/vector-icons';
 import { StackScreenProps } from '@react-navigation/stack';
 import { LinearGradient } from 'expo-linear-gradient';
 import React, { useEffect, useRef, useState } from 'react';
-import { SafeAreaView, Text, TouchableOpacity, View } from 'react-native';
+import {
+	LayoutAnimation,
+	SafeAreaView,
+	Text,
+	TouchableOpacity,
+	View,
+} from 'react-native';
 import tw from 'twrnc';
-
-import DisposalField from '@components/DisposalField';
 
 import Button from '@/components/Button';
 import DefaultHeader from '@/components/DefaultHeader';
+import DisposalField from '@/components/DisposalField';
 import ClaimSuccessModal from '@/components/Modals/ClaimSuccessModal';
 import SafeView from '@/components/SafeView';
+import SwipeableRow from '@/components/SwipeableRow';
 
 import { useAuthToken } from '@/lib/auth';
 import { getFontSize } from '@/lib/fonts';
@@ -70,6 +76,7 @@ const Screen: React.FC<Props> = (props) => {
 	const { height: headerHeight } = useHeaderLayout();
 
 	const addNewDisposalField = () => {
+		LayoutAnimation.configureNext(LayoutAnimation.Presets.easeInEaseOut);
 		setDisposalFields((prev) => [
 			...prev,
 			{ _id: prev.length, weight: undefined, disposalType: undefined },
@@ -139,12 +146,38 @@ const Screen: React.FC<Props> = (props) => {
 			>
 				<ScrollView style={{ flexGrow: 1, width: '100%' }}>
 					{disposalFields.map((item, index) => (
-						<DisposalField
+						<SwipeableRow
 							key={index}
-							index={index}
-							onDelete={() => removeDisposalFieldByIndex(index)}
-							onUpdate={setDisposalFields}
-						/>
+							containerStyle={{
+								height: 60 * Defaults.Spacing,
+								borderBottomWidth: 1,
+								borderColor: '#00000011',
+							}}
+							rightButtons={[
+								{
+									backgroundColor: '#ff0000',
+									text: 'Delete',
+									onPress: () => {
+										console.log('pressed');
+										removeDisposalFieldByIndex(index);
+									},
+								},
+							]}
+						>
+							<DisposalField
+								key={index}
+								index={index}
+								onDelete={() => {
+									LayoutAnimation.configureNext(
+										LayoutAnimation.Presets.easeInEaseOut,
+									);
+									removeDisposalFieldByIndex(index);
+								}}
+								onUpdate={setDisposalFields}
+							/>
+						</SwipeableRow>
+						/*
+						 */
 					))}
 					<TouchableOpacity onPress={addNewDisposalField}>
 						<View style={Styles.addButton}>
@@ -173,6 +206,10 @@ const Screen: React.FC<Props> = (props) => {
 								alert('Authentication expired.');
 								return;
 							}
+
+							disposalFields.forEach((f, i) =>
+								console.log(f._id, f.weight, f.disposalType),
+							);
 
 							if (
 								disposalFields.some(

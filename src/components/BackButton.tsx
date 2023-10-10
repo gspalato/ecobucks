@@ -14,7 +14,7 @@ type BackButtonProps = {
 };
 
 const Component: React.FC<BackButtonProps> = (props) => {
-	const { color, style } = props;
+	const { color = '#000000', style } = props;
 
 	const navigation = useNavigation();
 

@@ -153,7 +153,7 @@ const Component: React.FC<Props> = (props) => {
 							text='Redeem'
 							buttonStyle={{
 								height: '100%',
-								backgroundColor: Colors.accent,
+								backgroundColor: Colors.Accent,
 								borderWidth: 0,
 								borderRadius: 3 * Defaults.Spacing,
 								padding: 3 * Defaults.Spacing,

@@ -13,6 +13,8 @@ import { useHeaderLayout, useTabBarLayout } from '@lib/layout';
 
 import { getFontSize } from '@/lib/fonts';
 
+import { Colors, Defaults } from '@/styles';
+
 import { StoreStackParamList } from '.';
 
 const TestRewards = [
@@ -69,13 +71,16 @@ const Component: React.FC<Props> = (props) => {
 		<Screen>
 			<View style={{ flexGrow: 1 }}>
 				<FlatList
-					contentContainerStyle={{
-						display: 'flex',
-						flexDirection: 'column',
-						alignItems: 'center',
-						paddingTop: headerHeight,
-						paddingBottom: tabBarHeight,
-					}}
+					contentContainerStyle={[
+						{
+							backgroundColor: Colors.Background,
+							display: 'flex',
+							flexDirection: 'column',
+							alignItems: 'center',
+							paddingTop: headerHeight,
+							paddingBottom: tabBarHeight,
+						},
+					]}
 					data={TestRewards}
 					renderItem={(info) => (
 						<TouchableOpacity
