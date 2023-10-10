@@ -127,13 +127,13 @@ const Component: React.FC<BottomSheetProps> = (props, ref) => {
 				}}
 			>
 				<Animated.View
-					style={[styles.backdrop, backdropAnimation, backdropStyle]}
+					style={[Styles.backdrop, backdropAnimation, backdropStyle]}
 				/>
 			</TouchableWithoutFeedback>
 			<PanGestureHandler onGestureEvent={gestureHandler}>
 				<Animated.View
 					style={[
-						styles.container,
+						Styles.container,
 						animationStyle,
 						{
 							backgroundColor: Colors.background,
@@ -148,8 +148,8 @@ const Component: React.FC<BottomSheetProps> = (props, ref) => {
 						containerStyle,
 					]}
 				>
-					<View style={styles.lineContainer}>
-						<View style={styles.line} />
+					<View style={Styles.lineContainer}>
+						<View style={Styles.line} />
 					</View>
 					{children}
 				</Animated.View>
@@ -160,7 +160,7 @@ const Component: React.FC<BottomSheetProps> = (props, ref) => {
 
 export default forwardRef<{}, BottomSheetProps>(Component as any);
 
-const styles = StyleSheet.create({
+const Styles = StyleSheet.create({
 	container: {
 		position: 'absolute',
 		borderTopLeftRadius: 20,
