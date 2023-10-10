@@ -175,12 +175,10 @@ const Screen: React.FC<Props> = (props) => {
 							}
 
 							if (
-								disposalFields.some((item) => {
-									console.log(
-										`DF ${item._id} ${item.disposalType} ${item.weight} `,
-									);
-									return !item.weight || !item.disposalType;
-								})
+								disposalFields.some(
+									(item) =>
+										!item.weight || !item.disposalType,
+								)
 							) {
 								alert('Please fill all fields.');
 								return;
