@@ -196,7 +196,7 @@ const Screen: React.FC<Props> = (props) => {
 												item.disposalType!
 											],
 										credits:
-											item.weight! *
+											(item.weight! / 1000) *
 											PER_TYPE_RATE_KG[
 												item.disposalType!
 											],
