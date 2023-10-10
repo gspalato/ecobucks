@@ -10,6 +10,11 @@ export type RootStackParamList = {
 	QRCode: { id: string; credits: number };
 };
 
+export type MainTabsParamList = {
+	Home: undefined;
+	Store: undefined;
+};
+
 export type SettingsStackParamList = {
 	Settings: undefined;
 	ChangeCardStyle: undefined;

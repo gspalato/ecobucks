@@ -21,14 +21,13 @@ import { useAuthToken } from '@lib/auth';
 import { getFontSize } from '@lib/fonts';
 import * as GetEcobucksProfile from '@lib/graphql/queries/getEcobucksProfile';
 import { useHeaderLayout, useTabBarLayout } from '@lib/layout';
+import { MainTabsParamList } from '@lib/navigation/types';
 
 import { RootStackParamList } from '@/lib/navigation/types';
 
 import { Profile } from '@/types/Profile';
 
 import { Colors } from '@/styles';
-
-import { MainTabsParamList } from '.';
 
 type Props = CompositeScreenProps<
 	StackScreenProps<MainTabsParamList, 'Home'>,

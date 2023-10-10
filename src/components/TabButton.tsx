@@ -51,7 +51,7 @@ const Component: React.FC<TabButtonProps> = (props) => {
 	const inputRange =
 		routeIndex === 0
 			? [0, 0.5]
-			: [routeIndex - 0.5, routeIndex, routeIndex + 0.5];
+			: [routeIndex - 0.75, routeIndex, routeIndex + 0.75];
 
 	const outputRange =
 		routeIndex === 0

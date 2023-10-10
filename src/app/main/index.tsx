@@ -2,14 +2,10 @@ import { MaterialCommunityIcons } from '@expo/vector-icons';
 import { Animated } from 'react-native';
 
 import { createAnimatedTabsNavigator } from '@/lib/navigation/createAnimatedTabsNavigator';
+import { MainTabsParamList } from '@/lib/navigation/types';
 
 import HomeScreen from './home';
 import StoreScreen from './store';
-
-export type MainTabsParamList = {
-	Home: undefined;
-	Store: undefined;
-};
 
 const Tabs = createAnimatedTabsNavigator<MainTabsParamList>();
 

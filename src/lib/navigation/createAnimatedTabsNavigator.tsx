@@ -73,15 +73,12 @@ const AnimatedTabsNavigator: React.FC<AnimatedTabsNavigatorProps> = (props) => {
 
 	useEffect(() => {
 		let listener = scrollX.addListener(({ value }) => {
+			/* Convert scroll offset to route index by dividing by tab width */
+			/* When this division gives an integer, it means that the user has scrolled to the next tab */
+			/* We will then set the route to that tab */
+
 			const offsetToIndex = value / width;
 			if (Number.isInteger(offsetToIndex)) {
-				console.log(
-					'Swiped to tab ' +
-						offsetToIndex +
-						' ' +
-						getRouteFromIndex(offsetToIndex),
-				);
-
 				navigation.dispatch({
 					...TabActions.jumpTo(getRouteFromIndex(offsetToIndex)),
 				});
@@ -112,7 +109,10 @@ const AnimatedTabsNavigator: React.FC<AnimatedTabsNavigatorProps> = (props) => {
 				)}
 				data={state.routes}
 				renderItem={(info) => (
-					<View style={{ height: '100%', width }}>
+					<View
+						id={'animated_tab_wrapper-' + info.index}
+						style={{ height: '100%', width }}
+					>
 						{descriptors[info.item.key].render()}
 					</View>
 				)}
@@ -141,7 +141,7 @@ const AnimatedTabsNavigator: React.FC<AnimatedTabsNavigatorProps> = (props) => {
 							icon={descriptors[r.key].options.icon}
 							unfocusedColor={
 								descriptors[r.key].options.unfocusedColor ??
-								'#00000088'
+								'#00000055'
 							}
 							focusedColor={
 								descriptors[r.key].options.focusedColor ??
