@@ -34,7 +34,7 @@ const Component: React.FC<Props> = (props) => {
 	if (loading) return <Loading />;
 
 	return (
-		<Screen transition>
+		<Screen>
 			<ScrollView
 				style={[
 					DefaultStyles.View,
