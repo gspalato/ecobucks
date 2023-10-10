@@ -165,10 +165,6 @@ const AnimatedTabsNavigator: React.FC<AnimatedTabsNavigatorProps> = (props) => {
 										target: state.key,
 									});
 								}
-
-								console.log(
-									`Pressed tab ${state.index} :: ${r.name}`,
-								);
 							}}
 						/>
 					))}
