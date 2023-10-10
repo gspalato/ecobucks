@@ -50,7 +50,7 @@ const Component: React.FC<SelectSheetProps> = (props, ref) => {
 								<Text
 									style={{
 										position: 'absolute',
-										left: 5 * Defaults.Spacing,
+										left: 10 * Defaults.Spacing,
 										fontSize: fontSizes.xl,
 									}}
 								>
