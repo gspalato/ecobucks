@@ -62,8 +62,8 @@ const AnimatedTabsNavigator: React.FC<AnimatedTabsNavigatorProps> = (props) => {
 		initialRouteName,
 		children,
 		screenOptions,
-		tabBarBlur,
-		tabBarTransparent,
+		tabBarBlur = true,
+		tabBarTransparent = true,
 	} = props;
 
 	const { state, navigation, descriptors, NavigationContent } =
@@ -109,8 +109,11 @@ const AnimatedTabsNavigator: React.FC<AnimatedTabsNavigatorProps> = (props) => {
 		});
 	}, [state.index]);
 
-	const perConfigTabBarBlur = tabBarBlur ? tabBarBlur : null;
-	const perConfigTabBarTransparent = tabBarTransparent && '#ffffff00';
+	const perPlatformDefaultBlur = isAndroid ? 0 : 90;
+
+	const perConfigTabBarBlur = tabBarBlur ? perPlatformDefaultBlur : null;
+	const perConfigTabBarBackground =
+		isAndroid || tabBarTransparent ? '#ffffff' : '#ffffff00';
 
 	return (
 		<NavigationContent>
@@ -139,12 +142,9 @@ const AnimatedTabsNavigator: React.FC<AnimatedTabsNavigatorProps> = (props) => {
 				<BlurView
 					blurReductionFactor={100}
 					tint='light'
-					intensity={isAndroid ? 0 : perConfigTabBarBlur || 20}
+					intensity={perConfigTabBarBlur ?? 20}
 					style={{
-						backgroundColor:
-							perConfigTabBarTransparent || isAndroid
-								? '#ffffff'
-								: '#ffffff00',
+						backgroundColor: perConfigTabBarBackground,
 						display: 'flex',
 						flexDirection: 'row',
 						justifyContent: 'space-around',

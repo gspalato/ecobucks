@@ -106,7 +106,7 @@ const Component: React.FC<Props> = (props) => {
 	if (!profile) return <Loading />;
 
 	return (
-		<Screen>
+		<Screen style={{ backgroundColor: Colors.Background }}>
 			<View
 				style={{
 					alignItems: 'center',
@@ -116,10 +116,18 @@ const Component: React.FC<Props> = (props) => {
 				}}
 			>
 				<View
-					style={{ flexGrow: 1, overflow: 'hidden', width: '100%' }}
+					style={{
+						backgroundColor: Colors.Background,
+						flexGrow: 1,
+						overflow: 'hidden',
+						width: '100%',
+					}}
 				>
 					<ScrollView
-						style={Styles.contentContainer}
+						style={[
+							{ backgroundColor: Colors.Background },
+							Styles.contentContainer,
+						]}
 						contentContainerStyle={{
 							paddingTop: headerHeight,
 							paddingBottom: tabBarHeight,
