@@ -21,6 +21,7 @@ import { Colors } from '@/styles';
 
 export type BottomSheetProps = {
 	activeHeight: number;
+	dismissDistance?: number;
 	backdropStyle?: StyleProps;
 	containerStyle?: StyleProps;
 } & React.PropsWithChildren;
@@ -29,6 +30,7 @@ const Component: React.FC<BottomSheetProps> = (props, ref) => {
 	const {
 		activeHeight = 100,
 		children,
+		dismissDistance = 25,
 		backdropStyle,
 		containerStyle,
 	} = props;
@@ -103,7 +105,7 @@ const Component: React.FC<BottomSheetProps> = (props, ref) => {
 			}
 		},
 		onEnd: (_) => {
-			if (topAnimation.value > newActiveHeight + 50) {
+			if (topAnimation.value > newActiveHeight + dismissDistance) {
 				topAnimation.value = withSpring(height, {
 					damping: 100,
 					stiffness: 400,
