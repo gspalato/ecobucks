@@ -105,13 +105,6 @@ const Component: React.FC<Props> = (props) => {
 		navigation.push('Main');
 	};
 
-	if (hasPermission === null) {
-		return <Loading />;
-	}
-	if (hasPermission === false) {
-		return <Text>No access to camera</Text>;
-	}
-
 	return (
 		<Screen>
 			{displaySuccessModal && (
@@ -128,15 +121,19 @@ const Component: React.FC<Props> = (props) => {
 					StyleSheet.absoluteFillObject,
 				]}
 			>
-				<BarCodeScanner
-					onBarCodeScanned={
-						scanned ? undefined : handleBarCodeScanned
-					}
-					style={[
-						tw`mt-0 h-full flex-1 p-0`,
-						StyleSheet.absoluteFillObject,
-					]}
-				/>
+				{hasPermission === null && <Loading />}
+				{hasPermission === false && <Text>No access to camera</Text>}
+				{hasPermission && (
+					<BarCodeScanner
+						onBarCodeScanned={
+							scanned ? undefined : handleBarCodeScanned
+						}
+						style={[
+							tw`mt-0 h-full flex-1 p-0`,
+							StyleSheet.absoluteFillObject,
+						]}
+					/>
+				)}
 			</View>
 			<View style={{ flex: 1, position: 'absolute', width: '100%' }}>
 				<DefaultHeader
