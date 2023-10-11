@@ -6,8 +6,7 @@ import { NativeStackScreenProps } from '@react-navigation/native-stack';
 import { StackScreenProps } from '@react-navigation/stack';
 import * as SecureStore from 'expo-secure-store';
 import React, { useCallback, useEffect, useState } from 'react';
-import { ScrollView, Text, View } from 'react-native';
-import tw from 'twrnc';
+import { ScrollView, StyleSheet, Text, View } from 'react-native';
 
 import CreditCard from '@components/CreditCard';
 import Header from '@components/Header';
@@ -27,7 +26,7 @@ import { RootStackParamList } from '@/lib/navigation/types';
 
 import { Profile } from '@/types/Profile';
 
-import { Colors } from '@/styles';
+import { Colors, Defaults } from '@/styles';
 
 type Props = CompositeScreenProps<
 	StackScreenProps<MainTabsParamList, 'Home'>,
@@ -66,13 +65,10 @@ const Component: React.FC<Props> = (props) => {
 					}\n${e.graphQLErrors.map((e) => e.message)}`,
 				);
 				setSuccess(false);
+				navigation.replace('Login');
 			},
 		},
 	);
-
-	useEffect(() => {
-		if (success === false) navigation.replace('Login');
-	}, [success]);
 
 	useFocusEffect(
 		useCallback(() => {
@@ -140,7 +136,7 @@ const Component: React.FC<Props> = (props) => {
 								name={profile.name}
 							/>
 						</View>
-						<Text style={Styles.transactions.title}>
+						<Text style={Styles.transactionsTitle}>
 							Recent Transactions
 						</Text>
 						<RecentTransactionList
@@ -172,16 +168,21 @@ const Component: React.FC<Props> = (props) => {
 
 export default Component;
 
-const Styles = {
-	safeArea: [{ alignItems: 'center', flexGrow: 1, overflow: 'hidden' }],
-	safeAreaContent: [{ flexGrow: 1, overflow: 'hidden', width: '100%' }],
-	creditCardContainer: [tw`h-auto w-auto rounded-2xl`],
-	contentContainer: [tw`flex w-full px-4 py-0`],
-	transactions: {
-		list: [{ width: '100%' }],
-		title: [
-			tw`text-black/80 pt-15 px-1 pb-4 text-center`,
-			{ fontSize: getFontSize(22), fontFamily: 'Syne_600SemiBold' },
-		],
+const Styles = StyleSheet.create({
+	creditCardContainer: { borderRadius: 10, height: 'auto', width: 'auto' },
+	contentContainer: {
+		display: 'flex',
+		paddingHorizontal: 4 * Defaults.Spacing,
+		paddingVertical: 0,
+		width: '100%',
 	},
-};
+	transactionsList: { width: '100%' },
+	transactionsTitle: {
+		color: Colors.Text,
+		fontSize: getFontSize(22),
+		fontFamily: 'Syne_600SemiBold',
+		paddingBottom: 10 * Defaults.Spacing,
+		paddingTop: 20 * Defaults.Spacing,
+		textAlign: 'center',
+	},
+});
