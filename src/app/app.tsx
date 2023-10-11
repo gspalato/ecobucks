@@ -6,7 +6,7 @@ import { createNativeStackNavigator } from '@react-navigation/native-stack';
 import { useFonts } from 'expo-font';
 import * as NavigationBar from 'expo-navigation-bar';
 import { useEffect, useState } from 'react';
-import { Platform } from 'react-native';
+import { Platform, UIManager } from 'react-native';
 import { ModalProvider } from 'react-native-modalfy';
 
 import LoginScreen from '@app/login';
@@ -46,8 +46,11 @@ const App = () => {
 	useEffect(() => {
 		if (Platform.OS != 'android') return;
 
-		NavigationBar.setPositionAsync('absolute');
+		UIManager.setLayoutAnimationEnabledExperimental(true);
+
 		NavigationBar.setBackgroundColorAsync('#ffffff00');
+		NavigationBar.setBehaviorAsync('overlay-swipe');
+		NavigationBar.setVisibilityAsync('hidden');
 	}, []);
 
 	useEffect(() => {
