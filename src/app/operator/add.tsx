@@ -3,12 +3,10 @@ import { ScrollView, Swipeable } from 'react-native-gesture-handler';
 import { useMutation } from '@apollo/client';
 import { Feather } from '@expo/vector-icons';
 import { StackScreenProps } from '@react-navigation/stack';
-import { LinearGradient } from 'expo-linear-gradient';
-import React, { useEffect, useRef, useState } from 'react';
+import React, { useState } from 'react';
 import {
 	LayoutAnimation,
 	SafeAreaView,
-	Text,
 	TouchableOpacity,
 	View,
 } from 'react-native';
@@ -70,8 +68,6 @@ const Screen: React.FC<Props> = (props) => {
 	const [disposalFields, setDisposalFields] = useState<DisposalField[]>([
 		{ _id: 0, weight: undefined, disposalType: undefined },
 	]);
-
-	const [redeemButtonHeight, setRedeemButtonHeight] = useState(0);
 
 	const { height: headerHeight } = useHeaderLayout();
 
