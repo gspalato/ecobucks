@@ -11,7 +11,7 @@ import {
 import { BlurView } from 'expo-blur';
 import * as React from 'react';
 import { useEffect, useRef } from 'react';
-import { Animated, useWindowDimensions, View } from 'react-native';
+import { Animated, StatusBar, useWindowDimensions, View } from 'react-native';
 import Reanimated, { useSharedValue } from 'react-native-reanimated';
 import { useSafeAreaInsets } from 'react-native-safe-area-context';
 
@@ -113,7 +113,7 @@ const AnimatedTabsNavigator: React.FC<AnimatedTabsNavigatorProps> = (props) => {
 
 	const perConfigTabBarBlur = tabBarBlur ? perPlatformDefaultBlur : null;
 	const perConfigTabBarBackground =
-		isAndroid || tabBarTransparent ? '#ffffff' : '#ffffff00';
+		!isAndroid || tabBarTransparent ? '#ffffff00' : '#ffffff';
 
 	return (
 		<NavigationContent>
@@ -150,7 +150,9 @@ const AnimatedTabsNavigator: React.FC<AnimatedTabsNavigatorProps> = (props) => {
 						justifyContent: 'space-around',
 						alignItems: 'center',
 						paddingTop: 4 * Defaults.Spacing,
-						paddingBottom: paddings.bottom,
+						paddingBottom:
+							paddings.bottom +
+							(isAndroid ? StatusBar.currentHeight! || 10 : 0),
 						width: '100%',
 					}}
 					onLayout={(e) => {
