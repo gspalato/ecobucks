@@ -1,13 +1,12 @@
 import 'react-native-gesture-handler';
 
-import { ApolloProvider, useLazyQuery } from '@apollo/client';
+import { ApolloProvider } from '@apollo/client';
 import { loadDevMessages, loadErrorMessages } from '@apollo/client/dev';
 import { NavigationContainer } from '@react-navigation/native';
 import { registerRootComponent } from 'expo';
 import { StatusBar } from 'expo-status-bar';
-import { ModalProvider } from 'react-native-modalfy';
 
-import { modalStack } from '@/components/Modals';
+import { PerformantImageProvider } from '@/components/PerformantImage';
 
 import client from '@lib/graphql/client';
 
@@ -25,13 +24,15 @@ const Root = () => {
 			<StatusBar translucent backgroundColor='transparent' />
 			<ApolloProvider client={client}>
 				<AuthProvider>
-					<HeaderProvider>
-						<TabBarProvider>
-							<NavigationContainer>
-								<App />
-							</NavigationContainer>
-						</TabBarProvider>
-					</HeaderProvider>
+					<PerformantImageProvider>
+						<HeaderProvider>
+							<TabBarProvider>
+								<NavigationContainer>
+									<App />
+								</NavigationContainer>
+							</TabBarProvider>
+						</HeaderProvider>
+					</PerformantImageProvider>
 				</AuthProvider>
 			</ApolloProvider>
 		</>
