@@ -12,6 +12,8 @@ import DefaultHeader from '@components/DefaultHeader';
 import Loading from '@components/Loading';
 import Screen from '@components/Screen';
 
+import PerformantImage from '@/components/PerformantImage';
+
 import { getFontSize } from '@lib/fonts';
 import { useHeaderLayout, useTabBarLayout } from '@lib/layout';
 
@@ -50,16 +52,18 @@ const Component: React.FC<Props> = (props) => {
 					paddingHorizontal: 10,
 				}}
 			>
-				<Image
-					source={Number(image)}
+				<PerformantImage
+					source={image}
 					transition={100}
 					placeholder={'#ccc'}
 					style={{
 						aspectRatio: 4 / 3,
-						borderRadius: 15,
 						marginBottom: 20,
 						padding: 5,
 						width: '100%',
+					}}
+					imageStyle={{
+						borderRadius: 15,
 					}}
 					onLoad={() => setLoading(false)}
 				/>

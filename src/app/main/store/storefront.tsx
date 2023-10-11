@@ -1,12 +1,20 @@
 import { StackScreenProps } from '@react-navigation/stack';
 import { Image } from 'expo-image';
 import { useState } from 'react';
-import { FlatList, Text, TouchableOpacity, View } from 'react-native';
+import {
+	FlatList,
+	StyleSheet,
+	Text,
+	TouchableOpacity,
+	View,
+} from 'react-native';
 import tw from 'twrnc';
 
 import DefaultHeader from '@components/DefaultHeader';
 import Loading from '@components/Loading';
 import Screen from '@components/Screen';
+
+import PerformantImage from '@/components/PerformantImage';
 
 import Gradients from '@lib/assets/gradients';
 import { useHeaderLayout, useTabBarLayout } from '@lib/layout';
@@ -82,37 +90,40 @@ const Component: React.FC<Props> = (props) => {
 						},
 					]}
 					data={TestRewards}
+					keyExtractor={(item, index) =>
+						index + item.image + item.name + item.price
+					}
 					renderItem={(info) => (
 						<TouchableOpacity
-							key={info.index}
-							style={[
-								{
-									borderRadius: 10,
-									display: 'flex',
-									gap: 15,
-									margin: 2.5,
-									marginHorizontal: 'auto',
-									marginBottom: 10,
-									padding: 15,
-									width: '90%',
-								},
-							]}
+							style={{
+								borderRadius: 10,
+								display: 'flex',
+								gap: 15,
+								margin: 2.5,
+								marginHorizontal: 'auto',
+								marginBottom: 10,
+								padding: 15,
+								width: '90%',
+							}}
 							onPress={() =>
 								navigation.navigate('Reward', {
 									id: info.index,
-									image: info.item.image,
+									image: Gradients[
+										`Gradient${(info.index + 1) % 27}`
+									],
 									name: info.item.name,
 									price: info.item.price,
 								})
 							}
 						>
-							<Image
+							<PerformantImage
 								source={
 									Gradients[
 										`Gradient${(info.index + 1) % 27}`
 									]
 								}
-								style={tw`aspect-video w-full rounded-md`}
+								style={{ aspectRatio: 16 / 9, width: '100%' }}
+								imageStyle={{ borderRadius: 15 }}
 							/>
 							<View style={{ display: 'flex', gap: 5 }}>
 								<Text
@@ -148,6 +159,6 @@ const Component: React.FC<Props> = (props) => {
 
 export default Component;
 
-const Styles = {
-	list: [tw`mb-0 p-2 pb-0`],
-};
+const Styles = StyleSheet.create({
+	list: { marginBottom: 0, padding: 2 * Defaults.Spacing, paddingBottom: 0 },
+});

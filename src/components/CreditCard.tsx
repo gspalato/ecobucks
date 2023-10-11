@@ -4,6 +4,8 @@ import tw from 'twrnc';
 
 import { getFontSize } from '@/lib/fonts';
 
+import PerformantImage from './PerformantImage';
+
 type CreditCardProps = {
 	credits: number;
 	gradient: any;
@@ -15,7 +17,7 @@ const Component: React.FC<CreditCardProps> = (props) => {
 
 	return (
 		<Animated.View style={Styles.card}>
-			<Image
+			<PerformantImage
 				source={gradient}
 				style={tw`absolute h-full w-full rounded-2xl`}
 				contentPosition={{ top: -10 }}
