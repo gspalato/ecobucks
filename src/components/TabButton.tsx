@@ -6,16 +6,8 @@ import {
 	TouchableOpacity,
 	useWindowDimensions,
 } from 'react-native';
-import {
-	AnimatedStyleProp,
-	interpolateColor,
-	SharedValue,
-} from 'react-native-reanimated';
-import tw from 'twrnc';
 
-import { getFontSize } from '@/lib/fonts';
-
-import { Defaults } from '@/styles';
+import { Spacings } from '@/styles';
 
 type TabButtonProps = {
 	icon: (
@@ -76,7 +68,9 @@ const Component: React.FC<TabButtonProps> = (props) => {
 				display: 'flex',
 				alignItems: 'center',
 				justifyContent: 'center',
-				gap: 1.5 * Defaults.Spacing,
+				gap: 1.5 * Spacings.Unit,
+				width: 25 * Spacings.Unit,
+				maxWidth: 25 * Spacings.Unit,
 			}}
 			onPress={onPress}
 		>

@@ -86,9 +86,10 @@ const getFontSize = (size: number) => size / PixelRatio.getFontScale();
 const fontSizes = {
 	title: getFontSize(20),
 
-	xxl: getFontSize(20),
-	xl: getFontSize(17),
-	lg: getFontSize(15),
+	xl: getFontSize(20),
+	lg: getFontSize(18),
+	md: getFontSize(16),
+	sm: getFontSize(14),
 };
 
 export { getFontSize, fontSizes };

@@ -21,6 +21,9 @@
       ],
       "@constants": [
         "./src/constants.ts"
+      ],
+      "@styles" : [
+        "./src/styles.ts"
       ]
     }
   },

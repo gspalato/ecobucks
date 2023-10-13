@@ -1,10 +1,12 @@
 import { BlurView } from 'expo-blur';
-import { StyleProp, View, ViewStyle } from 'react-native';
+import { StyleProp, StyleSheet, View, ViewStyle } from 'react-native';
 import { useSafeAreaInsets } from 'react-native-safe-area-context';
 import tw from 'twrnc';
 
 import { HeaderProvider, useHeaderLayout } from '@/lib/layout/header';
 import { usePlatform } from '@/lib/platform';
+
+import { Spacings } from '@/styles';
 
 type HeaderProps = {
 	blurIntensity?: number;
@@ -37,10 +39,8 @@ const Component: React.FC<HeaderProps> = (props) => {
 					Styles.container,
 					{
 						backgroundColor: isAndroid ? '#ffffff' : '#ffffff00',
-						width: '100%',
-						paddingTop: 20 + (safe ? paddings.top : 0),
-						paddingBottom: 15,
-						marginBottom: 5,
+						paddingTop:
+							8 * Spacings.Unit + (safe ? paddings.top : 0),
 					},
 					style /*isAndroid && { paddingTop: 0 },*/,
 				]}
@@ -57,6 +57,11 @@ const Component: React.FC<HeaderProps> = (props) => {
 
 export default Component;
 
-const Styles = {
-	container: [tw`mb-4 w-full px-4 pb-3 pt-7`],
-};
+const Styles = StyleSheet.create({
+	container: {
+		paddingBottom: 8 * Spacings.Unit,
+		paddingHorizontal: 6 * Spacings.Unit,
+		paddingTop: 7 * Spacings.Unit,
+		width: '100%',
+	},
+});

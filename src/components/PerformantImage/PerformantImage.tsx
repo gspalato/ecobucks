@@ -64,13 +64,14 @@ const Component: React.FC<PerformantImageProps> = forwardRef((props, ref) => {
 					pixelSize,
 				);
 
-				console.log(
-					`[PerformantImage] Found cached image (${cachedImage?.uri.slice(
-						-20,
-					)}) for original "...${assetKey.slice(
-						-20,
-					)}" with dimensions ${pixelSize}x${pixelSize}.`,
-				);
+				if (__DEV__)
+					console.log(
+						`[PerformantImage] Found cached image (${cachedImage?.uri.slice(
+							-20,
+						)}) for original "...${assetKey.slice(
+							-20,
+						)}" with dimensions ${pixelSize}x${pixelSize}.`,
+					);
 
 				setImage(cachedImage);
 				return;
@@ -88,23 +89,25 @@ const Component: React.FC<PerformantImageProps> = forwardRef((props, ref) => {
 				{ format: SaveFormat.PNG },
 			)
 				.then((result) => {
-					console.log(
-						`[PerformantImage] Resized image "...${assetKey.slice(
-							-20,
-						)}" with dimensions ${pixelSize}x${pixelSize} (${result.uri.slice(
-							-20,
-						)}).`,
-					);
+					if (__DEV__)
+						console.log(
+							`[PerformantImage] Resized image "...${assetKey.slice(
+								-20,
+							)}" with dimensions ${pixelSize}x${pixelSize} (...${result.uri.slice(
+								-20,
+							)}).`,
+						);
 
 					setImage(result);
 
 					cacheImage(assetKey, pixelSize, pixelSize, result);
 
-					console.log(
-						`[PerformantImage] Cached image "...${assetKey.slice(
-							-20,
-						)}" with dimensions ${pixelSize}x${pixelSize}.`,
-					);
+					if (__DEV__)
+						console.log(
+							`[PerformantImage] Cached image "...${assetKey.slice(
+								-20,
+							)}" with dimensions ${pixelSize}x${pixelSize}.`,
+						);
 				})
 				.catch((e) => {
 					console.log(e);
@@ -116,9 +119,7 @@ const Component: React.FC<PerformantImageProps> = forwardRef((props, ref) => {
 	useEffect(() => {
 		Asset.fromModule(source)
 			.downloadAsync()
-			.then((asset) => {
-				downscaleToContainer(asset);
-			});
+			.then((asset) => downscaleToContainer(asset));
 	}, [containerWidth, source]);
 
 	return (

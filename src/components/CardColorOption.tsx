@@ -1,9 +1,11 @@
 import { Image } from 'expo-image';
-import { View } from 'react-native';
 import { TouchableOpacity } from 'react-native';
+import Animated, { FadeIn, FadeOut } from 'react-native-reanimated';
 import tw from 'twrnc';
 
 import Checkmark from '@/components/Checkmark';
+
+import { Radius } from '@/styles';
 
 type CardColorOptionsProps = {
 	image: any;
@@ -21,22 +23,35 @@ const Component: React.FC<CardColorOptionsProps> = (props) => {
 			key={`g${index}`}
 			style={[
 				tw`mx-auto mb-4 aspect-video w-[90%] rounded-2xl bg-[#00000022]`,
+				{ borderRadius: Radius.Large },
 			]}
 		>
 			<Image
 				source={image}
-				style={tw`aspect-video w-full rounded-2xl`}
+				style={{
+					aspectRatio: 16 / 9,
+					borderRadius: Radius.Large,
+					width: '100%',
+				}}
 				contentPosition={{ top: -10 }}
 				priority='high'
-				transition={750}
+				transition={300}
 			/>
 			{isSelected && (
-				<View
-					style={
-						isSelected && [
-							tw`absolute flex aspect-video h-full w-full items-center justify-center rounded-2xl bg-[#00000088]`,
-						]
-					}
+				<Animated.View
+					entering={FadeIn}
+					exiting={FadeOut}
+					style={{
+						aspectRatio: 16 / 9,
+						display: 'flex',
+						position: 'absolute',
+						height: '100%',
+						width: '100%',
+						alignItems: 'center',
+						justifyContent: 'center',
+						borderRadius: Radius.Large,
+						backgroundColor: '#00000088',
+					}}
 				>
 					<Checkmark
 						animate
@@ -45,7 +60,7 @@ const Component: React.FC<CardColorOptionsProps> = (props) => {
 						width={25}
 						color='#ffffff'
 					/>
-				</View>
+				</Animated.View>
 			)}
 		</TouchableOpacity>
 	);

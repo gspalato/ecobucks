@@ -1,13 +1,7 @@
 import { StackScreenProps } from '@react-navigation/stack';
-import { Image } from 'expo-image';
+import { FlashList } from '@shopify/flash-list';
 import { useState } from 'react';
-import {
-	FlatList,
-	StyleSheet,
-	Text,
-	TouchableOpacity,
-	View,
-} from 'react-native';
+import { StyleSheet, Text, TouchableOpacity, View } from 'react-native';
 import tw from 'twrnc';
 
 import DefaultHeader from '@components/DefaultHeader';
@@ -21,7 +15,7 @@ import { useHeaderLayout, useTabBarLayout } from '@lib/layout';
 
 import { getFontSize } from '@/lib/fonts';
 
-import { Colors, Defaults } from '@/styles';
+import { Colors, Spacings } from '@/styles';
 
 import { StoreStackParamList } from '.';
 
@@ -77,19 +71,15 @@ const Component: React.FC<Props> = (props) => {
 
 	return (
 		<Screen>
-			<View style={{ flexGrow: 1 }}>
-				<FlatList
-					contentContainerStyle={[
-						{
-							backgroundColor: Colors.Background,
-							display: 'flex',
-							flexDirection: 'column',
-							alignItems: 'center',
-							paddingTop: headerHeight,
-							paddingBottom: tabBarHeight,
-						},
-					]}
+			<View style={{ backgroundColor: Colors.Background, flexGrow: 1 }}>
+				<FlashList
+					contentContainerStyle={{
+						backgroundColor: Colors.Background,
+						paddingTop: headerHeight,
+						paddingBottom: tabBarHeight,
+					}}
 					data={TestRewards}
+					estimatedItemSize={290}
 					keyExtractor={(item, index) =>
 						index + item.image + item.name + item.price
 					}
@@ -100,10 +90,10 @@ const Component: React.FC<Props> = (props) => {
 								display: 'flex',
 								gap: 15,
 								margin: 2.5,
-								marginHorizontal: 'auto',
 								marginBottom: 10,
-								padding: 15,
-								width: '90%',
+								marginHorizontal: 'auto',
+								padding: 20,
+								width: '100%',
 							}}
 							onPress={() =>
 								navigation.navigate('Reward', {
@@ -160,5 +150,5 @@ const Component: React.FC<Props> = (props) => {
 export default Component;
 
 const Styles = StyleSheet.create({
-	list: { marginBottom: 0, padding: 2 * Defaults.Spacing, paddingBottom: 0 },
+	list: { marginBottom: 0, padding: 2 * Spacings.Unit, paddingBottom: 0 },
 });

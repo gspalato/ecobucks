@@ -46,9 +46,10 @@ const App = () => {
 	useEffect(() => {
 		if (Platform.OS != 'android') return;
 
-		UIManager.setLayoutAnimationEnabledExperimental(true);
+		if (UIManager.setLayoutAnimationEnabledExperimental)
+			UIManager.setLayoutAnimationEnabledExperimental(true);
 
-		NavigationBar.setBackgroundColorAsync('#ffffff00');
+		NavigationBar.setBackgroundColorAsync('#ffffff');
 		NavigationBar.setBehaviorAsync('overlay-swipe');
 		NavigationBar.setVisibilityAsync('hidden');
 	}, []);

@@ -28,6 +28,7 @@
     "@react-navigation/native": "^6.1.7",
     "@react-navigation/native-stack": "^6.9.13",
     "@react-navigation/stack": "^6.3.18",
+    "@shopify/flash-list": "1.4.3",
     "expo": "~49.0.8",
     "expo-app-loading": "^2.1.1",
     "expo-barcode-scanner": "~12.5.3",
@@ -67,7 +68,8 @@
     "react-native-swipe-action-list": "^0.0.6",
     "react-native-swipe-list-view": "^3.2.9",
     "react-native-swipeable-list": "^0.1.2",
-    "twrnc": "^3.6.4"
+    "twrnc": "^3.6.4",
+    "victory-native": "^40.0.2"
   },
   "devDependencies": {
     "@babel/core": "^7.20.0",

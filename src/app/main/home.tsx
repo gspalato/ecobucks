@@ -17,7 +17,7 @@ import Topbar from '@components/Topbar';
 
 import Gradients from '@lib/assets/gradients';
 import { useAuthToken } from '@lib/auth';
-import { getFontSize } from '@lib/fonts';
+import { fontSizes, getFontSize } from '@lib/fonts';
 import * as GetEcobucksProfile from '@lib/graphql/queries/getEcobucksProfile';
 import { useHeaderLayout, useTabBarLayout } from '@lib/layout';
 import { MainTabsParamList } from '@lib/navigation/types';
@@ -26,7 +26,7 @@ import { RootStackParamList } from '@/lib/navigation/types';
 
 import { Profile } from '@/types/Profile';
 
-import { Colors, Defaults } from '@/styles';
+import { Colors, Spacings } from '@/styles';
 
 type Props = CompositeScreenProps<
 	StackScreenProps<MainTabsParamList, 'Home'>,
@@ -103,53 +103,31 @@ const Component: React.FC<Props> = (props) => {
 
 	return (
 		<Screen style={{ backgroundColor: Colors.Background }}>
-			<View
-				style={{
-					alignItems: 'center',
-					backgroundColor: Colors.Background,
-					flexGrow: 1,
-					overflow: 'hidden',
+			<ScrollView
+				style={[
+					{ backgroundColor: Colors.Background },
+					Styles.contentContainer,
+				]}
+				contentContainerStyle={{
+					paddingTop: headerHeight + 10,
+					paddingBottom: tabBarHeight,
 				}}
 			>
-				<View
-					style={{
-						backgroundColor: Colors.Background,
-						flexGrow: 1,
-						overflow: 'hidden',
-						width: '100%',
-					}}
-				>
-					<ScrollView
-						style={[
-							{ backgroundColor: Colors.Background },
-							Styles.contentContainer,
-						]}
-						contentContainerStyle={{
-							paddingTop: headerHeight,
-							paddingBottom: tabBarHeight,
-						}}
-					>
-						<View style={Styles.creditCardContainer}>
-							<CreditCard
-								credits={profile.credits}
-								gradient={Gradients[cardGradient!]}
-								name={profile.name}
-							/>
-						</View>
-						<Text style={Styles.transactionsTitle}>
-							Recent Transactions
-						</Text>
-						<RecentTransactionList
-							style={{ width: '100%' }}
-							transactions={profile.transactions.map((t) => ({
-								action: t.claimId != null ? 'claim' : 'spend',
-								credits: t.credits,
-								description: t.description,
-							}))}
-						/>
-					</ScrollView>
-				</View>
-			</View>
+				<CreditCard
+					credits={profile.credits}
+					gradient={Gradients[cardGradient!]}
+					name={profile.name}
+				/>
+				<Text style={Styles.transactionsTitle}>Recent</Text>
+				<RecentTransactionList
+					style={{ width: '100%' }}
+					transactions={profile.transactions.map((t) => ({
+						action: t.claimId != null ? 'claim' : 'spend',
+						credits: t.credits,
+						description: t.description,
+					}))}
+				/>
+			</ScrollView>
 			<View style={{ flexGrow: 1, position: 'absolute', width: '100%' }}>
 				<Header blurIntensity={100}>
 					<Topbar
@@ -169,20 +147,19 @@ const Component: React.FC<Props> = (props) => {
 export default Component;
 
 const Styles = StyleSheet.create({
-	creditCardContainer: { borderRadius: 10, height: 'auto', width: 'auto' },
 	contentContainer: {
 		display: 'flex',
-		paddingHorizontal: 4 * Defaults.Spacing,
+		paddingHorizontal: 9 * Spacings.Unit,
 		paddingVertical: 0,
 		width: '100%',
 	},
 	transactionsList: { width: '100%' },
 	transactionsTitle: {
 		color: Colors.Text,
-		fontSize: getFontSize(22),
+		fontSize: fontSizes.md,
 		fontFamily: 'Syne_600SemiBold',
-		paddingBottom: 10 * Defaults.Spacing,
-		paddingTop: 20 * Defaults.Spacing,
-		textAlign: 'center',
+		paddingBottom: 7.5 * Spacings.Unit,
+		paddingTop: 20 * Spacings.Unit,
+		textAlign: 'left',
 	},
 });

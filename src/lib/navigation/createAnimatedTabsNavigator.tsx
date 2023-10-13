@@ -9,15 +9,15 @@ import {
 	useNavigationBuilder,
 } from '@react-navigation/native';
 import { BlurView } from 'expo-blur';
+import * as Haptics from 'expo-haptics';
 import * as React from 'react';
 import { useEffect, useRef } from 'react';
 import { Animated, StatusBar, useWindowDimensions, View } from 'react-native';
-import Reanimated, { useSharedValue } from 'react-native-reanimated';
 import { useSafeAreaInsets } from 'react-native-safe-area-context';
 
 import TabButton from '@/components/TabButton';
 
-import { Defaults } from '@/styles';
+import { Spacings } from '@/styles';
 
 import { useTabBarLayout } from '../layout';
 import { usePlatform } from '../platform';
@@ -149,7 +149,7 @@ const AnimatedTabsNavigator: React.FC<AnimatedTabsNavigatorProps> = (props) => {
 						flexDirection: 'row',
 						justifyContent: 'space-around',
 						alignItems: 'center',
-						paddingTop: 4 * Defaults.Spacing,
+						paddingTop: 4 * Spacings.Unit,
 						paddingBottom:
 							paddings.bottom +
 							(isAndroid ? StatusBar.currentHeight! || 10 : 0),
@@ -190,6 +190,10 @@ const AnimatedTabsNavigator: React.FC<AnimatedTabsNavigatorProps> = (props) => {
 										target: state.key,
 									});
 								}
+
+								Haptics.impactAsync(
+									Haptics.ImpactFeedbackStyle.Light,
+								);
 							}}
 						/>
 					))}

@@ -1,10 +1,10 @@
-import { Image } from 'expo-image';
 import { Animated, Text, View } from 'react-native';
 import tw from 'twrnc';
 
 import { getFontSize } from '@/lib/fonts';
 
 import PerformantImage from './PerformantImage';
+import { Radius, Spacings } from '@/styles';
 
 type CreditCardProps = {
 	credits: number;
@@ -19,7 +19,13 @@ const Component: React.FC<CreditCardProps> = (props) => {
 		<Animated.View style={Styles.card}>
 			<PerformantImage
 				source={gradient}
-				style={tw`absolute h-full w-full rounded-2xl`}
+				style={{
+					borderRadius: Radius.Large,
+					height: '100%',
+					position: 'absolute',
+					width: '100%',
+				}}
+				imageStyle={{ borderRadius: Radius.Large - 1 }}
 				contentPosition={{ top: -10 }}
 				priority='high'
 				transition={250}
@@ -29,7 +35,7 @@ const Component: React.FC<CreditCardProps> = (props) => {
 				numberOfLines={2}
 				style={Styles.text.credit}
 			>
-				${Math.floor(credits) || '0'}
+				${credits.toFixed(2) || '0'}
 			</Text>
 			<View style={Styles.detail.container}>
 				<Text style={Styles.detail.name}>{name}</Text>
@@ -43,9 +49,21 @@ export default Component;
 
 const Styles = {
 	card: [
-		tw`mx-auto mt-5 flex aspect-video w-[95%] items-start justify-start overflow-hidden rounded-2xl border border-[#ffffff11] bg-[#00000022]`,
+		{
+			alignItems: 'start',
+			aspectRatio: 16 / 9,
+			backgroundColor: '#0002',
+			borderColor: '#fff1',
+			borderRadius: Radius.Large,
+			borderWidth: 1,
+			display: 'flex',
+			marginHorizontal: 'auto',
+			marginTop: 5 * Spacings.Unit,
+			overflow: 'hidden',
+			width: '100%',
+		},
+		tw`mx-auto`,
 	],
-	button: [tw`rounded-lg bg-[#11da33] p-3`],
 	text: {
 		credit: [
 			tw`text-white w-full p-5 `,

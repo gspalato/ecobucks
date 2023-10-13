@@ -16,7 +16,6 @@ import Button from '@/components/Button';
 import DefaultHeader from '@/components/DefaultHeader';
 import DisposalField from '@/components/DisposalField';
 import ClaimSuccessModal from '@/components/Modals/ClaimSuccessModal';
-import SafeView from '@/components/SafeView';
 import SwipeableRow from '@/components/SwipeableRow';
 
 import { useAuthToken } from '@/lib/auth';
@@ -28,7 +27,7 @@ import { usePlatform } from '@/lib/platform';
 
 import { DisposalType } from '@/types/DisposalClaim';
 
-import { Colors, Defaults } from '@/styles';
+import { Colors, Defaults, Spacings } from '@/styles';
 
 export type DisposalField = {
 	_id: number;
@@ -145,7 +144,7 @@ const Screen: React.FC<Props> = (props) => {
 						<SwipeableRow
 							key={index}
 							containerStyle={{
-								height: 60 * Defaults.Spacing,
+								height: 60 * Spacings.Unit,
 								borderBottomWidth: 1,
 								borderColor: '#00000011',
 							}}
@@ -194,8 +193,8 @@ const Screen: React.FC<Props> = (props) => {
 					<Button
 						text='Register'
 						buttonStyle={{
-							height: 20 * Defaults.Spacing,
-							width: 100 * Defaults.Spacing,
+							height: 20 * Spacings.Unit,
+							width: 100 * Spacings.Unit,
 						}}
 						onPress={() => {
 							if (!token) {

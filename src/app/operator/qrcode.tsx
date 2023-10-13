@@ -16,7 +16,7 @@ import { fontSizes, getFontSize } from '@lib/fonts';
 import { RootStackParamList } from '@/lib/navigation/types';
 
 import Constants from '@/constants';
-import { Defaults } from '@/styles';
+import { Spacings } from '@/styles';
 
 type Props = StackScreenProps<RootStackParamList, 'QRCode'>;
 
@@ -37,8 +37,8 @@ const Screen: React.FC<Props> = (props) => {
 					<Button
 						text='Proceed'
 						buttonStyle={{
-							height: 20 * Defaults.Spacing,
-							width: 100 * Defaults.Spacing,
+							height: 20 * Spacings.Unit,
+							width: 100 * Spacings.Unit,
 						}}
 						textStyle={Styles.proceedButton.text}
 						onPress={() => navigation.replace('Main')}

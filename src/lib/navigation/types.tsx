@@ -13,9 +13,10 @@ export type RootStackParamList = {
 export type MainTabsParamList = {
 	Home: undefined;
 	Store: undefined;
+	Settings: undefined;
 };
 
 export type SettingsStackParamList = {
-	Settings: undefined;
+	Main: undefined;
 	ChangeCardStyle: undefined;
 };

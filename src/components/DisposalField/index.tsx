@@ -5,7 +5,7 @@ import {
 
 import { Feather } from '@expo/vector-icons';
 import { useState } from 'react';
-import { Animated, View } from 'react-native';
+import { Animated } from 'react-native';
 import tw from 'twrnc';
 
 import { DisposalField } from '@/app/operator/add';
@@ -16,7 +16,7 @@ import Input from '@/components/Input';
 
 import { DisposalType } from '@/types/DisposalClaim';
 
-import { Defaults } from '@/styles';
+import { Spacings } from '@/styles';
 
 const disposalOptions: SelectItemDefinition[] = [
 	{
@@ -85,9 +85,9 @@ const Component = (props: {
 	return (
 		<Animated.View
 			style={{
-				height: 40 * Defaults.Spacing,
+				height: 40 * Spacings.Unit,
 				width: '100%',
-				padding: 5 * Defaults.Spacing,
+				padding: 5 * Spacings.Unit,
 			}}
 		>
 			<Input

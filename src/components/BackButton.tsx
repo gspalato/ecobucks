@@ -1,12 +1,13 @@
 import { Feather } from '@expo/vector-icons';
 import { useNavigation } from '@react-navigation/native';
+import * as Haptics from 'expo-haptics';
 import {
 	OpaqueColorValue,
 	StyleProp,
 	TouchableOpacity,
 	View,
 } from 'react-native';
-import { ViewStyle } from 'react-native/Libraries/StyleSheet/StyleSheetTypes';
+import { ViewStyle } from 'react-native';
 
 type BackButtonProps = {
 	color?: string | OpaqueColorValue;
@@ -19,6 +20,7 @@ const Component: React.FC<BackButtonProps> = (props) => {
 	const navigation = useNavigation();
 
 	const onPress = () => {
+		Haptics.impactAsync(Haptics.ImpactFeedbackStyle.Light);
 		navigation.goBack();
 	};
 

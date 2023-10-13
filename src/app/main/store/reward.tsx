@@ -17,7 +17,7 @@ import PerformantImage from '@/components/PerformantImage';
 import { getFontSize } from '@lib/fonts';
 import { useHeaderLayout, useTabBarLayout } from '@lib/layout';
 
-import { Colors, Defaults, Defaults as DefaultStyles } from '@/styles';
+import { Colors, Defaults, Radius, Spacings } from '@/styles';
 
 import { StoreStackParamList } from '.';
 
@@ -39,7 +39,7 @@ const Component: React.FC<Props> = (props) => {
 		<Screen>
 			<ScrollView
 				style={[
-					DefaultStyles.View,
+					Defaults.View,
 					{
 						flexGrow: 1,
 					},
@@ -114,7 +114,7 @@ const Component: React.FC<Props> = (props) => {
 			</ScrollView>
 			<View
 				style={[
-					DefaultStyles.View,
+					Defaults.View,
 					{
 						alignItems: 'flex-start',
 						display: 'flex',
@@ -159,8 +159,8 @@ const Component: React.FC<Props> = (props) => {
 								height: '100%',
 								backgroundColor: Colors.Accent,
 								borderWidth: 0,
-								borderRadius: 3 * Defaults.Spacing,
-								padding: 3 * Defaults.Spacing,
+								borderRadius: Radius.Medium,
+								padding: 3 * Spacings.Unit,
 								width: '100%',
 							}}
 							textStyle={{

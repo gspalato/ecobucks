@@ -5,7 +5,7 @@ import { fontSizes } from '@/lib/fonts';
 
 import BottomSheet, { BottomSheetProps } from './BottomSheet';
 import { SelectItemDefinition } from './Select';
-import { Defaults } from '@/styles';
+import { Spacings } from '@/styles';
 
 type SelectSheetProps = {
 	items: SelectItemDefinition[];
@@ -31,11 +31,11 @@ const Component: React.FC<SelectSheetProps> = (props, ref) => {
 								display: 'flex',
 								flexDirection: 'row',
 								justifyContent: 'center',
-								padding: 4 * Defaults.Spacing,
+								padding: 4 * Spacings.Unit,
 								width: '100%',
 							},
 							info.index == 0 && {
-								marginTop: 4 * Defaults.Spacing,
+								marginTop: 4 * Spacings.Unit,
 							},
 						]}
 						onPress={() => {
@@ -50,7 +50,7 @@ const Component: React.FC<SelectSheetProps> = (props, ref) => {
 								<Text
 									style={{
 										position: 'absolute',
-										left: 10 * Defaults.Spacing,
+										left: 10 * Spacings.Unit,
 										fontSize: fontSizes.xl,
 									}}
 								>
