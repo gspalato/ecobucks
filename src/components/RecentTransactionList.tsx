@@ -1,11 +1,15 @@
-import { useCallback, useMemo } from 'react';
-import { StyleProp, Text, View, ViewStyle } from 'react-native';
 import { FlatList, ScrollView } from 'react-native-gesture-handler';
+
+import { Ionicons } from '@expo/vector-icons';
+import { useCallback, useMemo } from 'react';
+import { StyleProp, StyleSheet, Text, View, ViewStyle } from 'react-native';
 import tw from 'twrnc';
 
-import { getFontSize } from '@/lib/fonts';
+import { fontSizes, getFontSize } from '@/lib/fonts';
 
 import { DisposalType } from '@/types/DisposalClaim';
+
+import { Spacings } from '@/styles';
 
 type Transaction = {
 	action: 'claim' | 'spend';
@@ -33,18 +37,40 @@ const Component: React.FC<RecentTransactionListProps> = (props) => {
 			transactions.reverse().map((item, i) => (
 				<View
 					key={item.action + i}
-					style={Styles.transactionItem.container}
+					style={Styles.transactionItemContainer}
 				>
-					<View style={Styles.transactionItem.detail.container}>
-						<Text style={Styles.transactionItem.detail.title}>
+					<View
+						style={{
+							alignItems: 'center',
+							aspectRatio: 1,
+							backgroundColor: '#00000011',
+							borderRadius: 100,
+							display: 'flex',
+							justifyContent: 'center',
+							width: 40,
+						}}
+					>
+						<Ionicons
+							name={
+								item.action == 'claim'
+									? 'arrow-down'
+									: 'arrow-up'
+							}
+							size={25}
+							color='#000'
+							style={{ transform: [{ rotate: '45deg' }] }}
+						/>
+					</View>
+					<View style={Styles.transactionItemDetailContainer}>
+						<Text style={Styles.transactionItemDetailTitle}>
 							{item.action == 'claim' ? 'Claimed' : 'Spent'}{' '}
 						</Text>
-						<Text style={Styles.transactionItem.detail.description}>
+						<Text style={Styles.transactionItemDetailDescription}>
 							{item.description}
 						</Text>
 					</View>
-					<View style={Styles.transactionItem.credit.container}>
-						<Text style={Styles.transactionItem.credit.text}>
+					<View style={Styles.transactionItemDetailCreditContainer}>
+						<Text style={Styles.transactionItemDetailCreditText}>
 							{item.action == 'spend' ? '-' : '+'}${item.credits}
 						</Text>
 					</View>
@@ -64,7 +90,7 @@ const Component: React.FC<RecentTransactionListProps> = (props) => {
 						{ fontSize: getFontSize(15) },
 					]}
 				>
-					You haven't done any transaction recently.
+					You haven't done any transactions recently.
 				</Text>
 			)}
 		</View>
@@ -75,33 +101,49 @@ Component.displayName = 'RecentTransactionList';
 
 export default Component;
 
-const Styles = {
-	container: [tw`flex w-full flex-col gap-2`, { flexGrow: 1 }],
-	title: [tw`mb-3 text-center text-2xl`, { fontFamily: 'Syne_600SemiBold' }],
-	transactionItem: {
-		container: [
-			tw`min-h-20 mb-2 w-full flex-row justify-center rounded-xl border border-[#00000011] p-3`,
-		],
-		detail: {
-			container: [tw`flex-1 flex-col justify-center`],
-			title: [
-				tw`pb-2`,
-				{ fontSize: getFontSize(17), fontFamily: 'Syne_500Medium' },
-			],
-			description: [
-				tw`text-black/60 `,
-				{ fontFamily: 'Inter_400Regular', fontSize: getFontSize(15) },
-			],
-		},
-		credit: {
-			container: [tw`flex items-center justify-center`],
-			text: [
-				tw`text-center `,
-				{
-					fontSize: getFontSize(15),
-					fontFamily: 'BricolageGrotesque_700Bold',
-				},
-			],
-		},
+const Styles = StyleSheet.create({
+	container: {
+		display: 'flex',
+		flexDirection: 'column',
+		flexGrow: 1,
+		gap: 4 * Spacings.Unit,
+		width: '100%',
 	},
-};
+	title: {
+		fontFamily: 'Syne_600SemiBold',
+		fontSize: fontSizes.xl,
+		marginBottom: 3 * Spacings.Unit,
+		textAlign: 'center',
+	},
+	transactionItemContainer: {
+		alignItems: 'center',
+		flexDirection: 'row',
+		gap: 8 * Spacings.Unit,
+		justifyContent: 'center',
+		marginBottom: 2 * Spacings.Unit,
+		minHeight: 20 * Spacings.Unit,
+		padding: 4 * Spacings.Unit,
+		width: '100%',
+	},
+	transactionItemDetailContainer: { flexGrow: 1, justifyContent: 'center' },
+	transactionItemDetailTitle: {
+		fontSize: getFontSize(17),
+		fontFamily: 'Syne_500Medium',
+		paddingBottom: 2 * Spacings.Unit,
+	},
+	transactionItemDetailDescription: {
+		color: '#00000099',
+		fontFamily: 'Inter_400Regular',
+		fontSize: getFontSize(15),
+	},
+	transactionItemDetailCreditContainer: {
+		alignItems: 'center',
+		display: 'flex',
+		justifyContent: 'center',
+	},
+	transactionItemDetailCreditText: {
+		fontSize: getFontSize(15),
+		fontFamily: 'BricolageGrotesque_700Bold',
+		textAlign: 'center',
+	},
+});

@@ -3,7 +3,7 @@ import { TouchableWithoutFeedback } from 'react-native-gesture-handler';
 import AsyncStorage from '@react-native-async-storage/async-storage';
 import { useFocusEffect } from '@react-navigation/native';
 import * as Haptics from 'expo-haptics';
-import { useCallback, useRef, useState } from 'react';
+import { useCallback, useEffect, useRef, useState } from 'react';
 import {
 	Animated,
 	Text,
@@ -37,7 +37,7 @@ const Component: React.FC<CreditCardProps> = (props) => {
 	const selectCardStyleSheetRef = useRef<any>();
 
 	const updateCardStyle = useCallback(() => {
-		// Fetch user selected card gradient background.
+		// Fetch user selected card style.
 		AsyncStorage.getItem('cardStyle', (e, r) => {
 			if (e) {
 				console.log(e);
@@ -49,7 +49,7 @@ const Component: React.FC<CreditCardProps> = (props) => {
 		});
 	}, []);
 
-	useFocusEffect(updateCardStyle);
+	useEffect(updateCardStyle, []);
 
 	const onLongPress = () => {
 		Haptics.impactAsync(Haptics.ImpactFeedbackStyle.Heavy);
