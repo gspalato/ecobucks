@@ -21,7 +21,7 @@ import { modalStack } from '@components/Modals';
 import SplashScreenComponent from '@components/Modals/SplashScreen';
 
 import useAssets from '@/lib/assets';
-import Gradients from '@/lib/assets/gradients';
+import CardStyles from '@/lib/assets/cardStyles';
 import { useAuthToken } from '@/lib/auth';
 import fonts from '@/lib/fonts';
 import { CheckAuth } from '@/lib/graphql/queries';
@@ -61,7 +61,7 @@ const App = () => {
 	}, [error]);
 
 	useEffect(() => {
-		Object.values(Gradients).forEach((g) => {
+		Object.values(CardStyles).forEach((g) => {
 			Assets.preload(g);
 		});
 

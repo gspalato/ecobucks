@@ -8,11 +8,10 @@ import { useState } from 'react';
 import { Animated } from 'react-native';
 import tw from 'twrnc';
 
-import { DisposalField } from '@/app/operator/add';
+import { DisposalField } from '@app/operator/add';
 
+import Input from '@components/Input';
 import Select, { SelectItemDefinition } from '@components/Select';
-
-import Input from '@/components/Input';
 
 import { DisposalType } from '@/types/DisposalClaim';
 

@@ -21,11 +21,8 @@ import tw from '@/lib/tailwind';
 import { Defaults } from '@/styles';
 
 type Props = CompositeScreenProps<
-	CompositeScreenProps<
-		NativeStackScreenProps<SettingsStackParamList, 'Main'>,
-		NativeStackScreenProps<MainTabsParamList, 'Settings'>
-	>,
-	NativeStackScreenProps<RootStackParamList, 'Main'>
+	NativeStackScreenProps<SettingsStackParamList, 'Main'>,
+	NativeStackScreenProps<RootStackParamList, 'Settings'>
 >;
 
 const Component: React.FC<Props> = (props) => {
@@ -91,7 +88,11 @@ const Component: React.FC<Props> = (props) => {
 				)}
 			</View>
 			<View style={{ flexGrow: 1, position: 'absolute', width: '100%' }}>
-				<DefaultHeader title='Settings' blurIntensity={90} />
+				<DefaultHeader
+					showBackButton={false}
+					title='Settings'
+					blurIntensity={90}
+				/>
 			</View>
 		</>
 	);

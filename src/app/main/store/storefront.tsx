@@ -10,9 +10,9 @@ import Screen from '@components/Screen';
 
 import PerformantImage from '@/components/PerformantImage';
 
-import Gradients from '@lib/assets/gradients';
 import { useHeaderLayout, useTabBarLayout } from '@lib/layout';
 
+import CardStyles from '@/lib/assets/cardStyles';
 import { getFontSize } from '@/lib/fonts';
 
 import { Colors, Spacings } from '@/styles';
@@ -21,37 +21,37 @@ import { StoreStackParamList } from '.';
 
 const TestRewards = [
 	{
-		image: Gradients.Gradient20,
+		image: CardStyles.Gradient20,
 		name: 'Example Reward',
 		price: 100,
 	},
 	{
-		image: Gradients.Gradient20,
+		image: CardStyles.Gradient20,
 		name: 'Example Reward',
 		price: 200,
 	},
 	{
-		image: Gradients.Gradient20,
+		image: CardStyles.Gradient20,
 		name: 'Example Reward',
 		price: 300,
 	},
 	{
-		image: Gradients.Gradient20,
+		image: CardStyles.Gradient20,
 		name: 'Example Reward',
 		price: 400,
 	},
 	{
-		image: Gradients.Gradient20,
+		image: CardStyles.Gradient20,
 		name: 'Example Reward',
 		price: 500,
 	},
 	{
-		image: Gradients.Gradient20,
+		image: CardStyles.Gradient20,
 		name: 'Example Reward',
 		price: 600,
 	},
 	{
-		image: Gradients.Gradient20,
+		image: CardStyles.Gradient20,
 		name: 'Example Reward',
 		price: 700,
 	},
@@ -98,7 +98,7 @@ const Component: React.FC<Props> = (props) => {
 							onPress={() =>
 								navigation.navigate('Reward', {
 									id: info.index,
-									image: Gradients[
+									image: CardStyles[
 										`Gradient${(info.index + 1) % 27}`
 									],
 									name: info.item.name,
@@ -108,7 +108,7 @@ const Component: React.FC<Props> = (props) => {
 						>
 							<PerformantImage
 								source={
-									Gradients[
+									CardStyles[
 										`Gradient${(info.index + 1) % 27}`
 									]
 								}
@@ -118,7 +118,7 @@ const Component: React.FC<Props> = (props) => {
 							<View style={{ display: 'flex', gap: 5 }}>
 								<Text
 									style={{
-										fontFamily: 'Syne_700Bold',
+										fontFamily: 'Syne_600SemiBold',
 										fontSize: getFontSize(18),
 										textAlign: 'center',
 									}}
@@ -141,7 +141,11 @@ const Component: React.FC<Props> = (props) => {
 				/>
 			</View>
 			<View style={{ flexGrow: 1, position: 'absolute', width: '100%' }}>
-				<DefaultHeader title='Store' blurIntensity={90} />
+				<DefaultHeader
+					showBackButton={false}
+					title='Store'
+					blurIntensity={90}
+				/>
 			</View>
 		</Screen>
 	);

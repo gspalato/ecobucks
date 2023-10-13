@@ -7,7 +7,6 @@ import React, { useCallback, useEffect, useState } from 'react';
 import { Platform, ScrollView, Text, View } from 'react-native';
 import tw from 'twrnc';
 
-import CreditCard from '@components/CreditCard';
 import Header from '@components/Header';
 import Loading from '@components/Loading';
 import RecentTransactionList from '@components/RecentTransactionList';
@@ -15,12 +14,13 @@ import SafeView from '@components/SafeView';
 import Screen from '@components/Screen';
 import Topbar from '@components/Topbar';
 
+import CreditCard from '@/components/CreditCard';
 import TabBar from '@/components/Tabs/TabBar';
 
 import { useAuthToken } from '@lib/auth';
 import * as GetEcobucksProfile from '@lib/graphql/queries/getEcobucksProfile';
 
-import Gradients from '@/lib/assets/gradients';
+import Gradients from '@/lib/assets/cardStyles';
 import { getFontSize } from '@/lib/fonts';
 import { useHeaderLayout, useTabBarLayout } from '@/lib/layout';
 

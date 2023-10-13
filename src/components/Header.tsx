@@ -62,6 +62,7 @@ const Styles = StyleSheet.create({
 		paddingBottom: 8 * Spacings.Unit,
 		paddingHorizontal: 6 * Spacings.Unit,
 		paddingTop: 7 * Spacings.Unit,
+		minHeight: 35,
 		width: '100%',
 	},
 });

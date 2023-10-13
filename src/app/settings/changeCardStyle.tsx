@@ -10,7 +10,7 @@ import CardColorOption from '@components/CardColorOption';
 import DefaultHeader from '@/components/DefaultHeader';
 import SafeView from '@/components/SafeView';
 
-import Gradients from '@/lib/assets/gradients';
+import Gradients from '@/lib/assets/cardStyles';
 import { useHeaderLayout, useTabBarLayout } from '@/lib/layout';
 import {
 	RootStackParamList,

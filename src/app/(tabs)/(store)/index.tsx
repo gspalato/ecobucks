@@ -1,8 +1,9 @@
+import { ScrollView } from 'react-native-gesture-handler';
+
 import { Image } from 'expo-image';
 import { router, useFocusEffect } from 'expo-router';
 import { useState } from 'react';
 import { FlatList, Text, TouchableOpacity, View } from 'react-native';
-import { ScrollView } from 'react-native-gesture-handler';
 import tw from 'twrnc';
 
 import DefaultHeader from '@components/DefaultHeader';
@@ -11,9 +12,9 @@ import Screen from '@components/Screen';
 
 import Loading from '@/components/Loading';
 
-import Gradients from '@lib/assets/gradients';
 import { useHeaderLayout, useTabBarLayout } from '@lib/layout';
 
+import Gradients from '@/lib/assets/cardStyles';
 import { getFontSize } from '@/lib/fonts';
 
 const TestRewards = [

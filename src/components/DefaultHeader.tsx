@@ -50,7 +50,12 @@ const Component: React.FC<DefaultHeaderProps> = (props) => {
 			blurTint={blurTint}
 			style={[{ justifyContent: 'center' }, headerStyle]}
 		>
-			<View style={[{ justifyContent: 'center' }, containerStyle]}>
+			<View
+				style={[
+					{ justifyContent: 'center', minHeight: 35 },
+					containerStyle,
+				]}
+			>
 				{showBackButton && (
 					<BackButton
 						style={[{ paddingLeft: 0 }, backButtonStyle]}

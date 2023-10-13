@@ -7,8 +7,6 @@ import { MainTabsParamList } from '@/lib/navigation/types';
 import HomeScreen from './home';
 import StoreScreen from './store';
 
-import SettingsScreen from '../settings';
-
 const AnimatedMaterialCommunityIcon = Animated.createAnimatedComponent(
 	MaterialCommunityIcons,
 );
@@ -38,19 +36,6 @@ const Component = () => {
 					icon: (focused: boolean, color: any) => (
 						<AnimatedMaterialCommunityIcon
 							name={'store-outline'}
-							size={27}
-							style={{ color }}
-						/>
-					),
-				}}
-			/>
-			<Tabs.Screen
-				name='Settings'
-				component={SettingsScreen}
-				options={{
-					icon: (focused: boolean, color: any) => (
-						<AnimatedMaterialCommunityIcon
-							name={'cog-outline'}
 							size={27}
 							style={{ color }}
 						/>

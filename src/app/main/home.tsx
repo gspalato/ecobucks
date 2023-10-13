@@ -15,7 +15,6 @@ import RecentTransactionList from '@components/RecentTransactionList';
 import Screen from '@components/Screen';
 import Topbar from '@components/Topbar';
 
-import Gradients from '@lib/assets/gradients';
 import { useAuthToken } from '@lib/auth';
 import { fontSizes, getFontSize } from '@lib/fonts';
 import * as GetEcobucksProfile from '@lib/graphql/queries/getEcobucksProfile';
@@ -37,7 +36,6 @@ const Component: React.FC<Props> = (props) => {
 	const { navigation, route } = props;
 
 	const [token, setToken] = useState<string | null>(null);
-	const [cardGradient, setCardGradient] = useState<string | null>();
 
 	const [profile, setProfile] = useState<Profile | null>(null);
 	const [success, setSuccess] = useState<boolean | null>(null);
@@ -72,17 +70,6 @@ const Component: React.FC<Props> = (props) => {
 
 	useFocusEffect(
 		useCallback(() => {
-			// Fetch user selected card gradient background.
-			AsyncStorage.getItem('card-gradient', (e, r) => {
-				if (e) {
-					console.log(e);
-					AsyncStorage.setItem('card-gradient', 'Gradient20');
-					setCardGradient('Gradient20');
-				}
-
-				if (r) setCardGradient(r);
-			});
-
 			const update = async () => {
 				const token = await SecureStore.getItemAsync('token');
 				if (!token) navigation.replace('Login');
@@ -113,11 +100,7 @@ const Component: React.FC<Props> = (props) => {
 					paddingBottom: tabBarHeight,
 				}}
 			>
-				<CreditCard
-					credits={profile.credits}
-					gradient={Gradients[cardGradient!]}
-					name={profile.name}
-				/>
+				<CreditCard credits={profile.credits} name={profile.name} />
 				<Text style={Styles.transactionsTitle}>Recent</Text>
 				<RecentTransactionList
 					style={{ width: '100%' }}

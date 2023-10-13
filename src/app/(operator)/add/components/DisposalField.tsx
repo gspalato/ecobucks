@@ -8,9 +8,8 @@ import { BlurView } from '@react-native-community/blur';
 import { Animated, TextInput, View } from 'react-native';
 import tw from 'twrnc';
 
-import Select from '@components/Select';
-
 import Input from '@/components/Input';
+import Select from '@/components/Select';
 
 import { DisposalType } from '@/types/DisposalClaim';
 
