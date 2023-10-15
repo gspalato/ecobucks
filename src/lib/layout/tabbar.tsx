@@ -1,4 +1,4 @@
-import { createContext, useContext, useState } from 'react';
+import { createContext, useContext, useMemo, useState } from 'react';
 
 type TabBarContextValue = {
 	height: number;
@@ -39,19 +39,31 @@ const TabBarProvider: React.FC<React.PropsWithChildren> = (props) => {
 		'light',
 	);
 
+	const value = useMemo(
+		() => ({
+			height,
+			_setHeight,
+			width,
+			_setWidth,
+			blurIntensity,
+			setBlurIntensity,
+			blurTint,
+			setBlurTint,
+		}),
+		[
+			height,
+			_setHeight,
+			width,
+			_setWidth,
+			blurIntensity,
+			setBlurIntensity,
+			blurTint,
+			setBlurTint,
+		],
+	);
+
 	return (
-		<TabBarContext.Provider
-			value={{
-				height,
-				_setHeight,
-				width,
-				_setWidth,
-				blurIntensity,
-				setBlurIntensity,
-				blurTint,
-				setBlurTint,
-			}}
-		>
+		<TabBarContext.Provider value={value}>
 			{children}
 		</TabBarContext.Provider>
 	);

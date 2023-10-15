@@ -1,6 +1,4 @@
-import { useLazyQuery, useMutation } from '@apollo/client';
 import { NativeStackScreenProps } from '@react-navigation/native-stack';
-import * as SecureStore from 'expo-secure-store';
 import { useEffect, useState } from 'react';
 import { Text, View } from 'react-native';
 import tw from 'twrnc';
@@ -9,14 +7,13 @@ import Button from '@components/Button';
 
 import Input from '@/components/Input';
 
-import { useAuthToken } from '@lib/auth';
-import { Authenticate } from '@lib/graphql/mutations';
+import { useAuth } from '@lib/auth';
 
+import FoundationClient from '@/lib/api/client';
 import { getFontSize } from '@/lib/fonts';
-import { CheckAuth } from '@/lib/graphql/queries';
 import { RootStackParamList } from '@/lib/navigation/types';
 
-import { AuthenticationPayload } from '@/types/AuthenticationPayload';
+import { CheckAuthenticationPayload } from '@/types/CheckAuthenticationPayload';
 
 type Props = NativeStackScreenProps<RootStackParamList, 'Login'>;
 
@@ -29,75 +26,25 @@ const Screen: React.FC<Props> = (props) => {
 	const [submitting, setSubmitting] = useState(false);
 	const [success, setSuccess] = useState<boolean | null>(null);
 
-	const [token, setToken] = useState<string | null>(null);
+	const { isLoggedIn, login } = useAuth();
 
-	useAuthToken(setToken);
+	useEffect(() => {
+		if (isLoggedIn) navigation.replace('Main');
+	}, [isLoggedIn]);
 
-	const [login, { loading }] = useMutation(Authenticate.Mutation, {
-		fetchPolicy: 'no-cache',
-		variables: {
-			username,
-			password,
-		},
-		onCompleted(data) {
-			let payload: AuthenticationPayload = data.authenticate;
-			let success = payload.successful;
-
-			setSuccess(success);
-
-			if (!success) {
-				setSubmitting(false);
-				return;
-			}
-
-			setSubmitting(false);
-
-			SecureStore.setItemAsync('token', payload.token).then(() => {
-				setToken(payload.token);
-			});
-		},
-		onError(e) {
-			setSubmitting(false);
-			setSuccess(false);
-			alert(`Failed to login. Try again.`);
-		},
-	});
-
-	const [check, { loading: loadingCheck }] = useLazyQuery(CheckAuth.Query, {
-		fetchPolicy: 'no-cache',
-		variables: {
-			token,
-		},
-		onCompleted: (data) => {
-			console.log(data);
-			if (data.checkAuthentication.successful) {
-				navigation.replace('Main');
-			}
-		},
-		onError: (e) => {},
-	});
-
-	const onPress = () => {
-		login();
+	const onPress = async () => {
 		setSubmitting(true);
+		setSuccess(await login(username, password));
 	};
 
-	useEffect(() => {
-		SecureStore.getItemAsync('token').then((token) => {
-			if (!token) return;
-
-			check({ variables: { token } });
-		});
-	}, []);
-
-	useEffect(() => {
-		if (!token || !success) return;
-
-		if (token && success) navigation.replace('Main');
-	}, [token, success]);
-
 	return (
-		<View style={tw`flex-1 items-center justify-center`}>
+		<View
+			style={{
+				alignItems: 'center',
+				flexGrow: 1,
+				justifyContent: 'center',
+			}}
+		>
 			<Text
 				style={[
 					tw`pb-10  text-[#11da33]`,

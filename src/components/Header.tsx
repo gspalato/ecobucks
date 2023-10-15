@@ -6,7 +6,7 @@ import tw from 'twrnc';
 import { HeaderProvider, useHeaderLayout } from '@/lib/layout/header';
 import { usePlatform } from '@/lib/platform';
 
-import { Spacings } from '@/styles';
+import { Colors, Spacings } from '@/styles';
 
 type HeaderProps = {
 	blurIntensity?: number;
@@ -29,16 +29,13 @@ const Component: React.FC<HeaderProps> = (props) => {
 
 	const { _setHeight, _setWidth } = useHeaderLayout();
 
-	return (
-		<HeaderProvider>
-			<BlurView
-				blurReductionFactor={100}
-				intensity={isAndroid ? 0 : blurIntensity ?? 20}
-				tint={blurTint}
+	if (isAndroid)
+		return (
+			<View
 				style={[
 					Styles.container,
 					{
-						backgroundColor: isAndroid ? '#ffffff' : '#ffffff00',
+						backgroundColor: Colors.Background,
 						paddingTop:
 							8 * Spacings.Unit + (safe ? paddings.top : 0),
 					},
@@ -50,9 +47,30 @@ const Component: React.FC<HeaderProps> = (props) => {
 				}}
 			>
 				{children}
+			</View>
+		);
+	else
+		return (
+			<BlurView
+				blurReductionFactor={100}
+				intensity={blurIntensity ?? 20}
+				tint={blurTint}
+				style={[
+					Styles.container,
+					{
+						paddingTop:
+							8 * Spacings.Unit + (safe ? paddings.top : 0),
+					},
+					style,
+				]}
+				onLayout={(e) => {
+					_setHeight?.(e.nativeEvent.layout.height);
+					_setWidth?.(e.nativeEvent.layout.width);
+				}}
+			>
+				{children}
 			</BlurView>
-		</HeaderProvider>
-	);
+		);
 };
 
 export default Component;

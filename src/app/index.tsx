@@ -4,11 +4,14 @@ import { ApolloProvider } from '@apollo/client';
 import { loadDevMessages, loadErrorMessages } from '@apollo/client/dev';
 import { NavigationContainer } from '@react-navigation/native';
 import { registerRootComponent } from 'expo';
+import * as NavigationBar from 'expo-navigation-bar';
 import { StatusBar } from 'expo-status-bar';
+import { useEffect } from 'react';
+import { Platform, UIManager } from 'react-native';
 
 import { PerformantImageProvider } from '@/components/PerformantImage';
 
-import client from '@lib/graphql/client';
+import { useFoundationClient } from '@lib/api/graphql/client';
 
 import { AuthProvider } from '@/lib/auth';
 import { HeaderProvider, TabBarProvider } from '@/lib/layout';
@@ -19,6 +22,19 @@ loadErrorMessages();
 loadDevMessages();
 
 const Root = () => {
+	useEffect(() => {
+		if (Platform.OS != 'android') return;
+
+		if (UIManager.setLayoutAnimationEnabledExperimental)
+			UIManager.setLayoutAnimationEnabledExperimental(true);
+
+		NavigationBar.setBackgroundColorAsync('#ffffff');
+		NavigationBar.setBehaviorAsync('overlay-swipe');
+		NavigationBar.setVisibilityAsync('hidden');
+	});
+
+	const client = useFoundationClient();
+
 	return (
 		<>
 			<StatusBar translucent backgroundColor='transparent' />

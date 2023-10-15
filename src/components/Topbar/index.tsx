@@ -1,4 +1,5 @@
-import { useMemo } from 'react';
+import { MaterialIcons } from '@expo/vector-icons';
+import { useEffect, useMemo } from 'react';
 import { StyleProp, StyleSheet, Text, View, ViewStyle } from 'react-native';
 import tw from 'twrnc';
 
@@ -7,12 +8,13 @@ import PerformantImage from '@components/PerformantImage';
 import { getFontSize } from '@/lib/fonts';
 
 import IconButton from './IconButton';
+import ProfilePicture from './ProfilePicture';
 import { Colors, Spacings } from '@/styles';
 
 type ModernTopbarProps = {
-	name: string;
-	isOperator?: boolean;
 	containerStyle?: StyleProp<ViewStyle>;
+	isOperator?: boolean;
+	name: string;
 };
 
 const Component: React.FC<ModernTopbarProps> = (props) => {
@@ -26,17 +28,25 @@ const Component: React.FC<ModernTopbarProps> = (props) => {
 		else if (hours >= 17 || (hours >= 0 && hours < 5)) return 'evening';
 	}, []);
 
+	useEffect(() => console.log('topbar rerender'), []);
+
 	return (
 		<View style={[Styles.container, containerStyle]}>
 			<View style={Styles.userContainer}>
-				<PerformantImage
-					source='https://i.ibb.co/jZMGJsk/resonance.jpg'
-					style={{ width: 'auto' }}
+				<ProfilePicture
+					source=''
+					style={{
+						aspectRatio: 1,
+						height: '100%',
+					}}
+					containerStyle={{
+						aspectRatio: 1,
+						height: '100%',
+					}}
 					imageStyle={{
 						aspectRatio: 1,
 						borderRadius: 100,
-						height: 20,
-						width: 20,
+						height: '100%',
 					}}
 				/>
 				<View style={Styles.greetingsContainer}>
@@ -57,16 +67,22 @@ const Component: React.FC<ModernTopbarProps> = (props) => {
 				{isOperator && (
 					<>
 						<View style={tw`my-1 border-l border-[#00000011]`} />
-						<IconButton path='Add' icon='add' style={tw`px-0`} />
+						<IconButton path='Add'>
+							<MaterialIcons
+								name='add'
+								color='#000000'
+								size={22}
+								style={{
+									aspectRatio: 1,
+									alignItems: 'center',
+									display: 'flex',
+									justifyContent: 'center',
+									width: 'auto',
+								}}
+							/>
+						</IconButton>
 					</>
 				)}
-				{/*
-				<IconButton
-					path='Settings'
-					icon='settings-outline'
-					style={tw`pr-0`}
-				/>
-				*/}
 			</View>
 		</View>
 	);
@@ -82,11 +98,13 @@ const Styles = StyleSheet.create({
 		flexDirection: 'row',
 		gap: 16 * Spacings.Unit,
 		justifyContent: 'space-between',
+		height: 15 * Spacings.Unit,
 		width: '100%',
 	},
 	userContainer: {
 		display: 'flex',
 		flexDirection: 'row',
+		height: '100%',
 		justifyContent: 'flex-start',
 		alignItems: 'flex-start',
 		gap: 4 * Spacings.Unit,

@@ -47,11 +47,14 @@ const Component: React.FC<IconButtonProps> = (props) => {
 			<View
 				style={[
 					{
+						alignItems: 'center',
+						aspectRatio: 1,
 						backgroundColor: '#0000000d',
-						borderColor: '#00000022',
-						borderRadius: 20,
-						borderWidth: 0.4,
-						padding: 2.5 * Spacings.Unit,
+						borderRadius: 100,
+						display: 'flex',
+						height: '100%',
+						justifyContent: 'center',
+						padding: 2 * Spacings.Unit,
 					},
 					style,
 				]}
@@ -59,8 +62,13 @@ const Component: React.FC<IconButtonProps> = (props) => {
 				{isNamed && (
 					<Ionicons
 						name={props.icon}
-						size={props.size || 24}
+						size={props.size || 22}
 						color={props.color || '#000000'}
+						style={{
+							alignItems: 'center',
+							display: 'flex',
+							justifyContent: 'center',
+						}}
 					/>
 				)}
 				{isChildren && props.children}

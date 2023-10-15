@@ -3,7 +3,7 @@ import { NativeStackScreenProps } from '@react-navigation/native-stack';
 import { BarCodeScannedCallback, BarCodeScanner } from 'expo-barcode-scanner';
 import * as Haptics from 'expo-haptics';
 import React, { useEffect, useState } from 'react';
-import { StyleSheet, Text, View } from 'react-native';
+import { Dimensions, StyleSheet, Text, View } from 'react-native';
 import tw from 'twrnc';
 
 import DefaultHeader from '@components/DefaultHeader';
@@ -13,8 +13,8 @@ import Screen from '@components/Screen';
 import Loading from '@/components/Loading';
 import ClaimSuccessModal from '@/components/Modals/ClaimSuccessModal';
 
+import * as ClaimDisposalAndCredits from '@lib/api/graphql/mutations/claimDisposalAndCredits';
 import { useAuthToken } from '@lib/auth';
-import * as ClaimDisposalAndCredits from '@lib/graphql/mutations/claimDisposalAndCredits';
 
 import { RootStackParamList } from '@/lib/navigation/types';
 
@@ -28,14 +28,12 @@ const Component: React.FC<Props> = (props) => {
 	const [hasPermission, setHasPermission] = useState<boolean | null>(null);
 	const [scanned, setScanned] = useState<boolean>(false);
 
-	const [token, setToken] = useState<string | null>(null);
-
 	const [success, setSuccess] = useState<boolean | null>(null);
 
 	const [displaySuccessModal, setDisplaySuccessModal] = useState(false);
 	const [claimedCredits, setClaimedCredits] = useState<number | null>(null);
 
-	useAuthToken(setToken);
+	const token = useAuthToken();
 
 	const [claim, { loading }] =
 		useMutation<ClaimDisposalAndCredits.ReturnType>(
@@ -117,7 +115,13 @@ const Component: React.FC<Props> = (props) => {
 			)}
 			<View
 				style={[
-					tw`m-0 h-full flex-1 items-center p-0`,
+					{
+						alignItems: 'center',
+						backgroundColor: '#000',
+						flexGrow: 1,
+						margin: 0,
+						padding: 0,
+					},
 					StyleSheet.absoluteFillObject,
 				]}
 			>
@@ -130,6 +134,10 @@ const Component: React.FC<Props> = (props) => {
 						}
 						style={[
 							tw`mt-0 h-full flex-1 p-0`,
+							{
+								width: Dimensions.get('screen').width,
+								height: Dimensions.get('screen').height,
+							},
 							StyleSheet.absoluteFillObject,
 						]}
 					/>

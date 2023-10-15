@@ -17,6 +17,7 @@ module.exports = function (api) {
 					},
 				},
 			],
+			//'babel-plugin-transform-remove-console',
 			'react-native-reanimated/plugin',
 		],
 	};

@@ -43,7 +43,7 @@ const Component: React.FC<RecentTransactionListProps> = (props) => {
 						style={{
 							alignItems: 'center',
 							aspectRatio: 1,
-							backgroundColor: '#00000011',
+							backgroundColor: '#0000000d',
 							borderRadius: 100,
 							display: 'flex',
 							justifyContent: 'center',
@@ -123,6 +123,7 @@ const Styles = StyleSheet.create({
 		marginBottom: 2 * Spacings.Unit,
 		minHeight: 20 * Spacings.Unit,
 		padding: 4 * Spacings.Unit,
+		paddingHorizontal: 0,
 		width: '100%',
 	},
 	transactionItemDetailContainer: { flexGrow: 1, justifyContent: 'center' },

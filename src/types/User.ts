@@ -1,5 +1,6 @@
 export type User = {
-	Username: string;
-	Roles: string[];
-	Id: string;
+	id: string;
+	profilePictureUrl?: string;
+	roles: string[];
+	username: string;
 };

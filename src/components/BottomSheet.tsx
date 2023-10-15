@@ -3,6 +3,7 @@ import { PanGestureHandler } from 'react-native-gesture-handler';
 import { Portal } from '@gorhom/portal';
 import React, { forwardRef, useCallback, useImperativeHandle } from 'react';
 import {
+	Dimensions,
 	StyleSheet,
 	TouchableWithoutFeedback,
 	useWindowDimensions,
@@ -35,7 +36,7 @@ const Component: React.FC<BottomSheetProps> = (props, ref) => {
 		containerStyle,
 	} = props;
 
-	const { height } = useWindowDimensions();
+	const height = Dimensions.get('screen').height;
 	const newActiveHeight = height - activeHeight;
 	const topAnimation = useSharedValue(height);
 

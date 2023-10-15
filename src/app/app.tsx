@@ -20,11 +20,11 @@ import SettingsScreen from '@app/settings';
 import { modalStack } from '@components/Modals';
 import SplashScreenComponent from '@components/Modals/SplashScreen';
 
+import { CheckAuth } from '@/lib/api/graphql/queries';
 import useAssets from '@/lib/assets';
 import CardStyles from '@/lib/assets/cardStyles';
 import { useAuthToken } from '@/lib/auth';
 import fonts from '@/lib/fonts';
-import { CheckAuth } from '@/lib/graphql/queries';
 import { RootStackParamList } from '@/lib/navigation/types';
 
 import { Colors } from '@/styles';
@@ -32,27 +32,11 @@ import { Colors } from '@/styles';
 const Stack = createNativeStackNavigator<RootStackParamList>();
 
 const App = () => {
-	const [logged, setLogged] = useState(false);
-	const [token, setToken] = useState<string | null>(null);
-
-	useAuthToken(setToken);
-
 	const { loaded: assetsLoaded, ...Assets } = useAssets();
 
 	const [fontsLoaded, error] = useFonts(fonts);
 
 	const [showSplashScreen, setShowSplashScreen] = useState(true);
-
-	useEffect(() => {
-		if (Platform.OS != 'android') return;
-
-		if (UIManager.setLayoutAnimationEnabledExperimental)
-			UIManager.setLayoutAnimationEnabledExperimental(true);
-
-		NavigationBar.setBackgroundColorAsync('#ffffff');
-		NavigationBar.setBehaviorAsync('overlay-swipe');
-		NavigationBar.setVisibilityAsync('hidden');
-	}, []);
 
 	useEffect(() => {
 		if (!error) return;
@@ -73,22 +57,6 @@ const App = () => {
 			setShowSplashScreen(false);
 		}
 	}, [assetsLoaded, fontsLoaded]);
-
-	const [check, { loading: loadingCheck }] = useLazyQuery(CheckAuth.Query, {
-		fetchPolicy: 'no-cache',
-		variables: {
-			token,
-		},
-		onCompleted: (data) => {
-			console.log(data);
-			setLogged(data.checkAuthentication.successful);
-		},
-		onError: (e) => {},
-	});
-
-	useEffect(() => {
-		check();
-	}, []);
 
 	if (!fontsLoaded) return;
 

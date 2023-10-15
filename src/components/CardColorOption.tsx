@@ -20,7 +20,6 @@ const Component: React.FC<CardColorOptionsProps> = (props) => {
 	return (
 		<TouchableOpacity
 			onPress={() => onPress(image)}
-			key={`g${index}`}
 			style={[
 				tw`mx-auto mb-4 aspect-video w-[90%] rounded-2xl bg-[#00000022]`,
 				{ borderRadius: Radius.Large },

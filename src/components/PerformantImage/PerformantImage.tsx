@@ -1,17 +1,11 @@
 import { Asset } from 'expo-asset';
-import { Image, ImageProps, ImageStyle } from 'expo-image';
+import { Image, ImageProps, ImageSource, ImageStyle } from 'expo-image';
 import {
 	ImageResult,
 	manipulateAsync,
 	SaveFormat,
 } from 'expo-image-manipulator';
-import React, {
-	forwardRef,
-	useCallback,
-	useEffect,
-	useMemo,
-	useState,
-} from 'react';
+import React, { forwardRef, useCallback, useEffect, useState } from 'react';
 import {
 	PixelRatio,
 	StyleProp,
@@ -23,8 +17,8 @@ import Animated from 'react-native-reanimated';
 
 import { PerformantImageContext } from './PerformantImageProvider';
 
-type PerformantImageProps = {
-	source: any;
+export type PerformantImageProps = {
+	source: string | number | null | undefined;
 	containerStyle?: StyleProp<ViewStyle>;
 	imageStyle?: StyleProp<ImageStyle>;
 } & ImageProps;
@@ -41,7 +35,7 @@ const Component: React.FC<PerformantImageProps> = forwardRef((props, ref) => {
 
 	const [containerWidth, setContainerWidth] = useState(0);
 
-	const [image, setImage] = useState<ImageResult | null>(source);
+	const [image, setImage] = useState<ImageResult | null>(null);
 
 	const { cacheImage, hasCachedImage, getCachedImage } = React.useContext(
 		PerformantImageContext,
@@ -117,6 +111,8 @@ const Component: React.FC<PerformantImageProps> = forwardRef((props, ref) => {
 	);
 
 	useEffect(() => {
+		if (!source) return;
+
 		Asset.fromModule(source)
 			.downloadAsync()
 			.then((asset) => downscaleToContainer(asset));

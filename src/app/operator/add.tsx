@@ -18,9 +18,9 @@ import DisposalField from '@/components/DisposalField';
 import ClaimSuccessModal from '@/components/Modals/ClaimSuccessModal';
 import SwipeableRow from '@/components/SwipeableRow';
 
-import { useAuthToken } from '@/lib/auth';
+import * as RegisterDisposal from '@/lib/api/graphql/mutations/registerDisposal';
+import { useAuth, useAuthToken } from '@/lib/auth';
 import { getFontSize } from '@/lib/fonts';
-import * as RegisterDisposal from '@/lib/graphql/mutations/registerDisposal';
 import { useHeaderLayout } from '@/lib/layout';
 import { RootStackParamList } from '@/lib/navigation/types';
 import { usePlatform } from '@/lib/platform';
@@ -56,8 +56,7 @@ type Props = StackScreenProps<RootStackParamList, 'Add'>;
 const Screen: React.FC<Props> = (props) => {
 	const { navigation, route } = props;
 
-	const [token, setToken] = useState<string | null>(null);
-	useAuthToken(setToken);
+	const { token } = useAuth();
 
 	const { isAndroid, SafeAreaStyle } = usePlatform();
 

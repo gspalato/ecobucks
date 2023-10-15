@@ -15,9 +15,9 @@ import RecentTransactionList from '@components/RecentTransactionList';
 import Screen from '@components/Screen';
 import Topbar from '@components/Topbar';
 
-import { useAuthToken } from '@lib/auth';
-import { fontSizes, getFontSize } from '@lib/fonts';
-import * as GetEcobucksProfile from '@lib/graphql/queries/getEcobucksProfile';
+import * as GetEcobucksProfile from '@lib/api/graphql/queries/getEcobucksProfile';
+import { useAuth, useAuthToken } from '@lib/auth';
+import { fontSizes } from '@lib/fonts';
 import { useHeaderLayout, useTabBarLayout } from '@lib/layout';
 import { MainTabsParamList } from '@lib/navigation/types';
 
@@ -35,14 +35,10 @@ type Props = CompositeScreenProps<
 const Component: React.FC<Props> = (props) => {
 	const { navigation, route } = props;
 
-	const [token, setToken] = useState<string | null>(null);
-
 	const [profile, setProfile] = useState<Profile | null>(null);
 	const [success, setSuccess] = useState<boolean | null>(null);
 
-	const [displaySuccessModal, setDisplaySuccessModal] = useState(false);
-
-	useAuthToken(setToken);
+	const { token } = useAuth();
 
 	const { height: headerHeight } = useHeaderLayout();
 	const { height: tabBarHeight } = useTabBarLayout();
@@ -71,10 +67,9 @@ const Component: React.FC<Props> = (props) => {
 	useFocusEffect(
 		useCallback(() => {
 			const update = async () => {
-				const token = await SecureStore.getItemAsync('token');
 				if (!token) navigation.replace('Login');
 
-				console.log('has token. fetching again...');
+				console.log('Refetching profile...');
 				fetch({
 					variables: {
 						token,
@@ -103,7 +98,10 @@ const Component: React.FC<Props> = (props) => {
 				<CreditCard credits={profile.credits} name={profile.name} />
 				<Text style={Styles.transactionsTitle}>Recent</Text>
 				<RecentTransactionList
-					style={{ width: '100%' }}
+					style={{
+						paddingHorizontal: 2 * Spacings.Unit,
+						width: '100%',
+					}}
 					transactions={profile.transactions.map((t) => ({
 						action: t.claimId != null ? 'claim' : 'spend',
 						credits: t.credits,
@@ -142,6 +140,7 @@ const Styles = StyleSheet.create({
 		fontSize: fontSizes.md,
 		fontFamily: 'Syne_600SemiBold',
 		paddingBottom: 7.5 * Spacings.Unit,
+		paddingHorizontal: 2 * Spacings.Unit,
 		paddingTop: 20 * Spacings.Unit,
 		textAlign: 'left',
 	},

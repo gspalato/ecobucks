@@ -13,30 +13,150 @@ import React, {
 	useState,
 } from 'react';
 
-import * as GetEcobucksProfile from '@lib/graphql/queries/getEcobucksProfile';
+import * as GetEcobucksProfile from '@lib/api/graphql/queries/getEcobucksProfile';
 
+import { AuthenticationPayload } from '@/types/AuthenticationPayload';
+import { CheckAuthenticationPayload } from '@/types/CheckAuthenticationPayload';
 import { Profile } from '@/types/Profile';
 
-interface IAuthContextData {
-	profile: Profile | null;
-	setProfile: (profile: Profile | null) => void;
-}
+import FoundationClient from '../api/client';
 
-const AuthContext = createContext<IAuthContextData>({} as any);
+export type AuthState = {
+	token: string | null;
+	isLoggedIn: boolean;
+	isLoading: boolean;
+};
+export type AuthStateAction = { type: AuthStateActionType; [key: string]: any };
+export type AuthStateActionType =
+	| 'LOGIN'
+	| 'LOGOUT'
+	| 'SET_TOKEN'
+	| 'RESTORE_TOKEN'
+	| 'SET_LOGGED_IN';
+
+type AuthContextData = {
+	login: (username: string, password: string) => Promise<boolean>;
+	logout: () => void;
+} & AuthState;
+
+const AuthContext = createContext<AuthContextData>({} as any);
 const useAuth = () => useContext(AuthContext);
 
 const AuthProvider: React.FC<PropsWithChildren> = ({ children }) => {
-	const [profile, setProfile] = useState<Profile | null>(null);
+	const [state, dispatch] = React.useReducer(
+		(prevState: AuthState, action: AuthStateAction) => {
+			switch (action.type) {
+				case 'SET_TOKEN':
+					return {
+						...prevState,
+						token: action.token,
+					};
 
-	const data = useMemo(
-		() => ({
-			profile,
-			setProfile,
-		}),
-		[profile],
+				case 'RESTORE_TOKEN':
+					return {
+						...prevState,
+						token: action.token,
+						isLoading: false,
+					};
+
+				case 'SET_LOGGED_IN':
+					return {
+						...prevState,
+						isLoggedIn: action.isLoggedIn,
+					};
+
+				case 'LOGIN':
+					return {
+						...prevState,
+						isLoggedIn: true,
+						token: action.token,
+					};
+
+				case 'LOGOUT':
+					return {
+						...prevState,
+						isLoggedIn: false,
+						token: null,
+					};
+			}
+		},
+		{
+			isLoading: true,
+			isLoggedIn: false,
+			token: null,
+		},
 	);
 
-	return <AuthContext.Provider value={data}>{children}</AuthContext.Provider>;
+	React.useEffect(() => {
+		// Fetch the token from storage then navigate to our appropriate place
+		const bootstrapAsync = async () => {
+			let token;
+
+			try {
+				token = await SecureStore.getItemAsync('token');
+			} catch (e) {
+				// Restoring token failed
+			}
+
+			// After restoring token, we may need to validate it in production apps
+			FoundationClient.CheckAuthentication(token!).then(async (res) => {
+				const { successful }: CheckAuthenticationPayload =
+					await res.json();
+
+				dispatch({ type: 'SET_LOGGED_IN', isLoggedIn: successful });
+			});
+
+			// This will switch to the App screen or Auth screen and this loading
+			// screen will be unmounted and thrown away.
+			dispatch({ type: 'RESTORE_TOKEN', token: token });
+		};
+
+		bootstrapAsync();
+	}, []);
+
+	const authContext = React.useMemo(
+		() => ({
+			...state,
+			login: async (
+				username: string,
+				password: string,
+			): Promise<boolean> => {
+				const response = await FoundationClient.Authenticate(
+					username,
+					password,
+				);
+
+				if (!response.ok) {
+					alert(`Failed to login. Try again.`);
+					console.log(response);
+					return false;
+				}
+
+				const payload: AuthenticationPayload = await response.json();
+				if (!payload.successful) {
+					alert(`Failed to login. Try again.`);
+					console.log(response);
+					return false;
+				}
+
+				dispatch({ type: 'LOGIN', token: payload.token });
+
+				return true;
+			},
+			logout: () => {
+				SecureStore.deleteItemAsync('token');
+
+				dispatch({ type: 'LOGOUT' });
+			},
+		}),
+		[state],
+	);
+
+	return (
+		<AuthContext.Provider value={authContext}>
+			{children}
+		</AuthContext.Provider>
+	);
 };
 
 AuthProvider.displayName = 'AuthProvider';
@@ -51,15 +171,19 @@ const useSetAuthToken = (token: string) => {
 	}, [token]);
 };
 
-const useAuthToken = (callback: (token: string | null) => void) => {
+const useAuthToken = (callback?: (token: string | null) => any) => {
+	const [token, setToken] = useState<string | null>(null);
 	useEffect(() => {
 		const getToken = async () => {
 			const token = await SecureStore.getItemAsync('token');
-			callback(token);
+			setToken(token);
+			callback?.(token);
 		};
 
 		getToken();
-	}, [callback]);
+	}, []);
+
+	return token;
 };
 
 const useExpireAuthToken = (callback?: () => void) => {

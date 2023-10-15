@@ -45,6 +45,12 @@
         {
           "motionPermission": "Allow $(PRODUCT_NAME) to access your device motion."
         }
+      ],
+      [
+        "expo-image-picker",
+        {
+          "photosPermission": "Ecobucks might need to access your photos in order to allow you to change your profile picture."
+        }
       ]
     ]
   }

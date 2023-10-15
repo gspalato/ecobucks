@@ -7,12 +7,15 @@ import {
 	useWindowDimensions,
 } from 'react-native';
 
+import { getFontSize } from '@/lib/fonts';
+import { usePlatform } from '@/lib/platform';
+
 import { Spacings } from '@/styles';
 
 type TabButtonProps = {
 	icon: (
 		focused: boolean,
-		color: Animated.AnimatedInterpolation<string | number>,
+		color: Animated.AnimatedInterpolation<string | number> | string,
 	) => React.ReactNode;
 	name: string;
 	focused: boolean;
@@ -39,6 +42,7 @@ const Component: React.FC<TabButtonProps> = (props) => {
 	} = props;
 
 	const { width } = useWindowDimensions();
+	const { isAndroid } = usePlatform();
 
 	const inputRange =
 		routeIndex === 0
@@ -50,7 +54,7 @@ const Component: React.FC<TabButtonProps> = (props) => {
 			? [focusedColor, unfocusedColor]
 			: [unfocusedColor, focusedColor, unfocusedColor];
 
-	const interpolatedColor = scrollX
+	let color = scrollX
 		.interpolate({
 			inputRange: [0, width, width * 2],
 			outputRange: [0, 1, 2],
@@ -74,10 +78,14 @@ const Component: React.FC<TabButtonProps> = (props) => {
 			}}
 			onPress={onPress}
 		>
-			{icon(focused, interpolatedColor)}
+			{icon(focused, color)}
 			<Animated.Text
 				style={[
-					{ fontFamily: 'Syne_700Bold', color: interpolatedColor },
+					{
+						fontFamily: 'Syne_700Bold',
+						fontSize: getFontSize(13),
+						color: color,
+					},
 				]}
 			>
 				{name}

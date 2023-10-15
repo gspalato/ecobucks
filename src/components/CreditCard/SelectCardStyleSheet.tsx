@@ -40,7 +40,6 @@ const Component: React.FC<SelectCardStyleSheetProps> = forwardRef(
 					estimatedItemSize={232}
 					renderItem={(info) => (
 						<CardColorOption
-							key={info.index}
 							image={CardStyles[info.item]}
 							index={info.index}
 							onPress={() => {
