@@ -3,9 +3,8 @@ import { useEffect, useMemo } from 'react';
 import { StyleProp, StyleSheet, Text, View, ViewStyle } from 'react-native';
 import tw from 'twrnc';
 
-import PerformantImage from '@components/PerformantImage';
-
 import { getFontSize } from '@/lib/fonts';
+import { useRelativeTime } from '@/lib/utils';
 
 import Avatar from './Avatar';
 import IconButton from './IconButton';
@@ -20,15 +19,7 @@ type ModernTopbarProps = {
 const Component: React.FC<ModernTopbarProps> = (props) => {
 	const { containerStyle, isOperator, name } = props;
 
-	const timeOfDay = useMemo(() => {
-		const hours = new Date().getHours();
-
-		if (hours >= 5 && hours < 12) return 'morning';
-		else if (hours >= 12 && hours < 17) return 'afternoon';
-		else if (hours >= 17 || (hours >= 0 && hours < 5)) return 'evening';
-	}, []);
-
-	useEffect(() => console.log('topbar rerender'), []);
+	const timeOfDay = useRelativeTime();
 
 	return (
 		<View style={[Styles.container, containerStyle]}>
