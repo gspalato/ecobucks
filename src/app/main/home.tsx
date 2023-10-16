@@ -36,14 +36,13 @@ const Component: React.FC<Props> = (props) => {
 	const { height: headerHeight } = useHeaderLayout();
 	const { height: tabBarHeight } = useTabBarLayout();
 
+	const { logout } = useAuth();
 	const { profile, fetch } = useProfile(token);
-
-	const dialogref = React.useRef<any>();
 
 	useFocusEffect(
 		useCallback(() => {
 			const update = async () => {
-				if (!token) navigation.replace('Login');
+				if (!token) logout();
 
 				console.log('Refetching profile...');
 				fetch(token);
