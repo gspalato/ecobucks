@@ -18,14 +18,16 @@ import Animated from 'react-native-reanimated';
 import { PerformantImageContext } from './PerformantImageProvider';
 
 export type PerformantImageProps = {
-	source: string | number | null | undefined;
 	containerStyle?: StyleProp<ViewStyle>;
 	imageStyle?: StyleProp<ImageStyle>;
+	source: string | number | null | undefined;
 } & ImageProps;
 
 const Component: React.FC<PerformantImageProps> = forwardRef((props, ref) => {
 	const {
 		containerStyle,
+		contentFit,
+		contentPosition,
 		imageStyle,
 		source,
 		style,
@@ -33,6 +35,7 @@ const Component: React.FC<PerformantImageProps> = forwardRef((props, ref) => {
 		...rest
 	} = props;
 
+	const [containerHeight, setContainerHeight] = useState(0);
 	const [containerWidth, setContainerWidth] = useState(0);
 
 	const [image, setImage] = useState<ImageResult | null>(null);
@@ -58,15 +61,6 @@ const Component: React.FC<PerformantImageProps> = forwardRef((props, ref) => {
 					pixelSize,
 				);
 
-				if (__DEV__)
-					console.log(
-						`[PerformantImage] Found cached image (${cachedImage?.uri.slice(
-							-20,
-						)}) for original "...${assetKey.slice(
-							-20,
-						)}" with dimensions ${pixelSize}x${pixelSize}.`,
-					);
-
 				setImage(cachedImage);
 				return;
 			}
@@ -83,25 +77,9 @@ const Component: React.FC<PerformantImageProps> = forwardRef((props, ref) => {
 				{ format: SaveFormat.PNG },
 			)
 				.then((result) => {
-					if (__DEV__)
-						console.log(
-							`[PerformantImage] Resized image "...${assetKey.slice(
-								-20,
-							)}" with dimensions ${pixelSize}x${pixelSize} (...${result.uri.slice(
-								-20,
-							)}).`,
-						);
-
 					setImage(result);
 
 					cacheImage(assetKey, pixelSize, pixelSize, result);
-
-					if (__DEV__)
-						console.log(
-							`[PerformantImage] Cached image "...${assetKey.slice(
-								-20,
-							)}" with dimensions ${pixelSize}x${pixelSize}.`,
-						);
 				})
 				.catch((e) => {
 					console.log(e);
@@ -122,7 +100,10 @@ const Component: React.FC<PerformantImageProps> = forwardRef((props, ref) => {
 		<View
 			ref={ref as any}
 			style={[Styles.container, style]}
-			onLayout={(e) => setContainerWidth(e.nativeEvent.layout.width)}
+			onLayout={(e) => {
+				setContainerHeight(e.nativeEvent.layout.height);
+				setContainerWidth(e.nativeEvent.layout.width);
+			}}
 		>
 			<Image
 				source={image}

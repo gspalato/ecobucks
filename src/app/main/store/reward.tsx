@@ -13,6 +13,7 @@ import Loading from '@components/Loading';
 import Screen from '@components/Screen';
 
 import PerformantImage from '@/components/PerformantImage';
+import Subtitle from '@/components/Subtitle';
 
 import { getFontSize } from '@lib/fonts';
 import { useHeaderLayout, useTabBarLayout } from '@lib/layout';
@@ -58,7 +59,7 @@ const Component: React.FC<Props> = (props) => {
 					placeholder={'#ccc'}
 					style={{
 						aspectRatio: 4 / 3,
-						marginBottom: 20,
+						marginBottom: 30,
 						padding: 5,
 						width: '100%',
 					}}
@@ -71,46 +72,42 @@ const Component: React.FC<Props> = (props) => {
 					style={{
 						fontFamily: 'Syne_700Bold',
 						fontSize: getFontSize(30),
-						marginBottom: 30,
+						marginBottom: 45,
 						textAlign: 'center',
 						width: '100%',
 					}}
 				>
 					{name}
 				</Text>
-				<View
+				<Subtitle
 					style={{
-						flexGrow: 1,
-						marginBottom: 40,
+						paddingBottom: 7.5 * Spacings.Unit,
+						paddingHorizontal: 30,
+						//width: '100%',
+					}}
+				>
+					Description
+				</Subtitle>
+				<Text
+					style={{
+						color: '#666',
+						fontFamily: 'Inter_400Regular',
+						fontSize: getFontSize(14),
+						paddingHorizontal: 30,
+						textAlign: 'left',
 						width: '100%',
 					}}
 				>
-					<Text
-						style={{
-							color: '#666',
-							fontFamily: 'Inter_400Regular',
-							fontSize: getFontSize(15),
-							paddingHorizontal: 20,
-							textAlign: 'left',
-							width: '100%',
-						}}
-					>
-						Lorem ipsum dolor sit amet consectetur adipisicing elit.
-						Quam repellat nam cumque molestias iste commodi ratione
-						quae, voluptate beatae odit molestiae, deserunt vero?
-						Omnis ad illum distinctio impedit reiciendis saepe vel
-						ducimus officia aliquid ea error maiores, veritatis
-						dolorum cupiditate, atque nemo. Illum atque ab quis
-						totam voluptatibus iusto at modi distinctio expedita
-						natus odio eos repellendus dolor quae ipsa fugiat quos
-						explicabo, velit delectus laudantium est possimus
-						officia nemo! Corrupti fugit, repellat eaque non
-						possimus esse quo repellendus iusto enim, quis quidem
-						tempora minus. Et voluptatibus aliquid consectetur sed
-						doloribus, delectus ullam veritatis odit repellat
-						praesentium ipsam possimus harum!
-					</Text>
-				</View>
+					Lorem ipsum dolor sit, amet consectetur adipisicing elit.
+					Nisi optio, eveniet laudantium odio natus exercitationem ab
+					qui ducimus soluta consequuntur? Culpa dolore rerum
+					doloremque? Qui aspernatur fugit totam nobis laudantium
+					commodi vitae voluptas nesciunt iste dignissimos doloremque,
+					quod tenetur eos porro perspiciatis perferendis quam!
+					Inventore quia est libero fugiat quo soluta incidunt
+					asperiores, vero dolor repellendus tenetur. Officiis, soluta
+					deserunt.
+				</Text>
 			</ScrollView>
 			<View
 				style={[
