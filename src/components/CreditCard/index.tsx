@@ -1,17 +1,9 @@
 import { TouchableWithoutFeedback } from 'react-native-gesture-handler';
 
 import AsyncStorage from '@react-native-async-storage/async-storage';
-import { useFocusEffect } from '@react-navigation/native';
 import * as Haptics from 'expo-haptics';
 import { useCallback, useEffect, useRef, useState } from 'react';
-import {
-	Animated,
-	Text,
-	TouchableHighlight,
-	TouchableOpacity,
-	useWindowDimensions,
-	View,
-} from 'react-native';
+import { Animated, Text, useWindowDimensions, View } from 'react-native';
 import tw from 'twrnc';
 
 import CardStyles from '@/lib/assets/cardStyles';
@@ -93,8 +85,8 @@ const Component: React.FC<CreditCardProps> = (props) => {
 			</TouchableWithoutFeedback>
 			<SelectCardStyleSheet
 				ref={selectCardStyleSheetRef}
-				activeHeight={height * 0.5}
-				dismissDistance={10}
+				activeHeight={height * 0.75}
+				dismissDistance={20}
 				onStyleSelect={updateCardStyle}
 			/>
 		</>
