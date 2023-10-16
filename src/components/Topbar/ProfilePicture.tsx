@@ -1,17 +1,11 @@
 import { TouchableOpacity } from 'react-native-gesture-handler';
 
-import { useLazyQuery } from '@apollo/client';
 import * as Haptics from 'expo-haptics';
 import { Image } from 'expo-image';
 import * as ImagePicker from 'expo-image-picker';
 import { useCallback, useEffect, useRef, useState } from 'react';
-import {
-	ActivityIndicator,
-	StyleProp,
-	useWindowDimensions,
-	ViewStyle,
-} from 'react-native';
-import mime from 'react-native-mime-types';
+import { StyleProp, useWindowDimensions, ViewStyle } from 'react-native';
+import * as mime from 'react-native-mime-types';
 
 import BottomSheet from '@components/BottomSheet';
 import CustomButton from '@components/Button';
@@ -24,8 +18,6 @@ import { getFontSize } from '@/lib/fonts';
 import { CheckAuthenticationPayload } from '@/types/CheckAuthenticationPayload';
 
 import { Spacings } from '@/styles';
-
-import Dialog from '../Dialog';
 
 type ProfilePictureProps = {
 	containerStyle?: StyleProp<ViewStyle>;
@@ -74,13 +66,13 @@ const Component: React.FC<ProfilePictureProps> = (props) => {
 		const imageAsset = imageResult.assets[0];
 
 		try {
-			uploadingDialogRef?.current?.open();
-			const res = await FoundationClient.UploadAvatar(token, {
+			const payload = {
 				uri: imageAsset.uri,
 				type: mime.lookup(imageAsset.uri) || undefined,
 				name: imageAsset.uri.split('/').pop() || '',
-			});
-			uploadingDialogRef?.current?.close();
+			};
+
+			const res = await FoundationClient.UploadAvatar(token, payload);
 
 			if (res.status != 200) {
 				alert('Failed to upload profile picture.');

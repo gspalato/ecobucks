@@ -30,7 +30,7 @@ export class FoundationClient {
 		const formData = new FormData();
 		formData.append('file', image as any);
 
-		return fetch('http://3.223.11.90/api/identity/user/avatar', {
+		return fetch(Endpoints.REST.Avatar, {
 			method: 'PUT',
 			headers: {
 				Authorization: `Bearer ${token}`,
