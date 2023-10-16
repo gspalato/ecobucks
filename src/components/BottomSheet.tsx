@@ -131,7 +131,11 @@ const Component: React.FC<BottomSheetProps> = (props, ref) => {
 					style={[Styles.backdrop, backdropAnimation, backdropStyle]}
 				/>
 			</TouchableWithoutFeedback>
-			<PanGestureHandler onGestureEvent={gestureHandler}>
+			<PanGestureHandler
+				failOffsetY={[-5, 5]}
+				activeOffsetX={[-5, 5]}
+				onGestureEvent={gestureHandler}
+			>
 				<Animated.View
 					style={[
 						Styles.container,
