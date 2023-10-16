@@ -19,11 +19,11 @@ import { CheckAuthenticationPayload } from '@/types/CheckAuthenticationPayload';
 
 import { Spacings } from '@/styles';
 
-type ProfilePictureProps = {
+type AvatarProps = {
 	containerStyle?: StyleProp<ViewStyle>;
 } & PerformantImageProps;
 
-const Component: React.FC<ProfilePictureProps> = (props) => {
+const Component: React.FC<AvatarProps> = (props) => {
 	const { containerStyle, source, style, ...rest } = props;
 
 	const [reloadKey, setReloadKey] = useState<number>(0);

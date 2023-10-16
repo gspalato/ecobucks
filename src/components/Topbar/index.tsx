@@ -7,8 +7,8 @@ import PerformantImage from '@components/PerformantImage';
 
 import { getFontSize } from '@/lib/fonts';
 
+import Avatar from './Avatar';
 import IconButton from './IconButton';
-import ProfilePicture from './ProfilePicture';
 import { Colors, Spacings } from '@/styles';
 
 type ModernTopbarProps = {
@@ -33,7 +33,7 @@ const Component: React.FC<ModernTopbarProps> = (props) => {
 	return (
 		<View style={[Styles.container, containerStyle]}>
 			<View style={Styles.userContainer}>
-				<ProfilePicture
+				<Avatar
 					source=''
 					style={{
 						aspectRatio: 1,
