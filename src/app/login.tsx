@@ -9,11 +9,8 @@ import Input from '@/components/Input';
 
 import { useAuth } from '@lib/auth';
 
-import FoundationClient from '@/lib/api/client';
 import { getFontSize } from '@/lib/fonts';
 import { RootStackParamList } from '@/lib/navigation/types';
-
-import { CheckAuthenticationPayload } from '@/types/CheckAuthenticationPayload';
 
 type Props = NativeStackScreenProps<RootStackParamList, 'Login'>;
 
@@ -34,7 +31,9 @@ const Screen: React.FC<Props> = (props) => {
 
 	const onPress = async () => {
 		setSubmitting(true);
+
 		setSuccess(await login(username, password));
+		setSubmitting(false);
 	};
 
 	return (

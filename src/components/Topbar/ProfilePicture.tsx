@@ -5,7 +5,12 @@ import * as Haptics from 'expo-haptics';
 import { Image } from 'expo-image';
 import * as ImagePicker from 'expo-image-picker';
 import { useCallback, useEffect, useRef, useState } from 'react';
-import { StyleProp, useWindowDimensions, ViewStyle } from 'react-native';
+import {
+	ActivityIndicator,
+	StyleProp,
+	useWindowDimensions,
+	ViewStyle,
+} from 'react-native';
 import mime from 'react-native-mime-types';
 
 import BottomSheet from '@components/BottomSheet';
@@ -14,10 +19,13 @@ import { PerformantImageProps } from '@components/PerformantImage/PerformantImag
 
 import FoundationClient from '@/lib/api/client';
 import { useAuth } from '@/lib/auth';
+import { getFontSize } from '@/lib/fonts';
 
 import { CheckAuthenticationPayload } from '@/types/CheckAuthenticationPayload';
 
 import { Spacings } from '@/styles';
+
+import Dialog from '../Dialog';
 
 type ProfilePictureProps = {
 	containerStyle?: StyleProp<ViewStyle>;
@@ -30,11 +38,13 @@ const Component: React.FC<ProfilePictureProps> = (props) => {
 	const [profilePicture, setProfilePicture] = useState<string | null>();
 
 	const settingsBottomSheetRef = useRef<any>();
+	const uploadingDialogRef = useRef<any>();
 
 	const { height } = useWindowDimensions();
-	const { token } = useAuth();
+	const { token, logout } = useAuth();
 
 	const onPress = useCallback(() => {
+		uploadingDialogRef?.current?.open();
 		Haptics.impactAsync(Haptics.ImpactFeedbackStyle.Light);
 
 		settingsBottomSheetRef?.current?.open();
@@ -64,11 +74,13 @@ const Component: React.FC<ProfilePictureProps> = (props) => {
 		const imageAsset = imageResult.assets[0];
 
 		try {
+			uploadingDialogRef?.current?.open();
 			const res = await FoundationClient.UploadAvatar(token, {
 				uri: imageAsset.uri,
 				type: mime.lookup(imageAsset.uri) || undefined,
 				name: imageAsset.uri.split('/').pop() || '',
 			});
+			uploadingDialogRef?.current?.close();
 
 			if (res.status != 200) {
 				alert('Failed to upload profile picture.');
@@ -127,12 +139,12 @@ const Component: React.FC<ProfilePictureProps> = (props) => {
 			</TouchableOpacity>
 			<BottomSheet
 				ref={settingsBottomSheetRef}
-				activeHeight={height * 0.5}
+				activeHeight={height * 0.75}
 				dismissDistance={10}
 				containerStyle={{
 					alignItems: 'center',
 					display: 'flex',
-					gap: 8 * Spacings.Unit,
+					gap: 6 * Spacings.Unit,
 				}}
 			>
 				<CustomButton
@@ -140,20 +152,34 @@ const Component: React.FC<ProfilePictureProps> = (props) => {
 					onPress={() => {
 						uploadProfilePicture();
 					}}
-					buttonStyle={{ backgroundColor: '#0000', width: '100%' }}
-					textStyle={{ color: '#000' }}
+					buttonStyle={{
+						backgroundColor: '#0000',
+						paddingVertical: 5,
+						width: '100%',
+					}}
+					textStyle={{ color: '#000', fontSize: getFontSize(16) }}
 				/>
 				<CustomButton
 					text='Remove Profile Picture'
 					onPress={() => {}}
-					buttonStyle={{ backgroundColor: '#0000', width: '100%' }}
-					textStyle={{ color: '#000' }}
+					buttonStyle={{
+						backgroundColor: '#0000',
+						paddingVertical: 5,
+						width: '100%',
+					}}
+					textStyle={{ color: '#000', fontSize: getFontSize(16) }}
 				/>
 				<CustomButton
 					text='Log Out'
-					onPress={() => {}}
-					buttonStyle={{ backgroundColor: '#0000', width: '100%' }}
-					textStyle={{ color: '#000' }}
+					onPress={() => {
+						logout();
+					}}
+					buttonStyle={{
+						backgroundColor: '#0000',
+						paddingVertical: 5,
+						width: '100%',
+					}}
+					textStyle={{ color: '#000', fontSize: getFontSize(16) }}
 				/>
 			</BottomSheet>
 		</>

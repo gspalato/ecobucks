@@ -47,6 +47,15 @@ export class FoundationClient {
 			},
 		});
 	}
+
+	public static GetEcobucksProfile(token: string): Promise<Response> {
+		return fetch(Endpoints.REST.EcobucksProfile, {
+			method: 'GET',
+			headers: {
+				Authorization: `Bearer ${token}`,
+			},
+		});
+	}
 }
 
 export default FoundationClient;

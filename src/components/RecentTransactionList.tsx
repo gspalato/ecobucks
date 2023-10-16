@@ -135,7 +135,7 @@ const Styles = StyleSheet.create({
 	transactionItemDetailDescription: {
 		color: '#00000099',
 		fontFamily: 'Inter_400Regular',
-		fontSize: getFontSize(15),
+		fontSize: getFontSize(14),
 	},
 	transactionItemDetailCreditContainer: {
 		alignItems: 'center',

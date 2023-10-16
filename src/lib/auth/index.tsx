@@ -7,9 +7,11 @@ import * as SecureStore from 'expo-secure-store';
 import React, {
 	createContext,
 	PropsWithChildren,
+	useCallback,
 	useContext,
 	useEffect,
 	useMemo,
+	useReducer,
 	useState,
 } from 'react';
 
@@ -43,7 +45,7 @@ const AuthContext = createContext<AuthContextData>({} as any);
 const useAuth = () => useContext(AuthContext);
 
 const AuthProvider: React.FC<PropsWithChildren> = ({ children }) => {
-	const [state, dispatch] = React.useReducer(
+	const [state, dispatch] = useReducer(
 		(prevState: AuthState, action: AuthStateAction) => {
 			switch (action.type) {
 				case 'SET_TOKEN':
@@ -87,7 +89,7 @@ const AuthProvider: React.FC<PropsWithChildren> = ({ children }) => {
 		},
 	);
 
-	React.useEffect(() => {
+	useEffect(() => {
 		// Fetch the token from storage then navigate to our appropriate place
 		const bootstrapAsync = async () => {
 			let token;
@@ -96,19 +98,28 @@ const AuthProvider: React.FC<PropsWithChildren> = ({ children }) => {
 				token = await SecureStore.getItemAsync('token');
 			} catch (e) {
 				// Restoring token failed
+				return;
 			}
 
 			// After restoring token, we may need to validate it in production apps
-			FoundationClient.CheckAuthentication(token!).then(async (res) => {
+			if (!token) return;
+
+			try {
+				const result =
+					await FoundationClient.CheckAuthentication(token);
+
 				const { successful }: CheckAuthenticationPayload =
-					await res.json();
+					await result.json();
 
+				if (!successful) return;
+
+				// This will switch to the App screen or Auth screen and this loading
+				// screen will be unmounted and thrown away.
+				dispatch({ type: 'RESTORE_TOKEN', token: token });
 				dispatch({ type: 'SET_LOGGED_IN', isLoggedIn: successful });
-			});
-
-			// This will switch to the App screen or Auth screen and this loading
-			// screen will be unmounted and thrown away.
-			dispatch({ type: 'RESTORE_TOKEN', token: token });
+			} catch (e) {
+				console.log(e);
+			}
 		};
 
 		bootstrapAsync();
@@ -202,41 +213,41 @@ const useProfile = (
 	callback?: (profile: Profile | null) => void,
 ): {
 	profile: Profile | null;
-	fetch: LazyQueryExecFunction<
-		GetEcobucksProfile.ReturnType,
-		OperationVariables
-	>;
+	fetch: (token: string | null) => Promise<void>;
 } => {
 	const [profile, setProfile] = useState<Profile | null>(null);
 
-	const [fetch] = useLazyQuery<GetEcobucksProfile.ReturnType>(
-		GetEcobucksProfile.Query,
-		{
-			fetchPolicy: 'no-cache',
-			onCompleted(data) {
-				setProfile(data.ecobucksProfile);
-				callback?.(data.ecobucksProfile);
-			},
-			onError(e) {
-				alert(
-					`Failed to fetch profile.\n${e.message}\n${
-						e.cause
-					}\n${e.graphQLErrors.map((e) => e.message)}`,
-				);
-				setProfile(null);
-				callback?.(null);
-			},
+	const fetch = useCallback(
+		async (token: string | null) => {
+			if (!token) return;
+
+			const result = await FoundationClient.GetEcobucksProfile(token);
+
+			if (!result.ok) {
+				alert(`Failed to fetch profile.`);
+				console.log(result);
+				return;
+			}
+
+			const payload = await result.json();
+			const profile = payload.profile;
+
+			if (!profile) {
+				alert(`Failed to fetch profile.`);
+				console.log(result);
+				return;
+			}
+
+			setProfile(profile);
+			callback?.(profile);
 		},
+		[token],
 	);
 
 	useEffect(() => {
 		if (!token) return;
 
-		fetch({
-			variables: {
-				token,
-			},
-		});
+		fetch(token);
 	}, [token]);
 
 	return { profile, fetch };

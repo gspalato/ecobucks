@@ -1,4 +1,4 @@
-const BaseUrl = 'http://3.223.11.90/api';
+const BaseUrl = 'https://unreal.sh/api';
 
 export const Endpoints = {
 	GraphQL: {
@@ -13,7 +13,9 @@ export const Endpoints = {
 		UPx: new URL('/upx', BaseUrl).toString(),
 
 		Auth: new URL('/identity/auth', BaseUrl).toString(),
-		Avatar: new URL('/identity/user/avatar', BaseUrl).toString(),
+		Avatar: new URL('/identity/me/avatar', BaseUrl).toString(),
+
+		EcobucksProfile: new URL('/upx/ecobucks/me', BaseUrl).toString(),
 	},
 };
 

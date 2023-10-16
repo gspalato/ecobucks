@@ -20,10 +20,9 @@ import SettingsScreen from '@app/settings';
 import { modalStack } from '@components/Modals';
 import SplashScreenComponent from '@components/Modals/SplashScreen';
 
-import { CheckAuth } from '@/lib/api/graphql/queries';
 import useAssets from '@/lib/assets';
 import CardStyles from '@/lib/assets/cardStyles';
-import { useAuthToken } from '@/lib/auth';
+import { useAuth } from '@/lib/auth';
 import fonts from '@/lib/fonts';
 import { RootStackParamList } from '@/lib/navigation/types';
 
@@ -32,11 +31,12 @@ import { Colors } from '@/styles';
 const Stack = createNativeStackNavigator<RootStackParamList>();
 
 const App = () => {
-	const { loaded: assetsLoaded, ...Assets } = useAssets();
+	const [showSplashScreen, setShowSplashScreen] = useState(true);
 
+	const { loaded: assetsLoaded, ...Assets } = useAssets();
 	const [fontsLoaded, error] = useFonts(fonts);
 
-	const [showSplashScreen, setShowSplashScreen] = useState(true);
+	const { isLoggedIn } = useAuth();
 
 	useEffect(() => {
 		if (!error) return;
@@ -74,17 +74,40 @@ const App = () => {
 							},
 						}}
 					>
-						<Stack.Screen name='Login' component={LoginScreen} />
-						<Stack.Screen name='Main' component={MainScreen} />
-						<Stack.Screen name='Scan' component={ScanScreen} />
-						<Stack.Screen name='Map' component={MapScreen} />
-						<Stack.Screen
-							name='Settings'
-							component={SettingsScreen}
-						/>
+						{isLoggedIn ? (
+							<>
+								<Stack.Screen
+									name='Main'
+									component={MainScreen}
+								/>
+								<Stack.Screen
+									name='Scan'
+									component={ScanScreen}
+								/>
+								<Stack.Screen
+									name='Map'
+									component={MapScreen}
+								/>
+								<Stack.Screen
+									name='Settings'
+									component={SettingsScreen}
+								/>
 
-						<Stack.Screen name='Add' component={AddScreen} />
-						<Stack.Screen name='QRCode' component={QRCodeScreen} />
+								<Stack.Screen
+									name='Add'
+									component={AddScreen}
+								/>
+								<Stack.Screen
+									name='QRCode'
+									component={QRCodeScreen}
+								/>
+							</>
+						) : (
+							<Stack.Screen
+								name='Login'
+								component={LoginScreen}
+							/>
+						)}
 					</Stack.Navigator>
 				</PortalProvider>
 			</ModalProvider>

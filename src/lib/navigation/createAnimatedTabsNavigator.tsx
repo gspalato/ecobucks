@@ -110,47 +110,6 @@ const AnimatedTabsNavigator: React.FC<AnimatedTabsNavigatorProps> = (props) => {
 		});
 	}, [state.index]);
 
-	const AnimatedFlashList = React.useMemo(
-		() => Animated.createAnimatedComponent(FlashList),
-		[],
-	);
-
-	const memoizedTabButtons = React.useMemo(() => {
-		return state.routes.map((r, i) => (
-			<TabButton
-				key={r.name}
-				icon={descriptors[r.key].options.icon}
-				unfocusedColor={
-					descriptors[r.key].options.unfocusedColor ?? '#00000055'
-				}
-				focusedColor={
-					descriptors[r.key].options.focusedColor ?? '#000000ff'
-				}
-				name={descriptors[r.key].options.name || r.name}
-				focused={r.key === state.routes[state.index].key}
-				routeIndex={i}
-				scrollX={scrollX}
-				onPress={() => {
-					const event = navigation.emit({
-						type: 'tabPress',
-						target: r.key,
-						data: { blurring: false },
-						canPreventDefault: true,
-					});
-
-					if (!(event as any).defaultPrevented) {
-						navigation.dispatch({
-							...TabActions.jumpTo(r.name),
-							target: state.key,
-						});
-					}
-
-					Haptics.impactAsync(Haptics.ImpactFeedbackStyle.Light);
-				}}
-			/>
-		));
-	}, []);
-
 	const perPlatformDefaultBlur = isAndroid ? 0 : 90;
 
 	const perConfigTabBarBlur = tabBarBlur ? perPlatformDefaultBlur : null;
@@ -167,7 +126,7 @@ const AnimatedTabsNavigator: React.FC<AnimatedTabsNavigatorProps> = (props) => {
 				showsHorizontalScrollIndicator={false}
 				onScroll={Animated.event(
 					[{ nativeEvent: { contentOffset: { x: scrollX } } }],
-					{ useNativeDriver: true },
+					{ useNativeDriver: false },
 				)}
 				data={state.routes}
 				renderItem={(info: any) => (
@@ -197,7 +156,45 @@ const AnimatedTabsNavigator: React.FC<AnimatedTabsNavigatorProps> = (props) => {
 							_setWidth(e.nativeEvent.layout.width);
 						}}
 					>
-						{memoizedTabButtons}
+						{state.routes.map((r, i) => (
+							<TabButton
+								key={r.name}
+								icon={descriptors[r.key].options.icon}
+								unfocusedColor={
+									descriptors[r.key].options.unfocusedColor ??
+									'#00000055'
+								}
+								focusedColor={
+									descriptors[r.key].options.focusedColor ??
+									'#000000ff'
+								}
+								name={descriptors[r.key].options.name || r.name}
+								focused={
+									r.key === state.routes[state.index].key
+								}
+								routeIndex={i}
+								scrollX={scrollX}
+								onPress={() => {
+									const event = navigation.emit({
+										type: 'tabPress',
+										target: r.key,
+										data: { blurring: false },
+										canPreventDefault: true,
+									});
+
+									if (!(event as any).defaultPrevented) {
+										navigation.dispatch({
+											...TabActions.jumpTo(r.name),
+											target: state.key,
+										});
+									}
+
+									Haptics.impactAsync(
+										Haptics.ImpactFeedbackStyle.Light,
+									);
+								}}
+							/>
+						))}
 					</View>
 				) : (
 					<BlurView
@@ -219,7 +216,45 @@ const AnimatedTabsNavigator: React.FC<AnimatedTabsNavigatorProps> = (props) => {
 							_setWidth(e.nativeEvent.layout.width);
 						}}
 					>
-						{memoizedTabButtons}
+						{state.routes.map((r, i) => (
+							<TabButton
+								key={r.name}
+								icon={descriptors[r.key].options.icon}
+								unfocusedColor={
+									descriptors[r.key].options.unfocusedColor ??
+									'#00000055'
+								}
+								focusedColor={
+									descriptors[r.key].options.focusedColor ??
+									'#000000ff'
+								}
+								name={descriptors[r.key].options.name || r.name}
+								focused={
+									r.key === state.routes[state.index].key
+								}
+								routeIndex={i}
+								scrollX={scrollX}
+								onPress={() => {
+									const event = navigation.emit({
+										type: 'tabPress',
+										target: r.key,
+										data: { blurring: false },
+										canPreventDefault: true,
+									});
+
+									if (!(event as any).defaultPrevented) {
+										navigation.dispatch({
+											...TabActions.jumpTo(r.name),
+											target: state.key,
+										});
+									}
+
+									Haptics.impactAsync(
+										Haptics.ImpactFeedbackStyle.Light,
+									);
+								}}
+							/>
+						))}
 					</BlurView>
 				)}
 			</View>
