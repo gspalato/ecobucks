@@ -1,21 +1,27 @@
 const BaseUrl = 'https://foundation.unreal.sh/';
 
+const getUrl = (...paths: string[]) => {
+	let url = new URL(BaseUrl);
+	paths.forEach((path) => (url = new URL(path, url)));
+	return url.toString();
+};
+
 export const Endpoints = {
 	GraphQL: {
-		Gateway: BaseUrl,
+		Gateway: getUrl('gql'),
 
-		Identity: new URL('/identity/gql', BaseUrl).toString(),
-		UPx: new URL('/upx/gql', BaseUrl).toString(),
+		Identity: getUrl('identity', 'gql'),
+		UPx: getUrl('identity', 'gql'),
 	},
 
 	REST: {
-		Identity: new URL('/identity', BaseUrl).toString(),
-		UPx: new URL('/upx', BaseUrl).toString(),
+		Identity: getUrl('identity'),
+		UPx: getUrl('identity'),
 
-		Auth: new URL('/identity/auth', BaseUrl).toString(),
-		Avatar: new URL('/identity/me/avatar', BaseUrl).toString(),
+		Auth: getUrl('identity', 'auth'),
+		Avatar: getUrl('identity', 'me', 'avatar'),
 
-		EcobucksProfile: new URL('/upx/ecobucks/me', BaseUrl).toString(),
+		EcobucksProfile: getUrl('upx', 'ecobucks', 'me'),
 	},
 };
 
