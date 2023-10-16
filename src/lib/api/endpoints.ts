@@ -1,4 +1,4 @@
-const BaseUrl = 'https://unreal.sh/api';
+const BaseUrl = 'https://foundation.unreal.sh/';
 
 export const Endpoints = {
 	GraphQL: {
