@@ -1,7 +1,7 @@
 import AsyncStorage from '@react-native-async-storage/async-storage';
 import { FlashList } from '@shopify/flash-list';
 import { forwardRef, useEffect, useState } from 'react';
-import { View } from 'react-native';
+import { useWindowDimensions, View } from 'react-native';
 
 import CardStyles from '@/lib/assets/cardStyles';
 
@@ -36,23 +36,21 @@ const Component: React.FC<SelectCardStyleSheetProps> = forwardRef(
 
 		return (
 			<BottomSheet ref={ref as any} {...rest}>
-				<View style={{ flexGrow: 1 }}>
-					<FlashList
-						data={Object.keys(CardStyles)}
-						estimatedItemSize={232}
-						renderItem={(info) => (
-							<CardColorOption
-								image={CardStyles[info.item]}
-								index={info.index}
-								onPress={() => {
-									saveStyle(info.item);
-									onStyleSelect();
-								}}
-								isSelected={info.item == selected}
-							/>
-						)}
-					/>
-				</View>
+				<FlashList
+					data={Object.keys(CardStyles)}
+					estimatedItemSize={232}
+					renderItem={(info) => (
+						<CardColorOption
+							image={CardStyles[info.item]}
+							index={info.index}
+							onPress={() => {
+								saveStyle(info.item);
+								onStyleSelect();
+							}}
+							isSelected={info.item == selected}
+						/>
+					)}
+				/>
 			</BottomSheet>
 		);
 	},

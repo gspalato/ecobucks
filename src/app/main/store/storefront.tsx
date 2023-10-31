@@ -71,75 +71,70 @@ const Component: React.FC<Props> = (props) => {
 
 	return (
 		<Screen>
-			<View style={{ backgroundColor: Colors.Background, flexGrow: 1 }}>
-				<FlashList
-					contentContainerStyle={{
-						backgroundColor: Colors.Background,
-						paddingTop: headerHeight,
-						paddingBottom: tabBarHeight,
-					}}
-					data={TestRewards}
-					estimatedItemSize={290}
-					keyExtractor={(item, index) =>
-						index + item.image + item.name + item.price
-					}
-					renderItem={(info) => (
-						<TouchableOpacity
-							style={{
-								borderRadius: 10,
-								display: 'flex',
-								gap: 15,
-								margin: 2.5,
-								marginBottom: 10,
-								marginHorizontal: 'auto',
-								padding: 20,
-								width: '100%',
-							}}
-							onPress={() =>
-								navigation.navigate('Reward', {
-									id: info.index,
-									image: CardStyles[
-										`Gradient${(info.index + 1) % 27}`
-									],
-									name: info.item.name,
-									price: info.item.price,
-								})
+			<FlashList
+				contentContainerStyle={{
+					backgroundColor: Colors.Background,
+					paddingTop: headerHeight,
+					paddingBottom: tabBarHeight,
+				}}
+				data={TestRewards}
+				estimatedItemSize={316}
+				keyExtractor={(item, index) =>
+					index + item.image + item.name + item.price
+				}
+				renderItem={(info) => (
+					<TouchableOpacity
+						style={{
+							borderRadius: 10,
+							display: 'flex',
+							gap: 15,
+							margin: 2.5,
+							marginBottom: 10,
+							marginHorizontal: 'auto',
+							padding: 20,
+							width: '100%',
+						}}
+						onPress={() =>
+							navigation.navigate('Reward', {
+								id: info.index,
+								image: CardStyles[
+									`Gradient${(info.index + 1) % 27}`
+								],
+								name: info.item.name,
+								price: info.item.price,
+							})
+						}
+					>
+						<PerformantImage
+							source={
+								CardStyles[`Gradient${(info.index + 1) % 27}`]
 							}
-						>
-							<PerformantImage
-								source={
-									CardStyles[
-										`Gradient${(info.index + 1) % 27}`
-									]
-								}
-								style={{ aspectRatio: 16 / 9, width: '100%' }}
-								imageStyle={{ borderRadius: 15 }}
-							/>
-							<View style={{ display: 'flex', gap: 5 }}>
-								<Text
-									style={{
-										fontFamily: 'Syne_600SemiBold',
-										fontSize: getFontSize(18),
-										textAlign: 'center',
-									}}
-								>
-									{info.item.name}
-								</Text>
-								<Text
-									style={{
-										fontFamily:
-											'BricolageGrotesque_700Bold',
-										fontSize: getFontSize(17),
-										textAlign: 'center',
-									}}
-								>
-									${info.item.price}
-								</Text>
-							</View>
-						</TouchableOpacity>
-					)}
-				/>
-			</View>
+							style={{ aspectRatio: 16 / 9, width: '100%' }}
+							imageStyle={{ borderRadius: 15 }}
+						/>
+						<View style={{ display: 'flex', gap: 5 }}>
+							<Text
+								style={{
+									fontFamily: 'Syne_600SemiBold',
+									fontSize: getFontSize(18),
+									textAlign: 'center',
+								}}
+							>
+								{info.item.name}
+							</Text>
+							<Text
+								style={{
+									fontFamily: 'BricolageGrotesque_700Bold',
+									fontSize: getFontSize(17),
+									textAlign: 'center',
+								}}
+							>
+								${info.item.price}
+							</Text>
+						</View>
+					</TouchableOpacity>
+				)}
+			/>
 			<View style={{ flexGrow: 1, position: 'absolute', width: '100%' }}>
 				<DefaultHeader
 					showBackButton={false}
