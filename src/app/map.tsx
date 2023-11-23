@@ -81,21 +81,22 @@ const Component: React.FC<Props> = ({ navigation }) => {
 				<MapView
 					style={tw`absolute z-0 h-full w-full`}
 					showsUserLocation={true}
-				/>
-				{locations.map((location) => {
-					console.log(location);
-					return (
-						<Marker
-							coordinate={{
-								latitude: location.latitude,
-								longitude: location.longitude,
-							}}
-							icon={CardStyles.Gradient20}
-							pinColor='#11da23'
-							zIndex={10}
-						/>
-					);
-				})}
+				>
+					{locations.map((location) => {
+						console.log(location);
+						return (
+							<Marker
+								coordinate={{
+									latitude: location.latitude,
+									longitude: location.longitude,
+								}}
+								icon={CardStyles.Gradient20}
+								pinColor='#11da23'
+								zIndex={10}
+							/>
+						);
+					})}
+				</MapView>
 			</View>
 			<View style={{ flex: 1, position: 'absolute', width: '100%' }}>
 				<DefaultHeader
