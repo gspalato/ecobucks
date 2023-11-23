@@ -10,18 +10,21 @@ export const Endpoints = {
 	GraphQL: {
 		Gateway: getUrl('gql'),
 
-		Identity: getUrl('identity', 'gql'),
-		UPx: getUrl('identity', 'gql'),
+		Identity: getUrl('identity/gql'),
+		UPx: getUrl('identity/gql'),
 	},
 
 	REST: {
 		Identity: getUrl('identity'),
 		UPx: getUrl('identity'),
 
-		Auth: getUrl('identity', 'auth'),
-		Avatar: getUrl('identity', 'me', 'avatar'),
+		Auth: getUrl('identity/auth'),
+		Avatar: getUrl('identity/me/avatar'),
 
-		EcobucksProfile: getUrl('upx', 'ecobucks', 'me'),
+		EcobucksProfile: getUrl('upx/ecobucks/me'),
+		EcobucksDisposals: getUrl('upx/ecobucks/me/disposals'),
+		EcobucksStations: getUrl('upx/ecobucks/stations'),
+		EcobucksWebSocket: getUrl('upx/ecobucks/ws'),
 	},
 };
 

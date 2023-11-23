@@ -102,6 +102,8 @@ const Component: React.FC<AvatarProps> = (props) => {
 		}
 	}, []);
 
+	const toggleLocation = () => {};
+
 	useEffect(() => {
 		if (!token) return;
 

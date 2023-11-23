@@ -3,7 +3,6 @@ import { Icon } from '@expo/vector-icons/build/createIconSet';
 import { useNavigation } from '@react-navigation/native';
 import * as Haptics from 'expo-haptics';
 import { StyleProp, TouchableOpacity, View, ViewStyle } from 'react-native';
-import tw from 'twrnc';
 
 import { Spacings } from '@/styles';
 
@@ -12,7 +11,6 @@ type GetGeneric<Type> = Type extends Icon<infer Options, infer Name>
 	: never;
 
 type BaseIconButtonProps = {
-	path: string;
 	style?: StyleProp<ViewStyle>;
 };
 
@@ -22,24 +20,35 @@ type NamedIconButtonProps = {
 	size?: number;
 };
 
+type NavigationIconButtonProps = {
+	path: string;
+};
+
+type PressOnlyButtonProps = {
+	onPress: () => void;
+};
+
 type IconButtonProps =
 	| BaseIconButtonProps
-	| (
+	| ((
 			| (BaseIconButtonProps & NamedIconButtonProps)
 			| (BaseIconButtonProps & React.PropsWithChildren)
-	  );
+	  ) &
+			(NavigationIconButtonProps | PressOnlyButtonProps));
 
 const Component: React.FC<IconButtonProps> = (props) => {
 	const isNamed = 'icon' in props;
 	const isChildren = 'children' in props;
 
-	const { path, style } = props;
+	const { style } = props;
 
 	const navigation = useNavigation();
 
 	const onPress = () => {
 		Haptics.impactAsync(Haptics.ImpactFeedbackStyle.Light);
-		navigation.navigate(path as never);
+
+		if ('path' in props) navigation.navigate(props.path as never);
+		else if ('onPress' in props) props.onPress();
 	};
 
 	return (

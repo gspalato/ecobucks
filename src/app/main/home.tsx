@@ -1,3 +1,4 @@
+import { Foundation } from '@expo/vector-icons';
 import { useFocusEffect } from '@react-navigation/native';
 import type { CompositeScreenProps } from '@react-navigation/native';
 import { NativeStackScreenProps } from '@react-navigation/native-stack';
@@ -17,6 +18,7 @@ import { fontSizes } from '@lib/fonts';
 import { useHeaderLayout, useTabBarLayout } from '@lib/layout';
 import { MainTabsParamList } from '@lib/navigation/types';
 
+import FoundationClient from '@/lib/api/client';
 import { RootStackParamList } from '@/lib/navigation/types';
 
 import { Colors, Spacings } from '@/styles';
@@ -27,10 +29,6 @@ type Props = CompositeScreenProps<
 >;
 
 const Component: React.FC<Props> = (props) => {
-	const { navigation, route } = props;
-
-	const [success, setSuccess] = useState<boolean | null>(null);
-
 	const { token } = useAuth();
 
 	const { height: headerHeight } = useHeaderLayout();
@@ -38,6 +36,11 @@ const Component: React.FC<Props> = (props) => {
 
 	const { logout } = useAuth();
 	const { profile, fetch } = useProfile(token);
+
+	useEffect(() => {
+		if (profile && token)
+			FoundationClient.RunLocationLoopAsync(profile?.id, token);
+	}, [profile, token]);
 
 	useFocusEffect(
 		useCallback(() => {

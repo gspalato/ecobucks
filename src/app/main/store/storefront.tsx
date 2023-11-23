@@ -1,5 +1,6 @@
 import { StackScreenProps } from '@react-navigation/stack';
 import { FlashList } from '@shopify/flash-list';
+import { Image } from 'expo-image';
 import { useState } from 'react';
 import { StyleSheet, Text, TouchableOpacity, View } from 'react-native';
 import tw from 'twrnc';
@@ -98,19 +99,22 @@ const Component: React.FC<Props> = (props) => {
 							navigation.navigate('Reward', {
 								id: info.index,
 								image: CardStyles[
-									`Gradient${(info.index + 1) % 27}`
+									`Gradient${(info.index + 1) % 26}`
 								],
 								name: info.item.name,
 								price: info.item.price,
 							})
 						}
 					>
-						<PerformantImage
+						<Image
 							source={
-								CardStyles[`Gradient${(info.index + 1) % 27}`]
+								CardStyles[`Gradient${(info.index + 1) % 26}`]
 							}
-							style={{ aspectRatio: 16 / 9, width: '100%' }}
-							imageStyle={{ borderRadius: 15 }}
+							style={{
+								aspectRatio: 16 / 9,
+								borderRadius: 15,
+								width: '100%',
+							}}
 						/>
 						<View style={{ display: 'flex', gap: 5 }}>
 							<Text

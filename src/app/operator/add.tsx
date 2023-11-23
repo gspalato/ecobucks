@@ -18,6 +18,7 @@ import DisposalField from '@/components/DisposalField';
 import ClaimSuccessModal from '@/components/Modals/ClaimSuccessModal';
 import SwipeableRow from '@/components/SwipeableRow';
 
+import FoundationClient from '@/lib/api/client';
 import * as RegisterDisposal from '@/lib/api/graphql/mutations/registerDisposal';
 import { useAuth, useAuthToken } from '@/lib/auth';
 import { getFontSize } from '@/lib/fonts';
@@ -25,7 +26,7 @@ import { useHeaderLayout } from '@/lib/layout';
 import { RootStackParamList } from '@/lib/navigation/types';
 import { usePlatform } from '@/lib/platform';
 
-import { DisposalType } from '@/types/DisposalClaim';
+import { Disposal, DisposalType } from '@/types/DisposalClaim';
 
 import { Colors, Defaults, Spacings } from '@/styles';
 
@@ -91,36 +92,57 @@ const Screen: React.FC<Props> = (props) => {
 		navigation.push('Main');
 	};
 
-	const [register] = useMutation<RegisterDisposal.ReturnType>(
-		RegisterDisposal.Mutation,
-		{
-			fetchPolicy: 'no-cache',
-			onCompleted: (data) => {
-				if (
-					!data.registerDisposal.successful ||
-					data.registerDisposal.error
-				) {
-					alert(
-						`Failed to register disposal.\n${data.registerDisposal.error}`,
-					);
-					return;
-				}
+	const onRegisterPress = () => {
+		if (!token) {
+			alert('Authentication expired.');
+			return;
+		}
 
-				navigation.push('QRCode', {
-					id: data.registerDisposal.disposal.token,
-					credits: data.registerDisposal.disposal.credits,
-				});
-			},
-			onError: (error) => {
+		disposalFields.forEach((f, i) =>
+			console.log(f._id, f.weight, f.disposalType),
+		);
+
+		if (disposalFields.some((item) => !item.weight || !item.disposalType)) {
+			alert('Please fill all fields.');
+			return;
+		}
+
+		const disposals: Disposal[] = disposalFields.map((item) => ({
+			weight: item.weight!,
+			disposalType: item.disposalType!,
+			credits:
+				(item.weight! / 1000) * PER_TYPE_RATE_KG[item.disposalType!],
+		}));
+
+		FoundationClient.RegisterDisposal(disposals, token)
+			.then(async (r) => {
+				try {
+					const data = await r.json();
+					console.log(data);
+
+					if (!data.successful || data.error) {
+						alert(`Failed to register disposal.\n${data.error}`);
+						return;
+					}
+
+					navigation.push('QRCode', {
+						id: data.disposal.token,
+						credits: data.disposal.credits,
+					});
+				} catch (e) {
+					alert(`Failed to register disposal (internal error).`);
+					console.log(e);
+				}
+			})
+			.catch((e) => {
 				alert(
-					`Failed to register disposal (internal error).\n${error.message}`,
+					`Failed to register disposal (internal error).\n${e.message}`,
 				);
-				console.log(error.cause);
-				console.log(error.message);
-				console.log(error.stack);
-			},
-		},
-	);
+				alert(e.cause);
+				alert(e.message);
+				alert(e.stack);
+			});
+	};
 
 	return (
 		<>
@@ -195,44 +217,7 @@ const Screen: React.FC<Props> = (props) => {
 							height: 20 * Spacings.Unit,
 							width: 100 * Spacings.Unit,
 						}}
-						onPress={() => {
-							if (!token) {
-								alert('Authentication expired.');
-								return;
-							}
-
-							disposalFields.forEach((f, i) =>
-								console.log(f._id, f.weight, f.disposalType),
-							);
-
-							if (
-								disposalFields.some(
-									(item) =>
-										!item.weight || !item.disposalType,
-								)
-							) {
-								alert('Please fill all fields.');
-								return;
-							}
-
-							register({
-								variables: {
-									operatorToken: token!,
-									disposals: disposalFields.map((item) => ({
-										weight: item.weight!,
-										disposalType:
-											DISPOSAL_TYPE_ENUM_NAME[
-												item.disposalType!
-											],
-										credits:
-											(item.weight! / 1000) *
-											PER_TYPE_RATE_KG[
-												item.disposalType!
-											],
-									})),
-								},
-							});
-						}}
+						onPress={onRegisterPress}
 					/>
 				</View>
 			</SafeAreaView>

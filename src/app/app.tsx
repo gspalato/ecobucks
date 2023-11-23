@@ -1,12 +1,9 @@
 import { GestureHandlerRootView } from 'react-native-gesture-handler';
 
-import { useLazyQuery } from '@apollo/client';
 import { PortalProvider } from '@gorhom/portal';
 import { createNativeStackNavigator } from '@react-navigation/native-stack';
 import { useFonts } from 'expo-font';
-import * as NavigationBar from 'expo-navigation-bar';
 import { useEffect, useState } from 'react';
-import { Platform, UIManager } from 'react-native';
 import { ModalProvider } from 'react-native-modalfy';
 
 import LoginScreen from '@app/login';
@@ -20,6 +17,7 @@ import SettingsScreen from '@app/settings';
 import { modalStack } from '@components/Modals';
 import SplashScreenComponent from '@components/Modals/SplashScreen';
 
+import FoundationClient from '@/lib/api/client';
 import useAssets from '@/lib/assets';
 import CardStyles from '@/lib/assets/cardStyles';
 import { useAuth } from '@/lib/auth';
