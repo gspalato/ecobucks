@@ -70,7 +70,6 @@ Foundation is a microservice GraphQL back-end and platform for my projects, allo
 
 -   [React Native](https://reactnative.dev/)
 -   [Expo](https://expo.dev)
--   [Apollo GraphQL](https://www.apollographql.com/)
 -   [Node.js](https://nodejs.org/)
 
 <p align="right">(<a href="#top">back to top</a>)</p>
