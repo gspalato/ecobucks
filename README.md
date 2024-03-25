@@ -62,7 +62,10 @@
 
 ## About The Project
 
-Foundation is a microservice GraphQL back-end and platform for my projects, allowing easy deployments with an authentication server and database.
+Ecobucks is a waste disposal system that rewards users with credits that can be exchanged for rewards and gifts.
+It consists of a multiplatform app for checking your credits and redeeming rewards, and a waste disposal station prototype that weighs and generates a QR Code that can be scanned to redeem credits.
+
+> Ecobucks is an university project being developed for UNISO by UNISO's IT Core.
 
 <p align="right">(<a href="#top">back to top</a>)</p>
 
