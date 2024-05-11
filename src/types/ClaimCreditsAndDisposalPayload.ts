@@ -1,7 +1,7 @@
 import { DisposalClaim } from './DisposalClaim';
 
 export type ClaimDisposalAndCreditsPayload = {
-	successful: boolean;
+	success: boolean;
 	error: string;
 	disposal: DisposalClaim;
 };

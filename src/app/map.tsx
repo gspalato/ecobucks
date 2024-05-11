@@ -60,7 +60,7 @@ const Component: React.FC<Props> = ({ navigation }) => {
 			}
 
 			const payload = await response.json();
-			if (!payload.successful) {
+			if (!payload.success) {
 				console.log('Failed to fetch stations.');
 				return;
 			}

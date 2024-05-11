@@ -67,7 +67,7 @@ const App = () => {
 						screenOptions={{
 							headerShown: false,
 							contentStyle: {
-								backgroundColor: Colors.Background,
+								backgroundColor: '#000000',
 								flex: 1,
 							},
 						}}

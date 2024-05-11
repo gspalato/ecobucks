@@ -29,6 +29,7 @@ const Component: React.FC<ModernTopbarProps> = (props) => {
 					style={{
 						aspectRatio: 1,
 						height: '100%',
+						backgroundColor: '#00000033',
 					}}
 					containerStyle={{
 						aspectRatio: 1,

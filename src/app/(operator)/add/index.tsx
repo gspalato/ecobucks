@@ -81,7 +81,7 @@ const Screen: React.FC = () => {
 			fetchPolicy: 'no-cache',
 			onCompleted: (data) => {
 				if (
-					!data.registerDisposal.successful ||
+					!data.registerDisposal.success ||
 					data.registerDisposal.error
 				) {
 					alert(

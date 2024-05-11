@@ -126,7 +126,7 @@ const AnimatedTabsNavigator: React.FC<AnimatedTabsNavigatorProps> = (props) => {
 				showsHorizontalScrollIndicator={false}
 				onScroll={Animated.event(
 					[{ nativeEvent: { contentOffset: { x: scrollX } } }],
-					{ useNativeDriver: false },
+					{ useNativeDriver: true },
 				)}
 				data={state.routes}
 				renderItem={(info: any) => (

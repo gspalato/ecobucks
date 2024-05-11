@@ -1,6 +1,6 @@
 import { User } from './User';
 
 export type CheckAuthenticationPayload = {
-	successful: boolean;
+	success: boolean;
 	user: User;
 };

@@ -1,4 +1,5 @@
-const BaseUrl = 'https://foundation.unreal.sh/';
+const BaseUrl = 'http://192.168.0.108:4000/';
+//const BaseUrl = 'https://foundation.unreal.sh/';
 
 const getUrl = (...paths: string[]) => {
 	let url = new URL(BaseUrl);
@@ -7,24 +8,14 @@ const getUrl = (...paths: string[]) => {
 };
 
 export const Endpoints = {
-	GraphQL: {
-		Gateway: getUrl('gql'),
-
-		Identity: getUrl('identity/gql'),
-		UPx: getUrl('identity/gql'),
-	},
-
 	REST: {
-		Identity: getUrl('identity'),
-		UPx: getUrl('identity'),
+		Auth: getUrl('auth'),
+		//Avatar: getUrl('identity/me/avatar'),
 
-		Auth: getUrl('identity/auth'),
-		Avatar: getUrl('identity/me/avatar'),
-
-		EcobucksProfile: getUrl('upx/ecobucks/me'),
-		EcobucksDisposals: getUrl('upx/ecobucks/me/disposals'),
-		EcobucksStations: getUrl('upx/ecobucks/stations'),
-		EcobucksWebSocket: getUrl('upx/ecobucks/ws'),
+		EcobucksProfile: getUrl('me'),
+		EcobucksDisposals: getUrl('me/disposals'),
+		EcobucksStations: getUrl('stations'),
+		EcobucksWebSocket: getUrl('ws'),
 	},
 };
 

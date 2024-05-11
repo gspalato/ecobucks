@@ -1,9 +1,9 @@
 export type DisposalClaim = {
-	userId: string;
-	operatorId: string;
+	user_id: string;
+	operator_id: string;
 	token: string;
 	credits: number;
-	isClaimed: boolean;
+	is_claimed: boolean;
 	weight: number;
 	disposals: number;
 };
@@ -11,7 +11,7 @@ export type DisposalClaim = {
 export type Disposal = {
 	credits: number;
 	weight: number;
-	disposalType: DisposalType;
+	disposal_type: DisposalType;
 };
 
 export enum DisposalType {

@@ -42,16 +42,18 @@ const Component: React.FC<AvatarProps> = (props) => {
 		settingsBottomSheetRef?.current?.open();
 	}, [settingsBottomSheetRef]);
 
+	/*
 	const fetchProfilePicture = useCallback((token: string) => {
 		FoundationClient.CheckAuthentication(token).then(async (res) => {
-			const { successful, user }: CheckAuthenticationPayload =
+			const { success, user }: CheckAuthenticationPayload =
 				await res.json();
-			if (!successful) return;
+			if (!success) return;
 
 			const url = user.profilePictureUrl;
 			setProfilePicture(url);
 		});
 	}, []);
+	
 
 	const uploadProfilePicture = useCallback(async () => {
 		const imageResult = await ImagePicker.launchImageLibraryAsync({
@@ -83,7 +85,7 @@ const Component: React.FC<AvatarProps> = (props) => {
 
 			const result = await res.json();
 
-			if (!result.successful) {
+			if (!result.success) {
 				alert('Failed to upload profile picture.');
 				console.log(result);
 				console.log(res.status + ': ' + res.body);
@@ -101,6 +103,7 @@ const Component: React.FC<AvatarProps> = (props) => {
 			console.log(e);
 		}
 	}, []);
+	
 
 	const toggleLocation = () => {};
 
@@ -109,16 +112,17 @@ const Component: React.FC<AvatarProps> = (props) => {
 
 		fetchProfilePicture(token);
 	}, [token]);
+	*/
 
 	return (
 		<>
 			<TouchableOpacity containerStyle={containerStyle} onPress={onPress}>
 				<Image
 					key={reloadKey}
-					cachePolicy={'none'}
+					cachePolicy='none'
 					source={profilePicture}
 					transition={200}
-					placeholder={'#00000099'}
+					placeholder='#00000099'
 					style={[
 						{
 							aspectRatio: 1,
@@ -143,15 +147,19 @@ const Component: React.FC<AvatarProps> = (props) => {
 			>
 				<CustomButton
 					text='Change Profile Picture'
-					onPress={() => {
-						uploadProfilePicture();
-					}}
+					//onPress={() => {
+					//	uploadProfilePicture();
+					//}}
 					buttonStyle={{
 						backgroundColor: '#0000',
 						paddingVertical: 5,
 						width: '100%',
 					}}
-					textStyle={{ color: '#000', fontSize: getFontSize(16) }}
+					textStyle={{
+						color: '#000',
+						fontFamily: 'SpaceGrotesk_700Bold',
+						fontSize: getFontSize(16),
+					}}
 				/>
 				<CustomButton
 					text='Remove Profile Picture'
@@ -161,7 +169,11 @@ const Component: React.FC<AvatarProps> = (props) => {
 						paddingVertical: 5,
 						width: '100%',
 					}}
-					textStyle={{ color: '#000', fontSize: getFontSize(16) }}
+					textStyle={{
+						color: '#000',
+						fontFamily: 'SpaceGrotesk_700Bold',
+						fontSize: getFontSize(16),
+					}}
 				/>
 				<CustomButton
 					text='Log Out'
@@ -173,7 +185,11 @@ const Component: React.FC<AvatarProps> = (props) => {
 						paddingVertical: 5,
 						width: '100%',
 					}}
-					textStyle={{ color: '#000', fontSize: getFontSize(16) }}
+					textStyle={{
+						color: '#000',
+						fontFamily: 'SpaceGrotesk_700Bold',
+						fontSize: getFontSize(16),
+					}}
 				/>
 			</BottomSheet>
 		</>

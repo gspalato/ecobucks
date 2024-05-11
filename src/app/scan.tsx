@@ -1,4 +1,3 @@
-import { useMutation } from '@apollo/client';
 import { NativeStackScreenProps } from '@react-navigation/native-stack';
 import { BarCodeScannedCallback, BarCodeScanner } from 'expo-barcode-scanner';
 import * as Haptics from 'expo-haptics';
@@ -7,15 +6,14 @@ import { Dimensions, StyleSheet, Text, View } from 'react-native';
 import tw from 'twrnc';
 
 import DefaultHeader from '@components/DefaultHeader';
-import SafeView from '@components/SafeView';
 import Screen from '@components/Screen';
 
 import Loading from '@/components/Loading';
 import ClaimSuccessModal from '@/components/Modals/ClaimSuccessModal';
 
-import * as ClaimDisposalAndCredits from '@lib/api/graphql/mutations/claimDisposalAndCredits';
-import { useAuthToken } from '@lib/auth';
+import { useAuth, useAuthToken } from '@lib/auth';
 
+import FoundationClient from '@/lib/api/client';
 import { RootStackParamList } from '@/lib/navigation/types';
 
 import Constants from '@/constants';
@@ -33,17 +31,18 @@ const Component: React.FC<Props> = (props) => {
 	const [displaySuccessModal, setDisplaySuccessModal] = useState(false);
 	const [claimedCredits, setClaimedCredits] = useState<number | null>(null);
 
-	const token = useAuthToken();
+	const { token } = useAuth();
 
+	/*
 	const [claim, { loading }] =
 		useMutation<ClaimDisposalAndCredits.ReturnType>(
 			ClaimDisposalAndCredits.Mutation,
 			{
 				onCompleted(data) {
-					setSuccess(data.claimDisposalAndCredits.successful);
+					setSuccess(data.claimDisposalAndCredits.success);
 
 					const disposalClaim = data.claimDisposalAndCredits.disposal;
-					if (!data.claimDisposalAndCredits.successful) {
+					if (!data.claimDisposalAndCredits.success) {
 						console.log(data.claimDisposalAndCredits.error);
 						alert(data.claimDisposalAndCredits.error);
 						return;
@@ -59,6 +58,7 @@ const Component: React.FC<Props> = (props) => {
 				},
 			},
 		);
+	*/
 
 	useEffect(() => {
 		const getBarCodeScannerPermissions = async () => {
@@ -86,12 +86,44 @@ const Component: React.FC<Props> = (props) => {
 				Constants.CLAIM_DISPOSAL_QRCODE_PREFIX.length,
 			);
 
+			/*
 			claim({
 				variables: {
 					userToken: token,
 					disposalToken: disposalToken,
 				},
 			});
+			*/
+
+			if (!token) {
+				console.log('No token provided.');
+				return;
+			}
+
+			FoundationClient.ClaimDisposal(disposalToken, token).then(
+				async (r) => {
+					console.log(r);
+
+					if (!r.ok) {
+						alert('Failed to claim disposal.');
+						return;
+					}
+
+					const payload = await r.json();
+
+					setSuccess(payload.success);
+
+					const disposalClaim = payload.disposal;
+					if (!payload.success) {
+						console.log(payload.error);
+						alert(payload.error);
+						return;
+					}
+
+					setClaimedCredits(disposalClaim.credits);
+					setDisplaySuccessModal(true);
+				},
+			);
 		} else {
 			alert('Invalid QRCode.');
 		}

@@ -1,5 +1,5 @@
 export type ProfilePictureUploadUrlPayload = {
-	successful: boolean;
+	success: boolean;
 	url?: string;
 	error?: string;
 };

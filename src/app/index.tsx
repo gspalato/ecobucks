@@ -1,6 +1,5 @@
 import 'react-native-gesture-handler';
 
-import { ApolloProvider } from '@apollo/client';
 import { loadDevMessages, loadErrorMessages } from '@apollo/client/dev';
 import { NavigationContainer } from '@react-navigation/native';
 import { registerRootComponent } from 'expo';
@@ -10,8 +9,6 @@ import { useEffect } from 'react';
 import { Platform, UIManager } from 'react-native';
 
 import { PerformantImageProvider } from '@/components/PerformantImage';
-
-import { useFoundationClient } from '@lib/api/graphql/client';
 
 import { AuthProvider } from '@/lib/auth';
 import { HeaderProvider, TabBarProvider } from '@/lib/layout';
@@ -33,24 +30,20 @@ const Root = () => {
 		NavigationBar.setVisibilityAsync('hidden');
 	});
 
-	const client = useFoundationClient();
-
 	return (
 		<>
 			<StatusBar translucent backgroundColor='transparent' />
-			<ApolloProvider client={client}>
-				<AuthProvider>
-					<PerformantImageProvider>
-						<HeaderProvider>
-							<TabBarProvider>
-								<NavigationContainer>
-									<App />
-								</NavigationContainer>
-							</TabBarProvider>
-						</HeaderProvider>
-					</PerformantImageProvider>
-				</AuthProvider>
-			</ApolloProvider>
+			<AuthProvider>
+				<PerformantImageProvider>
+					<HeaderProvider>
+						<TabBarProvider>
+							<NavigationContainer>
+								<App />
+							</NavigationContainer>
+						</TabBarProvider>
+					</HeaderProvider>
+				</PerformantImageProvider>
+			</AuthProvider>
 		</>
 	);
 };
@@ -96,7 +89,7 @@ const Screen: React.FC = () => {
 		},
 		onCompleted(data) {
 			let payload: AuthenticationPayload = data.authenticate;
-			let success = payload.successful;
+			let success = payload.success;
 
 			setSuccess(success);
 
@@ -125,7 +118,7 @@ const Screen: React.FC = () => {
 		},
 		onCompleted: (data) => {
 			console.log(data);
-			if (data.checkAuthentication.successful) {
+			if (data.checkAuthentication.success) {
 				router.replace('/(tabs)');
 			}
 		},

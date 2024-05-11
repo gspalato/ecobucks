@@ -1,4 +1,4 @@
 export type UploadProfilePicturePayload = {
-	successful: boolean;
+	success: boolean;
 	error?: string;
 };

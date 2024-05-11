@@ -1,8 +1,3 @@
-import {
-	LazyQueryExecFunction,
-	OperationVariables,
-	useLazyQuery,
-} from '@apollo/client';
 import * as SecureStore from 'expo-secure-store';
 import React, {
 	createContext,
@@ -10,12 +5,9 @@ import React, {
 	useCallback,
 	useContext,
 	useEffect,
-	useMemo,
 	useReducer,
 	useState,
 } from 'react';
-
-import * as GetEcobucksProfile from '@lib/api/graphql/queries/getEcobucksProfile';
 
 import { AuthenticationPayload } from '@/types/AuthenticationPayload';
 import { CheckAuthenticationPayload } from '@/types/CheckAuthenticationPayload';
@@ -108,15 +100,15 @@ const AuthProvider: React.FC<PropsWithChildren> = ({ children }) => {
 				const result =
 					await FoundationClient.CheckAuthentication(token);
 
-				const { successful }: CheckAuthenticationPayload =
+				const { success }: CheckAuthenticationPayload =
 					await result.json();
 
-				if (!successful) return;
+				if (!success) return;
 
 				// This will switch to the App screen or Auth screen and this loading
 				// screen will be unmounted and thrown away.
 				dispatch({ type: 'RESTORE_TOKEN', token: token });
-				dispatch({ type: 'SET_LOGGED_IN', isLoggedIn: successful });
+				dispatch({ type: 'SET_LOGGED_IN', isLoggedIn: success });
 			} catch (e) {
 				console.log(e);
 			}
@@ -139,14 +131,16 @@ const AuthProvider: React.FC<PropsWithChildren> = ({ children }) => {
 
 				if (!response.ok) {
 					alert(`Failed to login. Try again.`);
-					console.log(response);
+					console.log('Response not ok.');
+					console.log(response.body);
 					return false;
 				}
 
 				const payload: AuthenticationPayload = await response.json();
-				if (!payload.successful) {
+				if (payload.error) {
 					alert(`Failed to login. Try again.`);
-					console.log(response);
+					console.log('Payload shows error: ', payload.error);
+					console.log(payload);
 					return false;
 				}
 
@@ -224,7 +218,7 @@ const useProfile = (
 			const result = await FoundationClient.GetEcobucksProfile(token);
 
 			if (!result.ok) {
-				alert(`Failed to fetch profile.`);
+				alert(`Failed to fetch profile. (Result not ok).`);
 				console.log(result);
 				return;
 			}

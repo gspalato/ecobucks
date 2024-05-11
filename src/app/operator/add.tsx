@@ -3,7 +3,7 @@ import { ScrollView, Swipeable } from 'react-native-gesture-handler';
 import { useMutation } from '@apollo/client';
 import { Feather } from '@expo/vector-icons';
 import { StackScreenProps } from '@react-navigation/stack';
-import React, { useState } from 'react';
+import React, { useEffect, useState } from 'react';
 import {
 	LayoutAnimation,
 	SafeAreaView,
@@ -68,6 +68,10 @@ const Screen: React.FC<Props> = (props) => {
 		{ _id: 0, weight: undefined, disposalType: undefined },
 	]);
 
+	useEffect(() => {
+		console.log(disposalFields);
+	}, [disposalFields]);
+
 	const { height: headerHeight } = useHeaderLayout();
 
 	const addNewDisposalField = () => {
@@ -102,7 +106,13 @@ const Screen: React.FC<Props> = (props) => {
 			console.log(f._id, f.weight, f.disposalType),
 		);
 
-		if (disposalFields.some((item) => !item.weight || !item.disposalType)) {
+		if (
+			disposalFields.some(
+				(item) =>
+					item.weight === undefined ||
+					item.disposalType === undefined,
+			)
+		) {
 			alert('Please fill all fields.');
 			return;
 		}
@@ -120,7 +130,7 @@ const Screen: React.FC<Props> = (props) => {
 					const data = await r.json();
 					console.log(data);
 
-					if (!data.successful || data.error) {
+					if (!data.success || data.error) {
 						alert(`Failed to register disposal.\n${data.error}`);
 						return;
 					}
@@ -189,7 +199,10 @@ const Screen: React.FC<Props> = (props) => {
 									);
 									removeDisposalFieldByIndex(index);
 								}}
-								onUpdate={setDisposalFields}
+								onUpdate={(f) => {
+									console.log(JSON.stringify(f));
+									setDisposalFields(f);
+								}}
 							/>
 						</SwipeableRow>
 						/*

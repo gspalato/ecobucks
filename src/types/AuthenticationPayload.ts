@@ -1,5 +1,7 @@
+import { Profile } from './Profile';
+
 export type AuthenticationPayload = {
-	successful: boolean;
+	user: Profile;
 	token: string;
 	error: string;
 };
