@@ -77,7 +77,10 @@ const Component: React.FC<Props> = (props) => {
 							width: '100%',
 						}}
 						transactions={profile.transactions.map((t) => ({
-							action: t.claimId != null ? 'claim' : 'spend',
+							action:
+								t.transaction_type == 'CLAIM'
+									? 'claim'
+									: 'spend',
 							credits: t.credits,
 							description: t.description,
 						}))}

@@ -1,9 +1,9 @@
 import { TransactionType } from './TransactionType';
 
 export type Transaction = {
-	transactionType: TransactionType;
-	userId: string;
-	claimId: string;
+	transaction_type: TransactionType;
+	user_id: string;
+	claim_id: string;
 	credits: number;
 	timestamp: number;
 	description: string;
