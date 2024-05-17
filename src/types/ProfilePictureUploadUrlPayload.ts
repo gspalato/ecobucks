@@ -1,5 +1,5 @@
-export type ProfilePictureUploadUrlPayload = {
+export type GetAvatarPayload = {
 	success: boolean;
-	url?: string;
+	avatar_url?: string;
 	error?: string;
 };

@@ -26,7 +26,7 @@ const Screen: React.FC<Props> = (props) => {
 
 	return (
 		<>
-			<SafeAreaView style={{ flexGrow: 1 }}>
+			<SafeAreaView style={{ backgroundColor: '#ffffff', flexGrow: 1 }}>
 				<View
 					style={{
 						alignItems: 'center',
@@ -48,14 +48,14 @@ const Screen: React.FC<Props> = (props) => {
 					<QRCode
 						value={(Constants.CLAIM_DISPOSAL_QRCODE_PREFIX + id)!}
 						size={300}
-						backgroundColor='#f3f3f3'
+						backgroundColor='#ffffff'
 						enableLinearGradient
 						linearGradient={['#00bbff', '#11da33']}
 					/>
 					<Text style={Styles.credits}>+${credits}</Text>
 				</View>
 			</SafeAreaView>
-			<View style={[tw`absolute w-full flex-1`]}>
+			<View style={{ flex: 1, position: 'absolute', width: '100%' }}>
 				<DefaultHeader
 					title={'Claim your credits!'}
 					blurIntensity={90}

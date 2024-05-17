@@ -1,28 +1,29 @@
-/*import { useMutation } from '@apollo/client';
+import { ScrollView } from 'react-native-gesture-handler';
+
 import { Feather } from '@expo/vector-icons';
 import { router } from 'expo-router';
 import React, { useState } from 'react';
 import { SafeAreaView, TouchableOpacity, View } from 'react-native';
-import { ScrollView } from 'react-native-gesture-handler';
 import tw from 'twrnc';
 
 import Button from '@/components/Button';
 import DefaultHeader from '@/components/DefaultHeader';
 import ClaimSuccessModal from '@/components/Modals/ClaimSuccessModal';
 
-import { useAuthToken } from '@/lib/auth';
+import FoundationClient from '@/lib/api/client';
+import { useAuth, useAuthToken } from '@/lib/auth';
 import { getFontSize } from '@/lib/fonts';
-import * as RegisterDisposal from '@/lib/graphql/mutations/registerDisposal';
 import { usePlatform } from '@/lib/platform';
 
 import { DisposalType } from '@/types/DisposalClaim';
+import { RegisterDisposalPayload } from '@/types/RegisterDisposalPayload';
 
 import DisposalField from './components/DisposalField';
 
 export type DisposalField = {
 	_id: number;
 	weight?: number;
-	disposalType?: DisposalType;
+	disposal_type?: DisposalType;
 };
 
 // This is an early development only implementation.
@@ -42,16 +43,14 @@ const PER_TYPE_RATE_KG = {
 };
 
 const Screen: React.FC = () => {
-	const [token, setToken] = useState<string | null>(null);
-	useAuthToken(setToken);
-
 	const { isAndroid, SafeAreaStyle } = usePlatform();
+	const { logout, token } = useAuth();
 
 	const [claimedCredits, setClaimedCredits] = useState<number | null>(null);
 	const [displaySuccessModal, setDisplaySuccessModal] = useState(false);
 
 	const [disposalFields, setDisposalFields] = useState<DisposalField[]>([
-		{ _id: 0, weight: undefined, disposalType: undefined },
+		{ _id: 0, weight: undefined, disposal_type: undefined },
 	]);
 
 	const addNewDisposalField = () => {
@@ -74,37 +73,6 @@ const Screen: React.FC = () => {
 		setClaimedCredits(null);
 		router.push('/(tabs)');
 	};
-
-	const [register] = useMutation<RegisterDisposal.ReturnType>(
-		RegisterDisposal.Mutation,
-		{
-			fetchPolicy: 'no-cache',
-			onCompleted: (data) => {
-				if (
-					!data.registerDisposal.success ||
-					data.registerDisposal.error
-				) {
-					alert(
-						`Failed to register disposal.\n${data.registerDisposal.error}`,
-					);
-					return;
-				}
-
-				router.replace({
-					pathname: '/(operator)/qrcode',
-					params: {
-						id: data.registerDisposal.disposal.token,
-						credits: data.registerDisposal.disposal.credits,
-					},
-				});
-			},
-			onError: (error) => {
-				alert(
-					`Failed to register disposal (internal error).\n${error.message}`,
-				);
-			},
-		},
-	);
 
 	return (
 		<>
@@ -149,24 +117,41 @@ const Screen: React.FC = () => {
 								disposalFields.some(
 									(item) =>
 										item.weight === undefined ||
-										item.disposalType === undefined,
+										item.disposal_type === undefined,
 								)
 							)
 								return alert('Please fill in all fields.');
 
-							register({
-								variables: {
-									operatorToken: token,
-									disposals: disposalFields.map((item) => ({
-										credits:
-											(item.weight! / 1000) *
-											PER_TYPE_RATE_KG[
-												item.disposalType!
-											],
-										weight: item.weight,
-										disposalType: item.disposalType,
-									})),
-								},
+							if (!token) {
+								alert('Session expired. Please log in again.');
+								logout();
+								return;
+							}
+
+							FoundationClient.RegisterDisposal(
+								disposalFields.map((item) => ({
+									credits:
+										(item.weight! / 1000) *
+										PER_TYPE_RATE_KG[item.disposal_type!],
+									weight: item.weight!,
+									disposal_type: item.disposal_type!,
+								})),
+								token,
+							).then(async (r) => {
+								if (!r.ok)
+									return alert(
+										'An error occurred. Please try again.',
+									);
+
+								let payload: RegisterDisposalPayload =
+									await r.json();
+
+								if (payload.error) {
+									alert(
+										'An error occurred. Please try again.',
+									);
+									console.log(payload.error);
+								}
 							});
 						}}
 					/>
@@ -195,4 +180,3 @@ const Styles = {
 		text: [tw`text-[#ffffff]`, { fontSize: getFontSize(17) }],
 	},
 };
-*/

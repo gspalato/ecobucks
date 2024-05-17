@@ -15,7 +15,7 @@ import FoundationClient from '@/lib/api/client';
 import { useAuth } from '@/lib/auth';
 import { getFontSize } from '@/lib/fonts';
 
-import { CheckAuthenticationPayload } from '@/types/CheckAuthenticationPayload';
+import { GetAvatarPayload } from '@/types/ProfilePictureUploadUrlPayload';
 
 import { Spacings } from '@/styles';
 
@@ -27,7 +27,7 @@ const Component: React.FC<AvatarProps> = (props) => {
 	const { containerStyle, source, style, ...rest } = props;
 
 	const [reloadKey, setReloadKey] = useState<number>(0);
-	const [profilePicture, setProfilePicture] = useState<string | null>();
+	const [avatar, setAvatar] = useState<string | null>();
 
 	const settingsBottomSheetRef = useRef<any>();
 	const uploadingDialogRef = useRef<any>();
@@ -42,20 +42,21 @@ const Component: React.FC<AvatarProps> = (props) => {
 		settingsBottomSheetRef?.current?.open();
 	}, [settingsBottomSheetRef]);
 
-	/*
-	const fetchProfilePicture = useCallback((token: string) => {
-		FoundationClient.CheckAuthentication(token).then(async (res) => {
-			const { success, user }: CheckAuthenticationPayload =
+	const fetchAvatar = useCallback((token: string) => {
+		FoundationClient.GetAvatar(token).then(async (res) => {
+			const { success, avatar_url, error }: GetAvatarPayload =
 				await res.json();
-			if (!success) return;
+			if (!success) {
+				console.error('Failed to fetch avatar: ' + error);
+				return;
+			}
 
-			const url = user.profilePictureUrl;
-			setProfilePicture(url);
+			setAvatar(avatar_url);
+			console.log('Avatar URL: ' + avatar_url);
 		});
 	}, []);
-	
 
-	const uploadProfilePicture = useCallback(async () => {
+	const uploadAvatar = useCallback(async () => {
 		const imageResult = await ImagePicker.launchImageLibraryAsync({
 			mediaTypes: ImagePicker.MediaTypeOptions.Images,
 			allowsEditing: true,
@@ -92,27 +93,25 @@ const Component: React.FC<AvatarProps> = (props) => {
 				return;
 			}
 
-			setProfilePicture(imageAsset.uri);
+			setAvatar(imageAsset.uri);
 			setReloadKey(Date.now());
 			alert('Successfully uploaded profile picture!');
 
 			setTimeout(() => {
-				if (token) fetchProfilePicture(token);
+				if (token) fetchAvatar(token);
 			}, 1000);
 		} catch (e) {
 			console.log(e);
 		}
 	}, []);
-	
 
 	const toggleLocation = () => {};
 
 	useEffect(() => {
 		if (!token) return;
 
-		fetchProfilePicture(token);
+		fetchAvatar(token);
 	}, [token]);
-	*/
 
 	return (
 		<>
@@ -120,7 +119,7 @@ const Component: React.FC<AvatarProps> = (props) => {
 				<Image
 					key={reloadKey}
 					cachePolicy='none'
-					source={profilePicture}
+					source={avatar}
 					transition={200}
 					placeholder='#00000099'
 					style={[
@@ -147,9 +146,9 @@ const Component: React.FC<AvatarProps> = (props) => {
 			>
 				<CustomButton
 					text='Change Profile Picture'
-					//onPress={() => {
-					//	uploadProfilePicture();
-					//}}
+					onPress={() => {
+						uploadAvatar();
+					}}
 					buttonStyle={{
 						backgroundColor: '#0000',
 						paddingVertical: 5,

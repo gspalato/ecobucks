@@ -56,7 +56,7 @@ const Component = (props: {
 
 		onUpdate((prev) => {
 			const newDisposalFields = [...prev];
-			newDisposalFields[index].disposalType = item!.value;
+			newDisposalFields[index].disposal_type = item!.value;
 			return newDisposalFields;
 		});
 	};
@@ -87,11 +87,12 @@ const Component = (props: {
 				height: 40 * Spacings.Unit,
 				width: '100%',
 				padding: 5 * Spacings.Unit,
+				gap: 5 * Spacings.Unit,
 			}}
 		>
 			<Input
 				inputMode='decimal'
-				style={tw`mx-auto`}
+				style={{ width: '90%', marginHorizontal: 'auto' }}
 				onChangeText={(text) =>
 					onUpdate((prev) => {
 						const newDisposalFields = [...prev];
@@ -107,6 +108,7 @@ const Component = (props: {
 				selectedItem={selected}
 				setItem={onSelect}
 				placeholder='Select Disposal Type'
+				buttonStyle={{ width: '90%', marginHorizontal: 'auto' }}
 			/>
 		</Animated.View>
 	);

@@ -1,4 +1,4 @@
-export type UploadProfilePicturePayload = {
+export type UploadAvatarPayload = {
 	success: boolean;
 	error?: string;
 };

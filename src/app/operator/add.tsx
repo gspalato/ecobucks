@@ -12,19 +12,17 @@ import {
 } from 'react-native';
 import tw from 'twrnc';
 
-import Button from '@/components/Button';
-import DefaultHeader from '@/components/DefaultHeader';
-import DisposalField from '@/components/DisposalField';
-import ClaimSuccessModal from '@/components/Modals/ClaimSuccessModal';
-import SwipeableRow from '@/components/SwipeableRow';
+import Button from '@components/Button';
+import DefaultHeader from '@components/DefaultHeader';
+import DisposalField from '@components/DisposalField';
+import SwipeableRow from '@components/SwipeableRow';
 
-import FoundationClient from '@/lib/api/client';
-import * as RegisterDisposal from '@/lib/api/graphql/mutations/registerDisposal';
-import { useAuth, useAuthToken } from '@/lib/auth';
-import { getFontSize } from '@/lib/fonts';
-import { useHeaderLayout } from '@/lib/layout';
-import { RootStackParamList } from '@/lib/navigation/types';
-import { usePlatform } from '@/lib/platform';
+import FoundationClient from '@lib/api/client';
+import { useAuth, useAuthToken } from '@lib/auth';
+import { getFontSize } from '@lib/fonts';
+import { useHeaderLayout } from '@lib/layout';
+import { RootStackParamList } from '@lib/navigation/types';
+import { usePlatform } from '@lib/platform';
 
 import { Disposal, DisposalType } from '@/types/DisposalClaim';
 
@@ -33,7 +31,7 @@ import { Colors, Defaults, Spacings } from '@/styles';
 export type DisposalField = {
 	_id: number;
 	weight?: number;
-	disposalType?: DisposalType;
+	disposal_type?: DisposalType;
 };
 
 // This is an early development only implementation.
@@ -59,13 +57,10 @@ const Screen: React.FC<Props> = (props) => {
 
 	const { token } = useAuth();
 
-	const { isAndroid, SafeAreaStyle } = usePlatform();
-
-	const [claimedCredits, setClaimedCredits] = useState<number | null>(null);
-	const [displaySuccessModal, setDisplaySuccessModal] = useState(false);
+	const { SafeAreaStyle } = usePlatform();
 
 	const [disposalFields, setDisposalFields] = useState<DisposalField[]>([
-		{ _id: 0, weight: undefined, disposalType: undefined },
+		{ _id: 0, weight: undefined, disposal_type: undefined },
 	]);
 
 	useEffect(() => {
@@ -90,12 +85,6 @@ const Screen: React.FC<Props> = (props) => {
 		});
 	};
 
-	const onSuccessModalClose = () => {
-		setDisplaySuccessModal(false);
-		setClaimedCredits(null);
-		navigation.push('Main');
-	};
-
 	const onRegisterPress = () => {
 		if (!token) {
 			alert('Authentication expired.');
@@ -103,14 +92,14 @@ const Screen: React.FC<Props> = (props) => {
 		}
 
 		disposalFields.forEach((f, i) =>
-			console.log(f._id, f.weight, f.disposalType),
+			console.log(f._id, f.weight, f.disposal_type),
 		);
 
 		if (
 			disposalFields.some(
 				(item) =>
 					item.weight === undefined ||
-					item.disposalType === undefined,
+					item.disposal_type === undefined,
 			)
 		) {
 			alert('Please fill all fields.');
@@ -119,9 +108,9 @@ const Screen: React.FC<Props> = (props) => {
 
 		const disposals: Disposal[] = disposalFields.map((item) => ({
 			weight: item.weight!,
-			disposalType: item.disposalType!,
+			disposal_type: item.disposal_type!,
 			credits:
-				(item.weight! / 1000) * PER_TYPE_RATE_KG[item.disposalType!],
+				(item.weight! / 1000) * PER_TYPE_RATE_KG[item.disposal_type!],
 		}));
 
 		FoundationClient.RegisterDisposal(disposals, token)
@@ -134,6 +123,8 @@ const Screen: React.FC<Props> = (props) => {
 						alert(`Failed to register disposal.\n${data.error}`);
 						return;
 					}
+
+					console.log(data.disposal.token, data.disposal.credits);
 
 					navigation.push('QRCode', {
 						id: data.disposal.token,
@@ -156,18 +147,14 @@ const Screen: React.FC<Props> = (props) => {
 
 	return (
 		<>
-			{displaySuccessModal && (
-				<ClaimSuccessModal
-					credits={claimedCredits!}
-					visible={displaySuccessModal}
-					onClose={onSuccessModalClose}
-					onPress={onSuccessModalClose}
-				/>
-			)}
 			<SafeAreaView
 				style={[
 					SafeAreaStyle,
-					{ flexGrow: 1, marginTop: headerHeight },
+					{
+						flexGrow: 1,
+						marginTop: headerHeight,
+						backgroundColor: '#ffffff',
+					},
 				]}
 			>
 				<ScrollView style={{ flexGrow: 1, width: '100%' }}>
@@ -234,7 +221,14 @@ const Screen: React.FC<Props> = (props) => {
 					/>
 				</View>
 			</SafeAreaView>
-			<View style={[tw`absolute w-full flex-1`]}>
+			<View
+				style={{
+					position: 'absolute',
+					width: '100%',
+					flex: 1,
+					backgroundColor: '#ffffff',
+				}}
+			>
 				<DefaultHeader title={'Register Disposal'} blurIntensity={90} />
 			</View>
 		</>
@@ -252,9 +246,13 @@ const Styles = {
 	],
 	registerButton: {
 		button: [
-			tw`h-13 border-transparent mx-auto w-80 rounded-lg bg-[#11da33] p-3 text-center`,
+			tw`h-13 w-80 rounded-lg p-3`,
 			{
+				borderColor: 'transparent',
+				background: '#11da33',
+				marginHorizontal: 'auto',
 				fontSize: getFontSize(17),
+				textAlign: 'center',
 			},
 		],
 		text: [tw`text-[#ffffff]`, { fontSize: getFontSize(17) }],

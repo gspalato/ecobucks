@@ -81,52 +81,49 @@ const Component: React.FC<Props> = (props) => {
 		Haptics.notificationAsync(Haptics.NotificationFeedbackType.Success);
 
 		let disposalToken;
-		if (data.data.startsWith(Constants.CLAIM_DISPOSAL_QRCODE_PREFIX)) {
-			disposalToken = data.data.slice(
-				Constants.CLAIM_DISPOSAL_QRCODE_PREFIX.length,
-			);
-
-			/*
-			claim({
-				variables: {
-					userToken: token,
-					disposalToken: disposalToken,
-				},
-			});
-			*/
-
-			if (!token) {
-				console.log('No token provided.');
-				return;
-			}
-
-			FoundationClient.ClaimDisposal(disposalToken, token).then(
-				async (r) => {
-					console.log(r);
-
-					if (!r.ok) {
-						alert('Failed to claim disposal.');
-						return;
-					}
-
-					const payload = await r.json();
-
-					setSuccess(payload.success);
-
-					const disposalClaim = payload.disposal;
-					if (!payload.success) {
-						console.log(payload.error);
-						alert(payload.error);
-						return;
-					}
-
-					setClaimedCredits(disposalClaim.credits);
-					setDisplaySuccessModal(true);
-				},
-			);
-		} else {
+		if (!data.data.startsWith(Constants.CLAIM_DISPOSAL_QRCODE_PREFIX)) {
 			alert('Invalid QRCode.');
+			return;
 		}
+
+		disposalToken = data.data.slice(
+			Constants.CLAIM_DISPOSAL_QRCODE_PREFIX.length,
+		);
+
+		if (!token) {
+			console.log('No token provided.');
+			return;
+		}
+
+		FoundationClient.ClaimDisposal(disposalToken, token)
+			.then(async (r) => {
+				console.log(r);
+
+				if (!r.ok) {
+					alert('Failed to claim disposal.');
+					return;
+				}
+
+				const payload = await r.json();
+
+				setSuccess(payload.success);
+
+				const disposalClaim = payload.disposal;
+				if (!payload.success) {
+					console.log(payload.error);
+					alert(payload.error);
+					return;
+				}
+
+				setClaimedCredits(disposalClaim.credits);
+				setDisplaySuccessModal(true);
+			})
+			.catch((e) => {
+				console.log(e);
+				alert(`Failed to claim.`);
+				setSuccess(false);
+				navigation.push('Main');
+			});
 	};
 
 	const onSuccessModalClose = () => {

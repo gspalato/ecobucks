@@ -31,7 +31,15 @@ export class FoundationClient {
 		});
 	}
 
-	/*
+	public static GetAvatar(token: string): Promise<Response> {
+		return fetch(Endpoints.REST.Avatar, {
+			method: 'GET',
+			headers: {
+				Authorization: `Bearer ${token}`,
+			},
+		});
+	}
+
 	public static UploadAvatar(
 		token: string,
 		image: { uri: string; name?: string; type?: string },
@@ -56,7 +64,6 @@ export class FoundationClient {
 			},
 		});
 	}
-	*/
 
 	public static GetEcobucksProfile(token: string): Promise<Response> {
 		return fetch(Endpoints.REST.EcobucksProfile, {
@@ -86,8 +93,8 @@ export class FoundationClient {
 				'Content-Type': 'application/json',
 			},
 			body: JSON.stringify({
-				disposalToken: disposalId,
-				userToken: token,
+				disposal_token: disposalId,
+				user_token: token,
 			}),
 		});
 	}

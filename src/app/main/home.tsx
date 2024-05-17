@@ -38,8 +38,7 @@ const Component: React.FC<Props> = (props) => {
 	const { profile, fetch } = useProfile(token);
 
 	useEffect(() => {
-		if (profile && token)
-			FoundationClient.RunLocationLoopAsync(profile?.id, token);
+		// if (profile && token) FoundationClient.RunLocationLoopAsync(profile?.id, token);
 	}, [profile, token]);
 
 	useFocusEffect(
@@ -90,7 +89,7 @@ const Component: React.FC<Props> = (props) => {
 					<Header blurIntensity={100}>
 						<Topbar
 							name={profile.name}
-							isOperator={profile.isOperator}
+							isOperator={profile.is_operator}
 							containerStyle={{
 								paddingHorizontal: 7.5,
 								paddingBottom: 0,
