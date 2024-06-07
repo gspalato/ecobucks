@@ -46,7 +46,7 @@ const Screen: React.FC<Props> = (props) => {
 				</View>
 				<View style={[Styles.qrcode, { pointerEvents: 'none' }]}>
 					<QRCode
-						value={(Constants.CLAIM_DISPOSAL_QRCODE_PREFIX + id)!}
+						value={id!}
 						size={300}
 						backgroundColor='#ffffff'
 						enableLinearGradient

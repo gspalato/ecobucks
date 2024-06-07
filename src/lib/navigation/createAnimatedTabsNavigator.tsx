@@ -9,7 +9,6 @@ import {
 	useNavigationBuilder,
 } from '@react-navigation/native';
 import { FlashList, ListRenderItemInfo } from '@shopify/flash-list';
-import { BlurView } from 'expo-blur';
 import * as Haptics from 'expo-haptics';
 import * as React from 'react';
 import { useEffect, useRef } from 'react';
@@ -139,124 +138,60 @@ const AnimatedTabsNavigator: React.FC<AnimatedTabsNavigatorProps> = (props) => {
 				)}
 			/>
 			<View style={{ position: 'absolute', bottom: 0, width }}>
-				{isAndroid ? (
-					<View
-						style={{
-							backgroundColor: Colors.Background,
-							display: 'flex',
-							flexDirection: 'row',
-							justifyContent: 'space-around',
-							alignItems: 'center',
-							paddingTop: 4 * Spacings.Unit,
-							paddingBottom: 10,
-							width: '100%',
-						}}
-						onLayout={(e) => {
-							_setHeight(e.nativeEvent.layout.height);
-							_setWidth(e.nativeEvent.layout.width);
-						}}
-					>
-						{state.routes.map((r, i) => (
-							<TabButton
-								key={r.name}
-								icon={descriptors[r.key].options.icon}
-								unfocusedColor={
-									descriptors[r.key].options.unfocusedColor ??
-									'#00000055'
-								}
-								focusedColor={
-									descriptors[r.key].options.focusedColor ??
-									'#000000ff'
-								}
-								name={descriptors[r.key].options.name || r.name}
-								focused={
-									r.key === state.routes[state.index].key
-								}
-								routeIndex={i}
-								scrollX={scrollX}
-								onPress={() => {
-									const event = navigation.emit({
-										type: 'tabPress',
-										target: r.key,
-										data: { blurring: false },
-										canPreventDefault: true,
+				<View
+					style={{
+						backgroundColor: Colors.Background,
+						display: 'flex',
+						flexDirection: 'row',
+						justifyContent: 'space-around',
+						alignItems: 'center',
+						paddingTop: 4 * Spacings.Unit,
+						paddingBottom: paddings.bottom,
+						width: '100%',
+					}}
+					onLayout={(e) => {
+						_setHeight(e.nativeEvent.layout.height);
+						_setWidth(e.nativeEvent.layout.width);
+					}}
+				>
+					{state.routes.map((r, i) => (
+						<TabButton
+							key={r.name}
+							icon={descriptors[r.key].options.icon}
+							unfocusedColor={
+								descriptors[r.key].options.unfocusedColor ??
+								'#00000055'
+							}
+							focusedColor={
+								descriptors[r.key].options.focusedColor ??
+								'#000000ff'
+							}
+							name={descriptors[r.key].options.name || r.name}
+							focused={r.key === state.routes[state.index].key}
+							routeIndex={i}
+							scrollX={scrollX}
+							onPress={() => {
+								const event = navigation.emit({
+									type: 'tabPress',
+									target: r.key,
+									data: { blurring: false },
+									canPreventDefault: true,
+								});
+
+								if (!(event as any).defaultPrevented) {
+									navigation.dispatch({
+										...TabActions.jumpTo(r.name),
+										target: state.key,
 									});
-
-									if (!(event as any).defaultPrevented) {
-										navigation.dispatch({
-											...TabActions.jumpTo(r.name),
-											target: state.key,
-										});
-									}
-
-									Haptics.impactAsync(
-										Haptics.ImpactFeedbackStyle.Light,
-									);
-								}}
-							/>
-						))}
-					</View>
-				) : (
-					<BlurView
-						blurReductionFactor={100}
-						tint='light'
-						intensity={perConfigTabBarBlur ?? 20}
-						style={{
-							backgroundColor: perConfigTabBarBackground,
-							display: 'flex',
-							flexDirection: 'row',
-							justifyContent: 'space-around',
-							alignItems: 'center',
-							paddingTop: 4 * Spacings.Unit,
-							paddingBottom: paddings.bottom,
-							width: '100%',
-						}}
-						onLayout={(e) => {
-							_setHeight(e.nativeEvent.layout.height);
-							_setWidth(e.nativeEvent.layout.width);
-						}}
-					>
-						{state.routes.map((r, i) => (
-							<TabButton
-								key={r.name}
-								icon={descriptors[r.key].options.icon}
-								unfocusedColor={
-									descriptors[r.key].options.unfocusedColor ??
-									'#00000055'
 								}
-								focusedColor={
-									descriptors[r.key].options.focusedColor ??
-									'#000000ff'
-								}
-								name={descriptors[r.key].options.name || r.name}
-								focused={
-									r.key === state.routes[state.index].key
-								}
-								routeIndex={i}
-								scrollX={scrollX}
-								onPress={() => {
-									const event = navigation.emit({
-										type: 'tabPress',
-										target: r.key,
-										data: { blurring: false },
-										canPreventDefault: true,
-									});
 
-									if (!(event as any).defaultPrevented) {
-										navigation.dispatch({
-											...TabActions.jumpTo(r.name),
-											target: state.key,
-										});
-									}
-
-									Haptics.impactAsync(
-										Haptics.ImpactFeedbackStyle.Light,
-									);
-								}}
-							/>
-						))}
-					</BlurView>
-				)}
+								Haptics.impactAsync(
+									Haptics.ImpactFeedbackStyle.Light,
+								);
+							}}
+						/>
+					))}
+				</View>
 			</View>
 		</NavigationContent>
 	);

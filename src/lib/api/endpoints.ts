@@ -1,5 +1,5 @@
-const BaseUrl = 'http://192.168.18.7:4000/';
-//const BaseUrl = 'https://foundation.unreal.sh/';
+//const BaseUrl = 'http://192.168.0.105:4000/';
+const BaseUrl = 'https://foundation.unreal.sh/ecobucks/';
 
 const getUrl = (...paths: string[]) => {
 	let url = new URL(BaseUrl);
@@ -9,7 +9,7 @@ const getUrl = (...paths: string[]) => {
 
 export const Endpoints = {
 	REST: {
-		Auth: getUrl('auth'),
+		Auth: 'https://foundation.unreal.sh/ecobucks/auth',
 
 		Avatar: getUrl('me/avatar'),
 		EcobucksProfile: getUrl('me'),

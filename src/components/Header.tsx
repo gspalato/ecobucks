@@ -1,4 +1,3 @@
-import { BlurView } from 'expo-blur';
 import { StyleProp, StyleSheet, View, ViewStyle } from 'react-native';
 import { useSafeAreaInsets } from 'react-native-safe-area-context';
 import tw from 'twrnc';
@@ -51,10 +50,7 @@ const Component: React.FC<HeaderProps> = (props) => {
 		);
 	else
 		return (
-			<BlurView
-				blurReductionFactor={100}
-				intensity={blurIntensity ?? 20}
-				tint={blurTint}
+			<View
 				style={[
 					Styles.container,
 					{
@@ -69,7 +65,7 @@ const Component: React.FC<HeaderProps> = (props) => {
 				}}
 			>
 				{children}
-			</BlurView>
+			</View>
 		);
 };
 

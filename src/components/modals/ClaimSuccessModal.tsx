@@ -40,7 +40,7 @@ const Component: React.FC<ClaimSuccessModalProps> = (props) => {
 			presentationStyle='fullScreen'
 			visible={visible}
 			animationType='fade'
-			style={tw`m-0 flex-1`}
+			style={{ flex: 1, margin: 0 }}
 		>
 			<Pressable onPress={onClose} style={tw`flex-1`}>
 				<Animated.View style={[Styles.screen, SafeAreaStyle]}>

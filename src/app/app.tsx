@@ -67,7 +67,7 @@ const App = () => {
 						screenOptions={{
 							headerShown: false,
 							contentStyle: {
-								backgroundColor: '#000000',
+								backgroundColor: '#ffffff',
 								flex: 1,
 							},
 						}}

@@ -1,7 +1,6 @@
 import { MaterialCommunityIcons } from '@expo/vector-icons';
-import { BlurView } from 'expo-blur';
 import { Tabs } from 'expo-router';
-import { StyleSheet } from 'react-native';
+import { StyleSheet, View } from 'react-native';
 
 import { getFontSize } from '@/lib/fonts';
 import { TabBarProvider, useTabBarLayout } from '@/lib/layout';
@@ -120,9 +119,7 @@ const BlurBackground: React.FC<{
 	const { intensity, tint, ...rest } = props;
 
 	return (
-		<BlurView
-			tint={tint}
-			intensity={intensity ?? 20}
+		<View
 			style={StyleSheet.absoluteFill}
 			onLayout={(e) => {
 				rest?._setHeight?.(e.nativeEvent.layout.height);

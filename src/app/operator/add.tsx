@@ -192,8 +192,6 @@ const Screen: React.FC<Props> = (props) => {
 								}}
 							/>
 						</SwipeableRow>
-						/*
-						 */
 					))}
 					<TouchableOpacity onPress={addNewDisposalField}>
 						<View style={Styles.addButton}>

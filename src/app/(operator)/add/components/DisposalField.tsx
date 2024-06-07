@@ -4,7 +4,6 @@ import {
 } from 'react-native-gesture-handler';
 
 import { Feather } from '@expo/vector-icons';
-import { BlurView } from '@react-native-community/blur';
 import { Animated, TextInput, View } from 'react-native';
 import tw from 'twrnc';
 

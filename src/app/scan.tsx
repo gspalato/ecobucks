@@ -80,16 +80,9 @@ const Component: React.FC<Props> = (props) => {
 
 		Haptics.notificationAsync(Haptics.NotificationFeedbackType.Success);
 
-		let disposalToken;
-		if (!data.data.startsWith(Constants.CLAIM_DISPOSAL_QRCODE_PREFIX)) {
-			alert('Invalid QRCode.');
-			return;
-		}
+		console.log(data.data);
 
-		disposalToken = data.data.slice(
-			Constants.CLAIM_DISPOSAL_QRCODE_PREFIX.length,
-		);
-
+		const disposalToken = data.data;
 		if (!token) {
 			console.log('No token provided.');
 			return;
@@ -101,6 +94,7 @@ const Component: React.FC<Props> = (props) => {
 
 				if (!r.ok) {
 					alert('Failed to claim disposal.');
+					navigation.goBack();
 					return;
 				}
 
@@ -112,6 +106,7 @@ const Component: React.FC<Props> = (props) => {
 				if (!payload.success) {
 					console.log(payload.error);
 					alert(payload.error);
+					navigation.goBack();
 					return;
 				}
 

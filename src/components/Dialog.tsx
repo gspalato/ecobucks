@@ -1,5 +1,4 @@
 import { Portal } from '@gorhom/portal';
-import { BlurView } from 'expo-blur';
 import React, {
 	forwardRef,
 	useCallback,
@@ -12,6 +11,7 @@ import {
 	StyleProp,
 	StyleSheet,
 	TouchableWithoutFeedback,
+	View,
 	ViewStyle,
 } from 'react-native';
 import Animated, {
@@ -94,13 +94,7 @@ const Component: React.FC<EmptyDialogProps> = (props, ref) => {
 		};
 	});
 
-	const MemoizedContainer = useMemo(
-		() =>
-			blurryBackground && !isAndroid
-				? Animated.createAnimatedComponent(BlurView)
-				: Animated.View,
-		[blurryBackground],
-	);
+	const MemoizedContainer = useMemo(() => Animated.View, [blurryBackground]);
 
 	return (
 		<Portal>
@@ -125,10 +119,7 @@ const Component: React.FC<EmptyDialogProps> = (props, ref) => {
 				]}
 				pointerEvents='none'
 			>
-				<BlurView
-					tint='light'
-					intensity={90}
-					blurReductionFactor={100}
+				<View
 					onLayout={(e) => {
 						setDialogHeight(e.nativeEvent.layout.height);
 					}}
@@ -147,7 +138,7 @@ const Component: React.FC<EmptyDialogProps> = (props, ref) => {
 					]}
 				>
 					{children}
-				</BlurView>
+				</View>
 			</Animated.View>
 		</Portal>
 	);
