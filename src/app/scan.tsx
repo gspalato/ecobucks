@@ -1,5 +1,10 @@
 import { NativeStackScreenProps } from '@react-navigation/native-stack';
-import { BarCodeScannedCallback, BarCodeScanner } from 'expo-barcode-scanner';
+import {
+	BarcodeScanningResult,
+	Camera,
+	CameraView,
+	useCameraPermissions,
+} from 'expo-camera';
 import * as Haptics from 'expo-haptics';
 import React, { useEffect, useState } from 'react';
 import { Dimensions, StyleSheet, Text, View } from 'react-native';
@@ -31,58 +36,31 @@ const Component: React.FC<Props> = (props) => {
 	const [displaySuccessModal, setDisplaySuccessModal] = useState(false);
 	const [claimedCredits, setClaimedCredits] = useState<number | null>(null);
 
+	const [permission, requestPermission] = useCameraPermissions();
+
 	const { token } = useAuth();
-
-	/*
-	const [claim, { loading }] =
-		useMutation<ClaimDisposalAndCredits.ReturnType>(
-			ClaimDisposalAndCredits.Mutation,
-			{
-				onCompleted(data) {
-					setSuccess(data.claimDisposalAndCredits.success);
-
-					const disposalClaim = data.claimDisposalAndCredits.disposal;
-					if (!data.claimDisposalAndCredits.success) {
-						console.log(data.claimDisposalAndCredits.error);
-						alert(data.claimDisposalAndCredits.error);
-						return;
-					}
-
-					setClaimedCredits(disposalClaim.credits);
-					setDisplaySuccessModal(true);
-				},
-				onError(e) {
-					alert(`Failed to claim.\n${e.message}`);
-					setSuccess(false);
-					navigation.push('Main');
-				},
-			},
-		);
-	*/
 
 	useEffect(() => {
 		const getBarCodeScannerPermissions = async () => {
-			const { status } = await BarCodeScanner.requestPermissionsAsync();
+			const { status } = await Camera.requestCameraPermissionsAsync();
 			setHasPermission(status === 'granted');
 		};
 
 		getBarCodeScannerPermissions();
 	}, []);
 
-	const handleBarCodeScanned: BarCodeScannedCallback = (data) => {
-		let qrcode = ['org.iso.QRCode', '256', 256];
-		if (!qrcode.some((e) => e == data.type)) {
-			setScanned(false);
-			return;
-		}
-
+	const handleBarCodeScanned: (result: BarcodeScanningResult) => void = ({
+		type,
+		data,
+	}) => {
 		setScanned(true);
+		console.log(data);
 
 		Haptics.notificationAsync(Haptics.NotificationFeedbackType.Success);
 
-		console.log(data.data);
+		console.log(data);
 
-		const disposalToken = data.data;
+		const disposalToken = data;
 		if (!token) {
 			console.log('No token provided.');
 			return;
@@ -127,6 +105,12 @@ const Component: React.FC<Props> = (props) => {
 		navigation.push('Main');
 	};
 
+	if (!permission) return <View />;
+
+	if (!permission.granted) {
+		return <Text>No access to camera</Text>;
+	}
+
 	return (
 		<Screen>
 			{displaySuccessModal && (
@@ -152,10 +136,13 @@ const Component: React.FC<Props> = (props) => {
 				{hasPermission === null && <Loading />}
 				{hasPermission === false && <Text>No access to camera</Text>}
 				{hasPermission && (
-					<BarCodeScanner
-						onBarCodeScanned={
+					<CameraView
+						onBarcodeScanned={
 							scanned ? undefined : handleBarCodeScanned
 						}
+						barcodeScannerSettings={{
+							barcodeTypes: ['qr'],
+						}}
 						style={[
 							tw`mt-0 h-full flex-1 p-0`,
 							{

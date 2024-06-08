@@ -1,71 +1,71 @@
 {
-  "expo": {
-    "name": "ecobucks",
-    "slug": "ecobucks",
-    "version": "1.0.0",
-    "orientation": "portrait",
-    "icon": "./assets/icon.png",
-    "userInterfaceStyle": "light",
-    "scheme": "exp",
-    "splash": {
-      "image": "./assets/splash.png",
-      "resizeMode": "contain",
-      "backgroundColor": "#11da33"
-    },
-    "assetBundlePatterns": [
-      "**/*"
-    ],
-    "ios": {
-      "supportsTablet": true
-    },
-    "android": {
-      "adaptiveIcon": {
-        "foregroundImage": "./assets/adaptive-icon.png",
-        "backgroundColor": "#ffffff"
-      },
-      "permissions": [
-        "android.permission.CAMERA",
-        "android.permission.ACCESS_COARSE_LOCATION",
-        "android.permission.ACCESS_FINE_LOCATION",
-        "android.permission.RECORD_AUDIO"
-      ],
-      "package": "com.spxlato.ecobucks"
-    },
-    "experiments": {
-      "tsconfigPaths": true
-    },
-    "plugins": [
-      [
-        "expo-barcode-scanner",
-        {
-          "cameraPermission": "Allow $(PRODUCT_NAME) to access camera."
-        }
-      ],
-      [
-        "expo-location",
-        {
-          "locationAlwaysAndWhenInUsePermission": "Allow $(PRODUCT_NAME) to use your location."
-        }
-      ],
-      [
-        "expo-sensors",
-        {
-          "motionPermission": "Allow $(PRODUCT_NAME) to access your device motion."
-        }
-      ],
-      [
-        "expo-image-picker",
-        {
-          "photosPermission": "Ecobucks might need to access your photos in order to allow you to change your profile picture."
-        }
-      ],
-      "expo-font",
-      "expo-secure-store"
-    ],
-    "extra": {
-      "eas": {
-        "projectId": "7c142521-ccbb-411e-b4fb-a3926142da82"
-      }
-    }
-  }
+	"expo": {
+		"name": "ecobucks",
+		"slug": "ecobucks",
+		"version": "1.0.0",
+		"orientation": "portrait",
+		"icon": "./assets/icon.png",
+		"userInterfaceStyle": "light",
+		"scheme": "exp",
+		"splash": {
+			"image": "./assets/splash.png",
+			"resizeMode": "contain",
+			"backgroundColor": "#11da33"
+		},
+		"assetBundlePatterns": ["**/*"],
+		"ios": {
+			"supportsTablet": true
+		},
+		"android": {
+			"adaptiveIcon": {
+				"foregroundImage": "./assets/adaptive-icon.png",
+				"backgroundColor": "#ffffff"
+			},
+			"permissions": [
+				"android.permission.CAMERA",
+				"android.permission.ACCESS_COARSE_LOCATION",
+				"android.permission.ACCESS_FINE_LOCATION",
+				"android.permission.RECORD_AUDIO"
+			],
+			"package": "com.spxlato.ecobucks"
+		},
+		"experiments": {
+			"tsconfigPaths": true
+		},
+		"plugins": [
+			[
+				"expo-camera",
+				{
+					"cameraPermission": "Allow $(PRODUCT_NAME) to access your camera",
+					"microphonePermission": "Allow $(PRODUCT_NAME) to access your microphone",
+					"recordAudioAndroid": false
+				}
+			],
+			[
+				"expo-location",
+				{
+					"locationAlwaysAndWhenInUsePermission": "Allow $(PRODUCT_NAME) to use your location."
+				}
+			],
+			[
+				"expo-sensors",
+				{
+					"motionPermission": "Allow $(PRODUCT_NAME) to access your device motion."
+				}
+			],
+			[
+				"expo-image-picker",
+				{
+					"photosPermission": "Ecobucks might need to access your photos in order to allow you to change your profile picture."
+				}
+			],
+			"expo-font",
+			"expo-secure-store"
+		],
+		"extra": {
+			"eas": {
+				"projectId": "7c142521-ccbb-411e-b4fb-a3926142da82"
+			}
+		}
+	}
 }
